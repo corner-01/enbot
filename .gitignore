@@ -1,0 +1,40 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Editors and Python environments
+.vscode/
+.idea/
+.venv/
+venv/
+venv*/
+
+# Python caches, tests, and logs
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+
+# Local RAG/model runtime data
+chroma_db/
+models/
+knowledge_data/
+output/
+outputs/
+logs/
+evaluations/
+merged-models/
+
+# Private or bulky source documents
+*.docx
+*.xlsx
+*.xls
+
+# OS-generated files
+.DS_Store
+Thumbs.db

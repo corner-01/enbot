@@ -1,0 +1,24 @@
+[
+  {
+    "name": "T系列电网数据显示异常",
+    "query": "HESS-HY-T-4~20K-M逆变器显示的电网侧数据不对",
+    "expected_model": "HESS-HY-T-4~20K-M",
+    "expected_any": ["一般是四类原因", "电表/CT的选择"]
+  },
+  {
+    "name": "T系列CT与电表接线图",
+    "query": "HESS-HY-T-4~20K-M电网侧ct和meter接线图",
+    "expected_model": "HESS-HY-T-4~20K-M",
+    "expected_any": ["CT&meter.png", "ct和meter接线图"]
+  },
+  {
+    "name": "通用电网编号说明",
+    "query": "逆变器电网数据各编号是什么意思？",
+    "expected_any": ["NO.1 is Voltage", "NO.2 is active power"]
+  },
+  {
+    "name": "不同型号编号资料保护",
+    "query": "HESS-HY-T-4~20K-M逆变器电网数据各编号是什么意思？",
+    "expect_empty": true
+  }
+]
