@@ -1,3 +1,8 @@
+"""Knowledge loading, vector indexing, and hybrid retrieval for EnBot."""
+
+from __future__ import annotations
+
+import json
 import os
 import threading
 from pathlib import Path
@@ -5,35 +10,40 @@ from typing import Any, Optional
 
 import pandas as pd
 import torch
-from langchain_chroma import Chroma
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.documents import Document
 from dotenv import load_dotenv
+from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
+from langchain_core.retrievers import BaseRetriever
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from sentence_transformers import SentenceTransformer
+
 from rag.hybrid_search import HybridSearchEngine
+from rag.vector_store import VectorStoreSettings, create_or_load_vector_store
+
 
 load_dotenv()
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-_knowledge_retriever_cache = None
+_knowledge_retriever_cache: Optional[BaseRetriever] = None
+
+
+def _env_int(name: str, default: int) -> int:
+    value = os.getenv(name, "").strip()
+    return int(value) if value else default
 
 
 class LocalSentenceEmbeddings(Embeddings):
-    def __init__(self, model_path):
-        # 移除 BitsAndBytesConfig，因为 SentenceTransformer 不支持它
-        # RAGAS 会读取 embeddings.model 并将其作为模型名称记录，
-        # EmbeddingUsageEvent 要求该字段必须是字符串。
+    """Thread-safe wrapper around the project's local embedding model."""
+
+    def __init__(self, model_path: str):
+        # RAGAS reads ``embeddings.model`` for telemetry metadata and expects a
+        # string rather than a SentenceTransformer instance.
         self.model = str(model_path)
         self.device = os.getenv(
             "EMBEDDING_DEVICE",
             "cuda" if torch.cuda.is_available() else "cpu",
         )
-        self._encoder = SentenceTransformer(
-            model_path,
-            device=self.device,
-        )
+        self._encoder = SentenceTransformer(model_path, device=self.device)
         self._encode_lock = threading.Lock()
 
     def embed_documents(self, texts):
@@ -42,14 +52,14 @@ class LocalSentenceEmbeddings(Embeddings):
                 embeddings = self._encoder.encode_document(
                     texts,
                     normalize_embeddings=True,
-                    batch_size=4,
+                    batch_size=_env_int("EMBEDDING_BATCH_SIZE", 4),
                 )
             else:
                 embeddings = self._encoder.encode(
                     texts,
                     prompt_name="document",
                     normalize_embeddings=True,
-                    batch_size=4,
+                    batch_size=_env_int("EMBEDDING_BATCH_SIZE", 4),
                 )
         return embeddings.tolist()
 
@@ -57,8 +67,7 @@ class LocalSentenceEmbeddings(Embeddings):
         with self._encode_lock:
             if hasattr(self._encoder, "encode_query"):
                 embeddings = self._encoder.encode_query(
-                    [text],
-                    normalize_embeddings=True,
+                    [text], normalize_embeddings=True
                 )
             else:
                 embeddings = self._encoder.encode(
@@ -70,150 +79,215 @@ class LocalSentenceEmbeddings(Embeddings):
 
 
 class KnowledgeRetriever(BaseRetriever):
-    """
-    自定义检索器，封装基础检索器并添加额外的方法
-    """
+    """Expose hybrid retrieval through LangChain's retriever interface."""
+
     base_retriever: BaseRetriever
     embeddings: Embeddings
     vectorstore: Any
     hybrid_engine: Optional[Any] = None
+    active_backend: str = ""
 
     def _get_relevant_documents(self, query: str, *, run_manager):
-        """实现基类方法，委托给基础检索器"""
         if self.hybrid_engine is not None:
             return self.hybrid_engine.search(query)
         return self.base_retriever.invoke(query)
 
 
-def get_knowledge_retriever() -> Optional[BaseRetriever]:
-    """
-    获取或创建基础检索器实例。
-    采用两阶段切片法：先按文件结构提取独立语义块，再对超长文本进行递归切片。
-    """
-    global _knowledge_retriever_cache
-    if _knowledge_retriever_cache is not None:
-        return _knowledge_retriever_cache
+def _safe_metadata_value(value: Any) -> Any:
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    return json.dumps(value, ensure_ascii=False, default=str)
 
-    # 添加日志记录
-    print("="*50)
-    print("开始初始化知识库检索器...")
-    print("="*50)
 
-    # ==================== 1. 读取 .env 中的配置 ====================
-    folder_path = os.getenv("KNOWLEDGE_FILE", str(PROJECT_ROOT / "knowledge_data"))
-    persist_directory = os.getenv("CHROMA_PATH", str(PROJECT_ROOT / "chroma_db"))
-    embedding_path = os.getenv(
-        "EMBEDDING_MODEL_PATH",
-        str(PROJECT_ROOT / "models" / "Qwen3-8B-native"),
-    )
+def _sanitize_document(document: Document) -> Document:
+    metadata = {
+        str(key): _safe_metadata_value(value)
+        for key, value in (document.metadata or {}).items()
+        if value is not None
+    }
+    return Document(page_content=document.page_content, metadata=metadata)
 
-    # ==================== 2. 初始化本地 HuggingFace Embedding 模型 ====================
-    try:
-        print("正在初始化本地 qwen3-embedding-8b-native 模型...")
 
-        embeddings = LocalSentenceEmbeddings(model_path=embedding_path)
-        print("[OK] 本地 qwen3-embedding-8b-native 模型加载成功！")
-    except Exception as e:
-        print(f"[ERROR] 加载本地 Embedding 模型失败: {e}")
-        embeddings = None
+def _record_text(value: Any) -> str:
+    """Convert a JSON Q&A field into stable searchable text."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value.strip()
+    return json.dumps(value, ensure_ascii=False, default=str).strip()
 
-    if embeddings is None:
+
+def _json_qa_document(
+    record: Any,
+    *,
+    source: str,
+    row_index: int,
+) -> Optional[Document]:
+    """Convert one Alpaca-style instruction/input/output row to a document."""
+    if not isinstance(record, dict):
         return None
 
-    # ==================== 3. 加载或构建向量数据库 ====================
-    if os.path.exists(persist_directory):
-        print(f"[INFO] 检测到本地已有 Chroma 数据库({persist_directory})，直接加载，跳过重复导入与向量化！")
-        vectorstore = Chroma(persist_directory=persist_directory, embedding_function=embeddings)
-    else:
-        print(f"[INFO] 首次运行，开始读取知识库，路径来源：{folder_path}")
+    instruction = _record_text(record.get("instruction"))
+    input_text = _record_text(record.get("input"))
+    output = _record_text(record.get("output"))
+    if not output or not (instruction or input_text):
+        return None
 
-        # --- 阶段1：多格式文件提取，支持 TXT 和 XLSX ---
-        raw_docs = []
-        file_count = 0
-        for root, _dirs, files in os.walk(folder_path):
-            for file in files:
-                file_path = os.path.join(root, file)
+    question_parts = [part for part in (instruction, input_text) if part]
+    question = "\n".join(question_parts)
+    page_content = f"Question: {question}\nAnswer: {output}"
+    return Document(
+        page_content=page_content,
+        metadata={
+            "source": source,
+            "row": row_index,
+            "format": "instruction_input_output",
+        },
+    )
 
-                # 处理 TXT 文件
-                if file.endswith('.txt'):
-                    file_count += 1
-                    try:
-                        with open(file_path, 'r', encoding='utf-8') as f:
-                            text = f.read()
-                        if text.strip():
-                            raw_docs.append(Document(page_content=text.strip(), metadata={"source": file}))
-                    except Exception as e:
-                        print(f"[WARN] 文件 {file_path} 解析失败: {e}，跳过")
 
-                # 处理 XLSX 文件
-                elif file.endswith('.xlsx'):
-                    file_count += 1
-                    try:
-                        df = pd.read_excel(file_path, engine='openpyxl')
-                        # 将每一行数据拼接成语义完整的文本块
-                        for _, row in df.iterrows():
-                            # 过滤掉空值，将列名与值组合，例如："列名: 值"
-                            row_data = [f"{col}: {val}" for col, val in row.items() if pd.notna(val)]
-                            text = "\n".join(row_data)
-                            if text.strip() and len(text.strip()) >= 10:
-                                raw_docs.append(Document(page_content=text.strip(), metadata={"source": file}))
-                    except Exception as e:
-                        print(f"[WARN] 文件 {file_path} 解析失败: {e}，跳过")
+def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
+    """Load TXT/XLSX/JSON sources and split them for dense and BM25 search."""
+    root_path = Path(folder_path).expanduser()
+    if not root_path.exists():
+        print(f"[WARN] Knowledge source path does not exist: {root_path}")
+        return []
 
-        print(f"[INFO] 一共读取了 {file_count} 个文件，提取出 {len(raw_docs)} 个独立语义块")
+    raw_documents: list[Document] = []
+    seen_content: set[str] = set()
+    duplicate_count = 0
+    invalid_record_count = 0
+    file_count = 0
 
-        if not raw_docs:
-            print("[ERROR] 没有找到可用的TXT/XLSX数据！请检查 .env 中的 KNOWLEDGE_FILE 路径是否正确。")
-            return None
+    def append_unique(document: Optional[Document]) -> None:
+        nonlocal duplicate_count, invalid_record_count
+        if document is None:
+            invalid_record_count += 1
+            return
+        content = document.page_content.strip()
+        if len(content) < 10:
+            invalid_record_count += 1
+            return
+        if content in seen_content:
+            duplicate_count += 1
+            return
+        seen_content.add(content)
+        raw_documents.append(document)
 
-        # --- 阶段2：递归长度切分，处理超长文本 ---
-        splitter = RecursiveCharacterTextSplitter(
-            chunk_size=800,
-            chunk_overlap=100,
-            separators=["\n\n", "\n", "。", "！", "？", "；", "，", " ", ""],
-            keep_separator=True,
-            add_start_index=True
+    for file_path in sorted(root_path.rglob("*")):
+        if not file_path.is_file():
+            continue
+        suffix = file_path.suffix.lower()
+        if suffix not in {".txt", ".xlsx", ".json"}:
+            continue
+        file_count += 1
+        source = str(file_path.relative_to(root_path))
+        try:
+            if suffix == ".txt":
+                text = file_path.read_text(encoding="utf-8").strip()
+                if text:
+                    append_unique(
+                        Document(page_content=text, metadata={"source": source})
+                    )
+            elif suffix == ".xlsx":
+                dataframe = pd.read_excel(file_path, engine="openpyxl")
+                for row_index, row in dataframe.iterrows():
+                    fields = [
+                        f"{column}: {value}"
+                        for column, value in row.items()
+                        if pd.notna(value)
+                    ]
+                    text = "\n".join(fields).strip()
+                    append_unique(
+                        Document(
+                            page_content=text,
+                            metadata={
+                                "source": source,
+                                "row": int(row_index) + 2,
+                            },
+                        )
+                    )
+            else:
+                payload = json.loads(file_path.read_text(encoding="utf-8-sig"))
+                records = payload if isinstance(payload, list) else [payload]
+                for row_index, record in enumerate(records, start=1):
+                    append_unique(
+                        _json_qa_document(
+                            record,
+                            source=source,
+                            row_index=row_index,
+                        )
+                    )
+        except Exception as exc:
+            print(f"[WARN] Failed to read {file_path}: {exc}")
+
+    if not raw_documents:
+        print(
+            f"[WARN] No usable TXT/XLSX/JSON documents found under {root_path} "
+            f"(files checked: {file_count})"
         )
-        split_docs = splitter.split_documents(raw_docs)
-        print(f"✂️ 经过递归优化切片后，最终生成 {len(split_docs)} 个知识片段")
+        return []
 
-        # ==================== 4. 显式文本向量化 ====================
-        print(f"🧠 正在使用本地模型，对 {len(split_docs)} 个片段进行文本向量化（耗时操作，请耐心等待）...")
-        try:
-            # 使用批量处理提高效率
-            batch_size = 32
-            vectors = []
-            for i in range(0, len(split_docs), batch_size):
-                batch = split_docs[i:i + batch_size]
-                batch_vectors = embeddings.embed_documents([doc.page_content for doc in batch])
-                vectors.extend(batch_vectors)
-                print(f"已处理 {min(i + batch_size, len(split_docs))}/{len(split_docs)} 个片段")
-            print(f"[OK] 向量化完成！成功生成 {len(vectors)} 条向量数据。")
-        except Exception as e:
-            print(f"[ERROR] 向量化过程中发生错误: {e}")
-            return None
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=_env_int("RAG_CHUNK_SIZE", 800),
+        chunk_overlap=_env_int("RAG_CHUNK_OVERLAP", 100),
+        separators=["\n\n", "\n", "。", "！", "？", ";", "；", " ", ""],
+        keep_separator=True,
+        add_start_index=True,
+    )
+    chunks = [_sanitize_document(doc) for doc in splitter.split_documents(raw_documents)]
+    print(
+        f"[OK] Loaded {file_count} knowledge files, "
+        f"{len(raw_documents)} unique records, {len(chunks)} chunks, "
+        f"{duplicate_count} duplicates and {invalid_record_count} invalid records skipped"
+    )
+    return chunks
 
-        # ==================== 5. 存入 Chroma 本地向量数据库 ====================
-        print(f"[INFO] 正在将文本和向量绑定，存入本地 Chroma 数据库...")
-        try:
-            vectorstore = Chroma.from_documents(
-                documents=split_docs,
-                embedding=embeddings,
-                persist_directory=persist_directory
-            )
-            print(f"[OK] 已成功存入本地 Chroma 数据库，持久化到目录: {persist_directory}")
-        except Exception as e:
-            print(f"[ERROR] 存入 Chroma 数据库失败: {e}")
-            return None
 
-    # ==================== 6. 创建并缓存检索器 ====================
+def reset_knowledge_retriever_cache() -> None:
+    global _knowledge_retriever_cache
+    _knowledge_retriever_cache = None
+
+
+def get_knowledge_retriever(
+    force_rebuild: bool = False,
+    raise_on_error: bool = False,
+) -> Optional[BaseRetriever]:
+    """Load or build the configured vector index and hybrid retriever."""
+    global _knowledge_retriever_cache
+    if _knowledge_retriever_cache is not None and not force_rebuild:
+        return _knowledge_retriever_cache
+
+    print("=" * 60)
+    print("Initializing EnBot knowledge retriever")
+    print("=" * 60)
+
     try:
-        # 第一阶段扩大向量召回，再由 BM25/RRF/CPU Reranker 精排。
+        settings = VectorStoreSettings.from_env()
+        folder_path = os.getenv(
+            "KNOWLEDGE_FILE", str(PROJECT_ROOT / "knowledge_data")
+        )
+        embedding_path = os.getenv(
+            "EMBEDDING_MODEL_PATH",
+            str(PROJECT_ROOT / "models" / "Qwen3-8B-native"),
+        )
+
+        print(f"[INFO] Loading local embedding model: {embedding_path}")
+        embeddings = LocalSentenceEmbeddings(model_path=embedding_path)
+        chunks = load_knowledge_chunks(folder_path)
+
+        vectorstore, active_backend, created = create_or_load_vector_store(
+            settings=settings,
+            embeddings=embeddings,
+            documents=chunks,
+            force_rebuild=force_rebuild,
+        )
+
+        dense_k = _env_int("RAG_DENSE_K", 30)
         base_retriever = vectorstore.as_retriever(
             search_type="similarity",
-            search_kwargs={"k": 30},
+            search_kwargs={"k": dense_k},
         )
-
         reranker_path = os.getenv(
             "RERANKER_MODEL_PATH",
             str(PROJECT_ROOT / "models" / "bge-reranker-v2-m3"),
@@ -221,31 +295,26 @@ def get_knowledge_retriever() -> Optional[BaseRetriever]:
         hybrid_engine = HybridSearchEngine(
             vectorstore=vectorstore,
             dense_retriever=base_retriever,
+            documents=chunks,
             reranker_path=reranker_path,
-            dense_k=30,
-            lexical_k=50,
-            rerank_k=10,
-            final_k=2,
+            dense_k=dense_k,
+            lexical_k=_env_int("RAG_LEXICAL_K", 50),
+            rerank_k=_env_int("RAG_RERANK_K", 10),
+            final_k=_env_int("RAG_FINAL_K", 2),
         )
-
-        # 创建自定义检索器，封装基础检索器和额外方法
-        custom_retriever = KnowledgeRetriever(
+        retriever = KnowledgeRetriever(
             base_retriever=base_retriever,
             embeddings=embeddings,
             vectorstore=vectorstore,
             hybrid_engine=hybrid_engine,
+            active_backend=active_backend,
         )
-
-    except Exception as e:
-        print(f"[WARN] 创建混合检索器时发生错误: {e}，降级使用常规相似度检索")
-        base_retriever = vectorstore.as_retriever(search_kwargs={"k": 30})
-        # 为降级检索器创建自定义检索器
-        custom_retriever = KnowledgeRetriever(
-            base_retriever=base_retriever,
-            embeddings=embeddings,
-            vectorstore=vectorstore,
-            hybrid_engine=None,
-        )
-
-    _knowledge_retriever_cache = custom_retriever
-    return custom_retriever
+        _knowledge_retriever_cache = retriever
+        action = "built" if created else "loaded"
+        print(f"[OK] Knowledge retriever ready: backend={active_backend}, index={action}")
+        return retriever
+    except Exception as exc:
+        print(f"[ERROR] Knowledge retriever initialization failed: {exc}")
+        if raise_on_error:
+            raise
+        return None

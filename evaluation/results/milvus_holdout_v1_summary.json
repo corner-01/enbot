@@ -1,0 +1,35 @@
+{
+  "evaluated_at": "2026-09-28T14:36:27+08:00",
+  "backend": "milvus",
+  "collection": "enbot_knowledge_v1",
+  "holdout": "D:\\telebot\\evaluation\\holdout\\retrieval_holdout_v1.json",
+  "holdout_sha256": "93262b2d2bec29dcb9a97e226e2f6b9543f20fa669a00df36cbfb9fbf7e6f739",
+  "policy": "One-time evaluation; no retrieval tuning may use these cases.",
+  "total": 45,
+  "positive_cases": 30,
+  "negative_cases": 15,
+  "passed": 35,
+  "pass_rate": 0.7778,
+  "recall_at_1": 0.6333,
+  "recall_at_2": 0.7333,
+  "mrr": 0.6833,
+  "no_answer_accuracy": 0.8667,
+  "negative_correct": 13,
+  "failed_cases": [
+    "HOLDOUT-POS-019",
+    "HOLDOUT-POS-020",
+    "HOLDOUT-POS-022",
+    "HOLDOUT-POS-023",
+    "HOLDOUT-POS-026",
+    "HOLDOUT-POS-027",
+    "HOLDOUT-POS-028",
+    "HOLDOUT-POS-029",
+    "HOLDOUT-NEG-011",
+    "HOLDOUT-NEG-015"
+  ],
+  "notes": [
+    "The previously generated local-model rewrite was rejected before evaluation because it contained answers and mojibake.",
+    "This curated replacement had zero source-row overlap with the 60-case development set.",
+    "The result is diagnostic only and must not be used to adjust thresholds or rules."
+  ]
+}

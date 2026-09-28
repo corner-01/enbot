@@ -2,6 +2,10 @@ import os
 import re
 from typing import Optional
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from langchain_classic.agents import AgentExecutor, create_react_agent
 from langchain_community.llms import Ollama
@@ -21,6 +25,22 @@ ASSISTANT_NAME = "小英"
 
 app = FastAPI(title=f"{PROJECT_NAME} API", version="2.0.0")
 
+
+def _retrieval_debug_payload(documents):
+    """Serialize retrieval results consistently for chat debugging and evals."""
+    return [
+        {
+            "rank": rank,
+            "model": document.metadata.get("model", ""),
+            "source": document.metadata.get("source", ""),
+            "row": document.metadata.get("row"),
+            "rrf_score": document.metadata.get("rrf_score"),
+            "reranker_score": document.metadata.get("reranker_score"),
+            "preview": document.page_content[:800],
+        }
+        for rank, document in enumerate(documents, start=1)
+    ]
+
 @app.on_event("startup")
 async def startup_event():
     # 预加载知识库
@@ -32,9 +52,11 @@ class Chatbot:
         # 初始化实例属性
         self.session_id = "default"
         # 使用 langchain_community 的 Ollama，兼容性最好，避免 502 错误
+        ollama_num_gpu = os.getenv("OLLAMA_NUM_GPU")
         self.chatmodel = Ollama(
-            model=os.getenv("OLLAMA_MODEL", "qwen2.5:7b"),
-            temperature=0
+            model=os.getenv("OLLAMA_MODEL", "enbot-optuna:7b"),
+            temperature=0,
+            num_gpu=int(ollama_num_gpu) if ollama_num_gpu else None,
         )
 
         # 初始化 Redis 对话历史。
@@ -360,11 +382,14 @@ Thought:{agent_scratchpad}"""
     def _is_product_support_query(query):
         """Route product and troubleshooting questions to the local RAG system."""
         normalized = query.lower()
+        if re.search(r"\b(?:home-ess|hess|cess)[a-z0-9~._/-]*\b", normalized):
+            return True
         product_keywords = (
             "hess", "逆变器", "储能", "电池", "电网", "光伏", "并网", "离网",
             "告警", "故障", "报错", "错误码", "参数", "手册", "安装", "接线",
             "充电", "放电", "功率", "电压", "电流", "频率", "ct", "bms",
-            "ems", "pcs", "设备", "app掉线",
+            "ems", "pcs", "设备", "app掉线", "负电价", "馈网", "限馈",
+            "ai mode", "工作模式", "soc",
         )
         return any(keyword in normalized for keyword in product_keywords)
 
@@ -409,6 +434,12 @@ Thought:{agent_scratchpad}"""
         self, query, response, output_text, evaluate_ragas=False, ground_truth=None
     ):
         """Evaluate, persist, and return one completed response."""
+        # Agent tool calls can return a stored Q&A record verbatim. Keep the
+        # answer itself but never expose storage labels such as Question/Answer.
+        standard_answer = self._extract_standard_answer(output_text)
+        if standard_answer:
+            output_text = standard_answer
+
         contexts = self._extract_rag_contexts(response)
         if contexts:
             response.setdefault("sources", self._extract_source_urls(contexts))
@@ -612,6 +643,32 @@ class ChatRequest(BaseModel):
     ground_truth: Optional[str] = None
     debug: bool = False
 
+
+class RetrieveRequest(BaseModel):
+    query: str
+
+
+@app.post("/retrieve")
+async def retrieve(request: RetrieveRequest):
+    """Run retrieval only, without invoking the answer-generation model."""
+    try:
+        retriever = get_knowledge_retriever()
+        if retriever is None:
+            raise RuntimeError("Knowledge retriever is unavailable")
+        documents = retriever.invoke(request.query)
+        return {
+            "status": "success",
+            "data": {
+                "retrieval_backend": getattr(retriever, "active_backend", "unknown"),
+                "retrieval_debug": _retrieval_debug_payload(documents),
+            },
+        }
+    except Exception as exc:
+        return {
+            "status": "error",
+            "data": {"message": str(exc), "retrieval_debug": []},
+        }
+
 # 全局变量
 chatbot = None
 
@@ -637,18 +694,13 @@ async def chat(request:ChatRequest):
             data["ragas"] = result.get("ragas")
         if request.debug and chatbot.knowledge_retriever is not None:
             try:
+                data["retrieval_backend"] = getattr(
+                    chatbot.knowledge_retriever,
+                    "active_backend",
+                    "unknown",
+                )
                 debug_documents = chatbot.knowledge_retriever.invoke(request.query)
-                data["retrieval_debug"] = [
-                    {
-                        "rank": rank,
-                        "model": document.metadata.get("model", ""),
-                        "source": document.metadata.get("source", ""),
-                        "rrf_score": document.metadata.get("rrf_score"),
-                        "reranker_score": document.metadata.get("reranker_score"),
-                        "preview": document.page_content[:800],
-                    }
-                    for rank, document in enumerate(debug_documents, start=1)
-                ]
+                data["retrieval_debug"] = _retrieval_debug_payload(debug_documents)
             except Exception as exc:
                 data["retrieval_debug"] = []
                 data["retrieval_debug_error"] = str(exc)

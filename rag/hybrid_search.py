@@ -9,7 +9,14 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from langchain_core.documents import Document
 
 
-MODEL_PATTERN = re.compile(r"hess[-a-z0-9~.]+", re.IGNORECASE)
+MODEL_PATTERN = re.compile(
+    r"(?:hess|home-ess|cess|hc-ev|iess)[-a-z0-9~./]+",
+    re.IGNORECASE,
+)
+FAULT_CODE_PATTERN = re.compile(
+    r"(?<![a-z0-9])[a-z]\.\d{1,3}(?!\d)",
+    re.IGNORECASE,
+)
 URL_PATTERN = re.compile(r"https?://[^\s\])]+")
 
 
@@ -18,6 +25,11 @@ def extract_model(text: str) -> str:
     # Punctuation immediately following a model name (for example the dash in
     # "HESS-HY-T-4~20K-M - certificate") is not part of the model itself.
     return match.group(0).upper().rstrip("-_.") if match else ""
+
+
+def extract_fault_codes(text: str) -> set[str]:
+    """Extract explicit dotted fault codes such as E.20 without matching units."""
+    return {match.group(0).upper() for match in FAULT_CODE_PATTERN.finditer(text or "")}
 
 
 def tokenize(text: str) -> List[str]:
@@ -199,6 +211,7 @@ class HybridSearchEngine:
         self,
         vectorstore: Any,
         dense_retriever: Any,
+        documents: Optional[Sequence[Document]] = None,
         reranker_path: Optional[str] = None,
         dense_k: int = 20,
         lexical_k: int = 20,
@@ -216,16 +229,7 @@ class HybridSearchEngine:
         self._cache: OrderedDict[str, List[Document]] = OrderedDict()
         self._cache_lock = threading.Lock()
 
-        payload = vectorstore.get(include=["documents", "metadatas"])
-        documents = []
-        for content, metadata in zip(
-            payload.get("documents", []), payload.get("metadatas", [])
-        ):
-            if not content:
-                continue
-            enriched_metadata = dict(metadata or {})
-            enriched_metadata.setdefault("model", extract_model(content))
-            documents.append(Document(page_content=content, metadata=enriched_metadata))
+        documents = self._load_lexical_documents(vectorstore, documents)
 
         self.bm25 = BM25Index(documents)
         enabled = os.getenv("RERANKER_ENABLED", "true").lower() not in {
@@ -237,6 +241,43 @@ class HybridSearchEngine:
             LocalCPUReranker(reranker_path) if enabled and reranker_path else None
         )
         print(f"[OK] 混合检索索引已建立: {len(documents)} 条文档")
+
+    @staticmethod
+    def _load_lexical_documents(
+        vectorstore: Any,
+        documents: Optional[Sequence[Document]],
+    ) -> List[Document]:
+        """Load BM25 input without depending on a vector-store-specific API.
+
+        Chroma exposes ``get()`` but Milvus does not expose the same method.
+        Passing the already-split source documents keeps the lexical branch
+        identical across both backends. The Chroma ``get()`` path remains as
+        a backward-compatible fallback.
+        """
+        if documents is not None:
+            source_documents = list(documents)
+        elif hasattr(vectorstore, "get"):
+            payload = vectorstore.get(include=["documents", "metadatas"])
+            source_documents = [
+                Document(page_content=content, metadata=dict(metadata or {}))
+                for content, metadata in zip(
+                    payload.get("documents", []), payload.get("metadatas", [])
+                )
+                if content
+            ]
+        else:
+            source_documents = []
+
+        output = []
+        for document in source_documents:
+            if not document.page_content:
+                continue
+            metadata = dict(document.metadata or {})
+            metadata.setdefault("model", extract_model(document.page_content))
+            output.append(
+                Document(page_content=document.page_content, metadata=metadata)
+            )
+        return output
 
     @staticmethod
     def _document_key(document: Document) -> str:
@@ -290,8 +331,32 @@ class HybridSearchEngine:
         normalized = (query or "").lower()
         return any(
             token in normalized
-            for token in ("接线图", "示意图", "图片", "照片", "diagram", "image", "picture")
+            for token in (
+                "接线图", "示意图", "图片", "照片", "场景图", "项目案例", "案例",
+                "diagram", "image", "picture", "case study", "project case",
+            )
         )
+
+    @staticmethod
+    def _is_in_domain(query: str) -> bool:
+        """Conservatively reject queries outside the energy-support domain."""
+        normalized = (query or "").lower()
+        if extract_model(normalized) or extract_fault_codes(normalized):
+            return True
+        domain_terms = (
+            "逆变器", "储能", "电池", "电网", "光伏", "并网", "离网", "告警",
+            "故障", "错误码", "充电", "放电", "功率", "电压", "电流", "频率",
+            "接线", "安装", "电价", "负电价", "能源", "电表", "馈网", "限馈",
+            "家庭能源", "设备", "app", "用户手册", "工作模式", "智能电表",
+            "hanchu", "ess", "项目案例", "案例", "mppt", "阴影扫描",
+            "shadow sol", "sg ready", "logger", "数据采集器",
+            "inverter", "battery", "grid", "solar", "photovoltaic", "pv ",
+            "charge", "charging", "discharge", "voltage", "current", "frequency",
+            "fault", "alarm", "error code", "energy", "electricity", "tariff",
+            "meter", "wiring", "installation", "manual", "soc", "bms", "ems",
+            "pcs", "ev charger", "octopus", "e.on", "ai mode",
+        )
+        return any(term in normalized for term in domain_terms)
 
     @staticmethod
     def _is_url_only_answer(document: Document) -> bool:
@@ -335,6 +400,10 @@ class HybridSearchEngine:
         if cached is not None:
             return cached
 
+        if not self._is_in_domain(query):
+            self._set_cached(query, [])
+            return []
+
         candidates: Dict[str, Document] = {}
         rrf_scores: Dict[str, float] = defaultdict(float)
         for expanded_query in self._expanded_queries(query):
@@ -371,6 +440,20 @@ class HybridSearchEngine:
                 return []
             candidates = {key: candidates[key] for key in structured_keys}
 
+        query_fault_codes = extract_fault_codes(query)
+        if query_fault_codes:
+            fault_code_keys = [
+                key
+                for key, document in candidates.items()
+                if query_fault_codes.issubset(
+                    extract_fault_codes(document.page_content)
+                )
+            ]
+            if not fault_code_keys:
+                self._set_cached(query, [])
+                return []
+            candidates = {key: candidates[key] for key in fault_code_keys}
+
         query_model = extract_model(query)
         if query_model:
             exact_keys = [
@@ -380,9 +463,10 @@ class HybridSearchEngine:
             ]
             if exact_keys:
                 candidates = {key: candidates[key] for key in exact_keys}
-            elif numbered_grid_query:
-                # Numbered screen layouts can differ between product families.
-                # Never present another model's layout as an exact-model answer.
+            else:
+                # Product specifications and screen layouts differ by model.
+                # Never present another model's record as an exact-model answer.
+                self._set_cached(query, [])
                 return []
 
         fused_documents = []

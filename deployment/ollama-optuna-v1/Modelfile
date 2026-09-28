@@ -1,0 +1,6 @@
+FROM D:\enbot-finetune-artifacts\deployment\ollama-optuna-v1\enbot-optuna-q4_k_m.gguf
+
+PARAMETER temperature 0
+PARAMETER num_ctx 4096
+PARAMETER repeat_penalty 1.05
+PARAMETER seed 42

@@ -6,7 +6,7 @@
 
 **最低 GPU 显存：单卡 32 GB。** 按当前代码让回答模型和 Embedding 同时使用 GPU（`EMBEDDING_DEVICE=cuda`）、重排模型使用 CPU，按低并发部署计算。
 
-**计算方法：**本地 Embedding 的四个 BF16 权重文件合计约 15.13 GB，Ollama `qwen2.5:7b` 的 Q4_K_M 模型文件约 4.7 GB，合计约 **19.83 GB**；再为 CUDA/PyTorch、Ollama 的 KV 缓存和临时计算预留约 **8–10 GB**，得到约 **28–30 GB**，取 **32 GB**。CPU 重排模型不占 GPU 显存。这是根据代码和模型文件大小算出的部署下限。
+**计算方法：**本地 Embedding 的四个 BF16 权重文件合计约 15.13 GB，Ollama `enbot-optuna:7b` 的 Q4_K_M 模型文件约 4.7 GB，合计约 **19.83 GB**；再为 CUDA/PyTorch、Ollama 的 KV 缓存和临时计算预留约 **8–10 GB**，得到约 **28–30 GB**，取 **32 GB**。CPU 重排模型不占 GPU 显存。这是根据代码和模型文件大小算出的部署下限。
 
 ## 二、部署步骤
 
@@ -67,7 +67,8 @@ python -c "import torch; print('CUDA:', torch.cuda.is_available())"
 curl -fsSL https://ollama.com/install.sh | sh
 sudo systemctl enable --now ollama
 sudo systemctl enable --now redis-server
-ollama pull qwen2.5:7b
+# 将 enbot-optuna-q4_k_m.gguf 和对应 Modelfile 上传到服务器后执行：
+ollama create enbot-optuna:7b -f /服务器上的/Modelfile
 ollama list
 redis-cli ping
 ```
@@ -84,7 +85,8 @@ nano .env
 至少核对以下项（均相对于仓库根目录；使用绝对路径也可以）：
 
 ```dotenv
-OLLAMA_MODEL=qwen2.5:7b
+OLLAMA_MODEL=enbot-optuna:7b
+OLLAMA_NUM_GPU=
 KNOWLEDGE_FILE=./knowledge_data
 CHROMA_PATH=./chroma_db
 EMBEDDING_MODEL_PATH=./models/Qwen3-8B-native
@@ -110,7 +112,7 @@ source .venv/bin/activate
 python -X utf8 main.py
 ```
 
-`redis-cli ping` 应显示 `PONG`；`ollama list` 应列出 `qwen2.5:7b`。首次启动会加载本地模型；如果没有现成的 `chroma_db/`，还会用知识库文件建索引，需等待直到终端显示服务监听 `http://127.0.0.1:8000`。**不要关闭终端 A**，关闭会停止手动启动的服务。
+`redis-cli ping` 应显示 `PONG`；`ollama list` 应列出 `enbot-optuna:7b`。首次启动会加载本地模型；如果没有现成的 `chroma_db/`，还会用知识库文件建索引，需等待直到终端显示服务监听 `http://127.0.0.1:8000`。**不要关闭终端 A**，关闭会停止手动启动的服务。
 
 另开一个**服务器终端 B**，执行下面两条检查命令：
 

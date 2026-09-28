@@ -1,0 +1,28 @@
+{
+  "evaluated_at": "2026-09-28",
+  "backend": "milvus",
+  "collection": "enbot_knowledge_v1",
+  "dataset": "evaluation/retrieval_cases_v2.json",
+  "total_cases": 60,
+  "positive_cases": 50,
+  "negative_cases": 10,
+  "passed": 51,
+  "pass_rate": 0.85,
+  "recall_at_1": 0.96,
+  "recall_at_2": 0.96,
+  "mrr": 0.96,
+  "no_answer_accuracy": 0.3,
+  "positive_failures": [
+    {
+      "case": "KB-022-oss文件",
+      "reason": "The project-case Q&A was filtered as a URL-only answer."
+    },
+    {
+      "case": "KB-023-低压电池告警切片",
+      "reason": "The E.20 query was reranked behind E.19 and E.00 records."
+    }
+  ],
+  "negative_cases_correct": ["NEG-006", "NEG-007", "NEG-010"],
+  "answer_label_cleanup_verified": true,
+  "notes": "This is a deterministic retrieval regression set built from 50 local Q&A records plus 10 out-of-scope queries. It is not a paraphrased holdout set."
+}

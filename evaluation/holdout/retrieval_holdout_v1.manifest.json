@@ -1,0 +1,13 @@
+{
+  "created_at": "2026-09-28T06:31:48.817575+00:00",
+  "status": "LOCKED_EVALUATED",
+  "generator": "curated_manual_paraphrases",
+  "model": null,
+  "positive_cases": 30,
+  "negative_cases": 15,
+  "excluded_development_set": "D:\\telebot\\evaluation\\retrieval_cases_v2.json",
+  "sha256": "93262b2d2bec29dcb9a97e226e2f6b9543f20fa669a00df36cbfb9fbf7e6f739",
+  "policy": "Evaluated once. Do not tune retrieval rules against this file.",
+  "evaluated_at": "2026-09-28T14:36:27+08:00",
+  "result": "D:\\telebot\\evaluation\\results\\milvus_holdout_v1_summary.json"
+}

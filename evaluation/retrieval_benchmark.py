@@ -38,12 +38,18 @@ def retrieve_from_api(api_url: str, query: str) -> List[Dict[str, Any]]:
 def first_relevant_rank(case: Dict[str, Any], documents: List[Dict[str, Any]]) -> int:
     expected_terms = [term.lower() for term in case.get("expected_any", [])]
     expected_model = case.get("expected_model", "").upper()
+    expected_source = case.get("expected_source", "")
+    expected_row = case.get("expected_row")
     for rank, document in enumerate(documents, start=1):
         text = document.get("preview", "").lower()
         model = document.get("model", "").upper()
         term_matches = not expected_terms or any(term in text for term in expected_terms)
         model_matches = not expected_model or model == expected_model
-        if term_matches and model_matches:
+        source_matches = (
+            not expected_source or document.get("source", "") == expected_source
+        )
+        row_matches = expected_row is None or document.get("row") == expected_row
+        if term_matches and model_matches and source_matches and row_matches:
             return rank
     return 0
 
@@ -52,13 +58,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description="Evaluate local hybrid retrieval through the running FastAPI service."
     )
-    parser.add_argument("--api", default="http://127.0.0.1:8000/chat")
+    parser.add_argument("--api", default="http://127.0.0.1:8000/retrieve")
     parser.add_argument("--cases", type=Path, default=DEFAULT_CASES)
     args = parser.parse_args()
 
     cases = load_cases(args.cases)
     passed = 0
     positive_count = 0
+    negative_count = 0
+    negative_correct = 0
+    recall_at_1_count = 0
+    recall_at_2_count = 0
     reciprocal_rank_sum = 0.0
 
     for case in cases:
@@ -69,12 +79,16 @@ def main() -> int:
             return 2
 
         if case.get("expect_empty"):
+            negative_count += 1
             case_passed = not documents
+            negative_correct += int(case_passed)
             detail = f"returned={len(documents)}, expected=0"
         else:
             positive_count += 1
             rank = first_relevant_rank(case, documents)
             case_passed = rank > 0
+            recall_at_1_count += int(rank == 1)
+            recall_at_2_count += int(0 < rank <= 2)
             reciprocal_rank_sum += 1.0 / rank if rank else 0.0
             detail = f"relevant_rank={rank or 'not found'}, returned={len(documents)}"
 
@@ -86,12 +100,24 @@ def main() -> int:
                 "  "
                 f"#{document.get('rank')} model={document.get('model') or '-'} "
                 f"reranker={document.get('reranker_score')} "
-                f"source={document.get('source') or '-'}"
+                f"source={document.get('source') or '-'} "
+                f"row={document.get('row') if document.get('row') is not None else '-'}"
             )
 
-    recall_at_k = passed / len(cases) if cases else 0.0
+    pass_rate = passed / len(cases) if cases else 0.0
+    recall_at_1 = recall_at_1_count / positive_count if positive_count else 0.0
+    recall_at_2 = recall_at_2_count / positive_count if positive_count else 0.0
     mrr = reciprocal_rank_sum / positive_count if positive_count else 0.0
-    print(f"\nSummary: passed={passed}/{len(cases)}, pass_rate={recall_at_k:.4f}, MRR={mrr:.4f}")
+    no_answer_accuracy = (
+        negative_correct / negative_count if negative_count else 0.0
+    )
+    print(
+        "\nSummary: "
+        f"passed={passed}/{len(cases)}, pass_rate={pass_rate:.4f}, "
+        f"Recall@1={recall_at_1:.4f}, Recall@2={recall_at_2:.4f}, "
+        f"MRR={mrr:.4f}, no_answer_accuracy={no_answer_accuracy:.4f} "
+        f"({negative_correct}/{negative_count})"
+    )
     return 0 if passed == len(cases) else 1
 
 

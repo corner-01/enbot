@@ -1,0 +1,257 @@
+[
+  {
+    "name": "HOLDOUT-POS-001",
+    "query": "On a sunny day, what charging and discharging behavior should I expect from Weather Optimization?",
+    "expected_source": "120.json",
+    "expected_row": 40
+  },
+  {
+    "name": "HOLDOUT-POS-002",
+    "query": "For a CESS-HV-9.4K battery, what are black power cable 1, red power cable 2, and the black CAN communication cables used for?",
+    "expected_source": "CESS-HV-9.4K.json",
+    "expected_row": 25
+  },
+  {
+    "name": "HOLDOUT-POS-003",
+    "query": "For the CESS-HY-25~50K inverter, explain first-time startup, what to do if it malfunctions, how SOC calibration is handled, and the inverter's main function.",
+    "expected_source": "CESS-HY-25~50K_user-manual.json",
+    "expected_row": 94
+  },
+  {
+    "name": "HOLDOUT-POS-004",
+    "query": "Where can I find the on-site installation steps and switch/cable recommendations for both HC-EV-AC-7/11/22K-S0 and HC-EV-AC-7/11/22K-S1 chargers?",
+    "expected_source": "HC-EV-AC-071122K.json",
+    "expected_row": 9
+  },
+  {
+    "name": "HOLDOUT-POS-005",
+    "query": "Which tools should be prepared before installing a HESS-Gateway-M1?",
+    "expected_source": "HESS-Gateway-M1.json",
+    "expected_row": 5
+  },
+  {
+    "name": "HOLDOUT-POS-006",
+    "query": "On the HESS-HY-S-6K-S display home page, what is the center icon, how do I open historical data, and where are the advanced settings?",
+    "expected_source": "HESS-HY-S-12K-S_user-manual.json",
+    "expected_row": 51
+  },
+  {
+    "name": "HOLDOUT-POS-007",
+    "query": "How can I use the GRID indicator on a HESS-HY-S-3~6K to confirm grid connection, and what does a steady white light mean?",
+    "expected_source": "HESS-HY-S-3~6K.json",
+    "expected_row": 22
+  },
+  {
+    "name": "HOLDOUT-POS-008",
+    "query": "How should the positive and negative conductors from two PV strings be wired to a HESS-HY-S-6K-S inverter?",
+    "expected_source": "HESS-HY-S-6K-S_user-manual.json",
+    "expected_row": 22
+  },
+  {
+    "name": "HOLDOUT-POS-009",
+    "query": "For a HESS-HV-T-15/20K M4, what is the first-start procedure, what should I do if it fails to operate, and how is SOC calibration performed during use?",
+    "expected_source": "HESS-HY-T-15~20K-M4_user-manual.json",
+    "expected_row": 91
+  },
+  {
+    "name": "HOLDOUT-POS-010",
+    "query": "Describe the HESS-HY-T-5~12K electrical connection area and its main components, including the DC-switch requirement for Australia.",
+    "expected_source": "HESS-HY-T-5~12K.json",
+    "expected_row": 59
+  },
+  {
+    "name": "HOLDOUT-POS-011",
+    "query": "What is the correct grounding procedure for a HOME-ESS-HV-2.7K battery?",
+    "expected_source": "HOME-ESS-HV-2.7K.json",
+    "expected_row": 35
+  },
+  {
+    "name": "HOLDOUT-POS-012",
+    "query": "Is there a diagram explaining the safety labels used on a HOME-ESS-HV-5.12K battery?",
+    "expected_source": "HOME-ESS-HV-5.12K.json",
+    "expected_row": 7
+  },
+  {
+    "name": "HOLDOUT-POS-013",
+    "query": "Can you provide the HOME-ESS-HV-3.7K BDU interface diagram and explain its alphanumeric connection codes?",
+    "expected_source": "HOME-ESS-HV-5.3K.json",
+    "expected_row": 22
+  },
+  {
+    "name": "HOLDOUT-POS-014",
+    "query": "Which accessories are included in the HOME-ESS-LV-3.2K battery package, and is there a complete accessories table?",
+    "expected_source": "HOME-ESS-LV-3.2K.json",
+    "expected_row": 25
+  },
+  {
+    "name": "HOLDOUT-POS-015",
+    "query": "Show the grounding steps for a HOME-ESS-LV-3.68K battery and the corresponding wiring diagram.",
+    "expected_source": "HOME-ESS-LV-3.68K (1).json",
+    "expected_row": 29
+  },
+  {
+    "name": "HOLDOUT-POS-016",
+    "query": "What safety precautions, cabling rules, and electrical requirements apply to a HOME-ESS-LV-5.12K battery?",
+    "expected_source": "HOME-ESS-LV-5.12K.json",
+    "expected_row": 6
+  },
+  {
+    "name": "HOLDOUT-POS-017",
+    "query": "What standard or specialized tools are needed to install a HOME-ESS-LV-9.4K, and where is the tool list?",
+    "expected_source": "HOME-ESS-LV-9.4K.json",
+    "expected_row": 22
+  },
+  {
+    "name": "HOLDOUT-POS-018",
+    "query": "How do I download and install the EnValt app on the app side?",
+    "expected_source": "[APP side]Update instructions.json",
+    "expected_row": 2
+  },
+  {
+    "name": "HOLDOUT-POS-019",
+    "query": "Where can I find the web-side operating instructions?",
+    "expected_source": "[WEB side]Manual Information.json",
+    "expected_row": 2
+  },
+  {
+    "name": "HOLDOUT-POS-020",
+    "query": "In the settings interface, how do I navigate to Meter type for the HESS and CESS inverter families and the EV Charger?",
+    "expected_source": "hanchu_raw_dataset.json",
+    "expected_row": 156
+  },
+  {
+    "name": "HOLDOUT-POS-021",
+    "query": "What details should I provide when requesting troubleshooting help for an iESS-M1/M3/M5 smart meter?",
+    "expected_source": "iESS-M1.json",
+    "expected_row": 14
+  },
+  {
+    "name": "HOLDOUT-POS-022",
+    "query": "Where can I obtain the Spanish certification file 230152RECO03-A-M4-CER_HESS-HY-T-4~20K-M(4) for the HESS-HY-T-4~20K-M three-phase inverter?",
+    "expected_source": "oss文件.json",
+    "expected_row": 238
+  },
+  {
+    "name": "HOLDOUT-POS-023",
+    "query": "HOME-ESS-LV-3.2K、HOME-ESS-LV-9.4K、HOME-ESS-LV-5.12K或HOME-ESS-LV-3.68K出现“加热膜故障”时，可能原因和处理方法分别是什么？",
+    "expected_source": "低压电池告警切片.json",
+    "expected_row": 71
+  },
+  {
+    "name": "HOLDOUT-POS-024",
+    "query": "What does Error Code 5 indicate on a Hanchu single-phase hybrid inverter?",
+    "expected_source": "单相逆变器问答.json",
+    "expected_row": 2
+  },
+  {
+    "name": "HOLDOUT-POS-025",
+    "query": "低压电池的BAT-Logger采集器指示灯不亮通常表示什么？",
+    "expected_source": "售后.json",
+    "expected_row": 23
+  },
+  {
+    "name": "HOLDOUT-POS-026",
+    "query": "What can cause batteries in the same system to drift out of balance again?",
+    "expected_source": "场景化问答(1).json",
+    "expected_row": 171
+  },
+  {
+    "name": "HOLDOUT-POS-027",
+    "query": "MPPT阴影扫描（Shadow Scan）是什么功能，应该在哪里开启？",
+    "expected_source": "场景化问答.json",
+    "expected_row": 1
+  },
+  {
+    "name": "HOLDOUT-POS-028",
+    "query": "N-PE接地检测检查的是什么，出现异常时代表什么？",
+    "expected_source": "垂直领域(1).json",
+    "expected_row": 3
+  },
+  {
+    "name": "HOLDOUT-POS-029",
+    "query": "SG Ready代表什么，它主要用于什么场景？",
+    "expected_source": "垂直领域.json",
+    "expected_row": 1
+  },
+  {
+    "name": "HOLDOUT-POS-030",
+    "query": "Hanchu公司目前大约有多少名员工？",
+    "expected_source": "市场与解决方案.json",
+    "expected_row": 3
+  },
+  {
+    "name": "HOLDOUT-NEG-001",
+    "query": "推荐两部适合周末看的科幻电影。",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-002",
+    "query": "第一次去北京旅游应该安排哪些景点？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-003",
+    "query": "Python怎样按照字典的value给列表排序？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-004",
+    "query": "普通感冒应该吃什么药？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-005",
+    "query": "最近哪只股票值得买？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-006",
+    "query": "帮我写一封向老师请假的邮件。",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-007",
+    "query": "把“今天天气很好”翻译成西班牙语。",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-008",
+    "query": "一元二次方程的求根公式是什么？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-009",
+    "query": "篮球比赛中的三秒违例是什么意思？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-010",
+    "query": "白色衣服染色后应该怎么清洗？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-011",
+    "query": "XESS-HY-Z-888K支持哪些量子通信协议？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-012",
+    "query": "HESS-HY-X-404K出现E.999故障应该如何处理？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-013",
+    "query": "HOME-ESS-LV-777K的外形尺寸和重量是多少？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-014",
+    "query": "CESS-HY-888K通过了哪些国际航空认证？",
+    "expect_empty": true
+  },
+  {
+    "name": "HOLDOUT-NEG-015",
+    "query": "虚构的SolarMagic App如何绑定量子电池？",
+    "expect_empty": true
+  }
+]

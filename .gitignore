@@ -16,12 +16,15 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.cache/
 .coverage
 htmlcov/
 *.log
 
 # Local RAG/model runtime data
 chroma_db/
+milvus_data/
+milvus_db/
 models/
 knowledge_data/
 output/
@@ -38,3 +41,7 @@ merged-models/
 # OS-generated files
 .DS_Store
 Thumbs.db
+
+# Local Codex working artifacts
+tmp/
+.codex-finalizer-*/
