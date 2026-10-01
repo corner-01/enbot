@@ -1,0 +1,85 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Editors and Python environments
+.vscode/
+.idea/
+.venv/
+venv/
+venv*/
+
+# Python caches, tests, and logs
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+.coverage
+htmlcov/
+*.log
+
+# Local RAG/model runtime data
+milvus_data/
+milvus_db/
+models/
+knowledge_data/
+output/
+outputs/
+artifacts/
+logs/
+evaluations/
+merged-models/
+data/feedback/*.db*
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
+# Private or bulky source documents
+*.docx
+*.xlsx
+*.xls
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Local Codex working artifacts
+tmp/
+.codex-finalizer-*/
+.local-archive/
+
+# Proprietary evaluation inputs and all generated outputs.
+evaluation/**/*.json
+evaluation/**/*.jsonl
+evaluation/**/*.csv
+evaluation/**/*.tsv
+evaluation/**/*.xlsx
+evaluation/retrieval_cases*.json
+evaluation/answer_ab_cases*.json
+evaluation/holdout/retrieval_holdout_v*.json
+evaluation/answer_ab/**/generations.jsonl
+evaluation/answer_ab/**/summary.json
+evaluation/performance/*.json
+evaluation/results/*.json
+
+# Local Optuna study database (results JSON may still be versioned)
+evaluation/optuna/**/study.db
+evaluation/optuna/**/study.db-*
+evaluation/optuna/**/candidate*/
+evaluation/optuna/**/diagnose*/
+evaluation/optuna/**/regression*/
+
+# Local multimodal evaluation inputs and generated outputs
+evaluation/multimodal/images/*
+!evaluation/multimodal/images/.gitkeep
+evaluation/multimodal/results/*
+!evaluation/multimodal/results/.gitkeep

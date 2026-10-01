@@ -1,0 +1,9 @@
+model_name_or_path: models/Qwen2.5-7B-Instruct
+adapter_name_or_path: artifacts/adapters/optuna-best
+template: qwen
+trust_remote_code: true
+
+export_dir: artifacts/merged-model
+export_size: 5
+export_device: cpu
+export_legacy_format: false

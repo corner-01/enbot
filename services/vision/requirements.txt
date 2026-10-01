@@ -1,0 +1,9 @@
+paddlepaddle==3.2.0
+paddleocr==3.7.0
+Pillow==12.1.0
+opencv-contrib-python==4.10.0.84
+httpx==0.28.1
+pydantic==2.13.5
+fastapi==0.142.2
+uvicorn==0.54.0
+python-multipart==0.0.32
