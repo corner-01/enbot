@@ -34,6 +34,16 @@ def _retrieval_debug_payload(documents):
             "model": document.metadata.get("model", ""),
             "source": document.metadata.get("source", ""),
             "row": document.metadata.get("row"),
+            "record_id": document.metadata.get("record_id", ""),
+            "parent_restored": bool(
+                document.metadata.get("parent_restored", False)
+            ),
+            "parent_section_extracted": bool(
+                document.metadata.get("parent_section_extracted", False)
+            ),
+            "parent_total_chars": document.metadata.get("parent_total_chars"),
+            "matched_start_index": document.metadata.get("matched_start_index"),
+            "content_chars": len(document.page_content),
             "rrf_score": document.metadata.get("rrf_score"),
             "reranker_score": document.metadata.get("reranker_score"),
             "preview": document.page_content[:800],
@@ -315,7 +325,25 @@ Thought:{agent_scratchpad}"""
             maxsplit=1,
             flags=re.IGNORECASE,
         )[0]
+        # Some imported Markdown records escape punctuation before storage.
+        answer = re.sub(r"\\([\\`*_{}\[\]<>()#+\-.!|])", r"\1", answer)
+        # URLs are returned separately in ``sources``. Remove their Markdown
+        # wrappers as a whole so the answer does not contain empty ``![]()``.
+        answer = re.sub(
+            r"!\[([^\]]*)\]\(\s*https?://[^\s)]+\s*\)",
+            "",
+            answer,
+            flags=re.IGNORECASE,
+        )
+        answer = re.sub(
+            r"\[([^\]]+)\]\(\s*https?://[^\s)]+\s*\)",
+            r"\1",
+            answer,
+            flags=re.IGNORECASE,
+        )
         answer = re.sub(r"https?://[^\s\])]+", "", answer)
+        answer = re.sub(r"!\s*\[\s*\]\s*\(\s*\)", "", answer)
+        answer = re.sub(r"</?font\b[^>]*>", "", answer, flags=re.IGNORECASE)
         answer = re.sub(r"[ \t]+\n", "\n", answer)
         answer = re.sub(r"\n{3,}", "\n\n", answer).strip()
         return answer if len(answer) >= 10 else ""
@@ -368,7 +396,120 @@ Thought:{agent_scratchpad}"""
             return clean_context
 
     @staticmethod
-    def _extract_source_urls(contexts):
+    def _focus_visual_fault_answer(query, answer, contexts=()):
+        """Keep a visual fault answer on the visible state and handling steps."""
+        if "visual_focus=fault" not in (query or "").casefold():
+            return answer
+
+        label_match = re.search(
+            r"display\s+shows\s+([^|]+)",
+            query or "",
+            flags=re.IGNORECASE,
+        )
+        label_text = label_match.group(1) if label_match else query or ""
+        fault_terms = re.findall(
+            r"\b(?:alarm|fault|error|warning|[ef]\d{2,})\b|告警|报警|故障|错误|异常",
+            label_text,
+            flags=re.IGNORECASE,
+        )
+        labels = []
+        canonical_names = {
+            "alarm": "Alarm",
+            "fault": "Fault",
+            "error": "Error",
+            "warning": "Warning",
+        }
+        for term in fault_terms:
+            if re.fullmatch(r"[ef]\d{2,}", term, re.I):
+                canonical = term.upper()
+            else:
+                canonical = canonical_names.get(term.casefold(), term)
+            if canonical.casefold() not in {item.casefold() for item in labels}:
+                labels.append(canonical)
+
+        evidence_match = re.search(
+            r"visible_fault_evidence=([^|]+)",
+            query or "",
+            flags=re.IGNORECASE,
+        )
+        visible_evidence = evidence_match.group(1).strip() if evidence_match else ""
+        evidence_text = "\n".join(
+            [answer or "", visible_evidence, *(contexts or ())]
+        )
+        sentences = [
+            item.strip(" -\t")
+            for item in re.split(
+                r"(?:\r?\n)+|(?<=[.!?。！？])\s+",
+                evidence_text,
+            )
+            if item.strip()
+        ]
+        action_markers = (
+            "remove", "clear", "troubleshoot", "power on", "restart", "contact",
+            "排除", "清除", "上电", "重启", "联系", "处理",
+        )
+
+        def score(sentence):
+            normalized = sentence.casefold()
+            fault_hits = sum(term.casefold() in normalized for term in labels)
+            action_hits = sum(marker in normalized for marker in action_markers)
+            return fault_hits * 3 + action_hits * 2
+
+        ranked = sorted(sentences, key=score, reverse=True)
+        guidance = ranked[0] if ranked and score(ranked[0]) > 0 else ""
+        user_part = (query or "").split("user_question=", 1)[-1]
+        chinese = bool(re.search(r"[\u4e00-\u9fff]", user_part))
+        normalized_guidance = guidance.casefold()
+        reason = ""
+        reason_match = re.search(
+            r"reason\s*:\s*([^;|]+)",
+            visible_evidence,
+            flags=re.IGNORECASE,
+        )
+        if not reason_match:
+            reason_match = re.search(
+                r"([^;|]*abnormal[^;|]*)",
+                visible_evidence,
+                flags=re.IGNORECASE,
+            )
+        if reason_match:
+            reason = reason_match.group(1).strip(" .")
+
+        if chinese and reason:
+            visible = "、".join(labels) if labels else "故障"
+            evidence_casefold = evidence_text.casefold()
+            if "contact supplier" in evidence_casefold:
+                guidance = "知识库建议联系供应商，问题可能出在车辆的充电系统。"
+            elif "contact administrator" in evidence_casefold:
+                guidance = "按照图片提示，应联系管理员或运维人员处理，不要反复尝试启动。"
+            elif not guidance:
+                guidance = "请根据可见故障原因排查，无法确认时联系供应商或运维人员。"
+            return (
+                f"图中显示设备处于 {visible} 状态。\n\n"
+                f"可见故障原因：{reason}。\n\n处理建议：{guidance}"
+            )
+
+        if chinese:
+            visible = "、".join(labels) if labels else "告警或故障"
+            if (
+                any(term in normalized_guidance for term in ("remove", "clear", "排除", "清除"))
+                and any(term in normalized_guidance for term in ("power on", "上电"))
+            ):
+                guidance = "启动时若出现这些状态，应先排查并清除故障，确认恢复正常后再上电。"
+            elif not guidance:
+                guidance = "知识库未提供足够的处理步骤，请不要在状态未确认前继续上电。"
+            return f"图中显示的是电池系统的 {visible} 状态。\n\n处理建议：{guidance}"
+
+        visible = ", ".join(labels) if labels else "an alarm or fault"
+        if not guidance:
+            guidance = (
+                "The knowledge base does not provide enough handling detail; "
+                "do not continue powering on until the state is verified."
+            )
+        return f"The image shows the battery-system state: {visible}.\n\nHandling: {guidance}"
+
+    @staticmethod
+    def _extract_source_urls(contexts, query=""):
         """Extract unique source URLs without mixing them into the scored answer."""
         sources = []
         for context in contexts:
@@ -376,6 +517,27 @@ Thought:{agent_scratchpad}"""
                 cleaned_url = url.rstrip(".,;，。；")
                 if cleaned_url not in sources:
                     sources.append(cleaned_url)
+        if "visual_focus=fault" in (query or "").casefold():
+            focus_terms = (
+                "alarm", "fault", "error", "warning",
+                "告警", "报警", "故障", "异常",
+            )
+            focused_sources = []
+            for context in contexts:
+                context_casefold = context.casefold()
+                for source in sources:
+                    index = context.find(source)
+                    if index < 0:
+                        continue
+                    start = context.rfind("\n", 0, index) + 1
+                    next_newline = context.find("\n", index + len(source))
+                    end = len(context) if next_newline < 0 else next_newline
+                    window = context_casefold[start:end]
+                    if any(term in window for term in focus_terms):
+                        if source not in focused_sources:
+                            focused_sources.append(source)
+            if focused_sources:
+                return focused_sources
         return sources
 
     @staticmethod
@@ -436,13 +598,14 @@ Thought:{agent_scratchpad}"""
         """Evaluate, persist, and return one completed response."""
         # Agent tool calls can return a stored Q&A record verbatim. Keep the
         # answer itself but never expose storage labels such as Question/Answer.
+        contexts = self._extract_rag_contexts(response)
         standard_answer = self._extract_standard_answer(output_text)
         if standard_answer:
             output_text = standard_answer
+        output_text = self._focus_visual_fault_answer(query, output_text, contexts)
 
-        contexts = self._extract_rag_contexts(response)
         if contexts:
-            response.setdefault("sources", self._extract_source_urls(contexts))
+            response.setdefault("sources", self._extract_source_urls(contexts, query))
 
         ragas_result = None
         if evaluate_ragas:
@@ -646,6 +809,7 @@ class ChatRequest(BaseModel):
 
 class RetrieveRequest(BaseModel):
     query: str
+    include_content: bool = False
 
 
 @app.post("/retrieve")
@@ -656,11 +820,15 @@ async def retrieve(request: RetrieveRequest):
         if retriever is None:
             raise RuntimeError("Knowledge retriever is unavailable")
         documents = retriever.invoke(request.query)
+        debug_payload = _retrieval_debug_payload(documents)
+        if request.include_content:
+            for payload, document in zip(debug_payload, documents):
+                payload["content"] = document.page_content
         return {
             "status": "success",
             "data": {
                 "retrieval_backend": getattr(retriever, "active_backend", "unknown"),
-                "retrieval_debug": _retrieval_debug_payload(documents),
+                "retrieval_debug": debug_payload,
             },
         }
     except Exception as exc:

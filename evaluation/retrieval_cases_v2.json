@@ -117,6 +117,17 @@
     "query": "[APP side]Download and install the app.->Note",
     "expected_source": "hanchu_raw_dataset.json",
     "expected_row": 2,
+    "acceptable_documents": [
+      {
+        "source": "hanchu_raw_dataset.json",
+        "row": 2
+      },
+      {
+        "source": "[APP side]Update instructions.json",
+        "row": 2
+      }
+    ],
+    "label_note": "The consolidated APP-side record contains the same note plus installation steps.",
     "name": "KB-020-hanchu_raw_dataset"
   },
   {

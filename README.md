@@ -1,167 +1,170 @@
-# EnBot 服务器部署
+# EnBot：储能领域智能客服
 
-本文档只说明现有版本的部署和资源预算。目标环境为 **Ubuntu 22.04 x86_64、NVIDIA GPU、Python 3.10**；下列命令在服务器终端执行，除特别注明外使用同一个普通登录账号。服务仅监听本机，不直接对公网开放。
+EnBot 是一个完全本地运行的储能领域智能客服系统，组合了微调大模型、
+Milvus 混合检索、CPU 重排、拒答机制、多模态 OCR/VLM 诊断、FastAPI 和
+飞书机器人。运行过程不依赖付费模型 API。
 
-## 一、服务器配置估算
+> 公开仓库不包含公司知识库、训练/评测正文、模型权重或任何凭据。
+> 使用者需要准备自己有权使用的数据和本地模型。
 
-**最低 GPU 显存：单卡 32 GB。** 按当前代码让回答模型和 Embedding 同时使用 GPU（`EMBEDDING_DEVICE=cuda`）、重排模型使用 CPU，按低并发部署计算。
+## 核心能力
 
-**计算方法：**本地 Embedding 的四个 BF16 权重文件合计约 15.13 GB，Ollama `enbot-optuna:7b` 的 Q4_K_M 模型文件约 4.7 GB，合计约 **19.83 GB**；再为 CUDA/PyTorch、Ollama 的 KV 缓存和临时计算预留约 **8–10 GB**，得到约 **28–30 GB**，取 **32 GB**。CPU 重排模型不占 GPU 显存。这是根据代码和模型文件大小算出的部署下限。
+- **混合 RAG**：Milvus 稠密向量 + BM25 词法召回，通过加权 RRF 融合。
+- **精排与拒答**：使用本地 BGE reranker，并对未知型号、故障码和域外问题保守拒答。
+- **长文本恢复**：子块负责召回，命中后恢复完整父级问答或目标章节。
+- **微调模型**：通过 Ollama 运行 Qwen2.5-7B 的 Optuna QLoRA 最优版本，部署为 Q4_K_M。
+- **多模态诊断**：PaddleOCR 提取精确文字、数值和单位，Qwen3-VL 提取图像结构，证据融合后再进入 RAG。
+- **服务接口**：文本 API（8000）和视觉 API（8011）独立部署，支持健康检查、API Key、并发限制与会话隔离。
+- **业务接入**：支持飞书官方 SDK 长连接机器人和用户反馈收集。
+- **离线评测**：检索、拒答、回答质量 A/B、性能和多模态组件均有自动化测试。
 
-## 二、部署步骤
+## 系统架构
 
-### 1. 取得代码和必须的私有文件
-
-仓库**不包含** `.env`、模型权重、原始知识库和 `chroma_db`。部署人员需要有仓库读取权限，且要从项目负责人处取得**完整的** `models/Qwen3-8B-native/`、`models/bge-reranker-v2-m3/`，以及原始 TXT/XLSX 知识库（或已验证可用、用同一 Embedding 构建的完整 Chroma 目录）。不要把令牌写进 Git URL、README 或 `.env`。
-
-```bash
-sudo apt update
-sudo apt install -y git
-cd ~
-git clone https://cnb.cool/envalt-tech/enbot
-cd enbot
-mkdir -p models knowledge_data
+```text
+文本问题
+   │
+   ├─ Milvus Dense ─┐
+   ├─ BM25 ─────────┼─ Weighted RRF ─ CPU Reranker ─ 拒答/父级恢复 ─ RAG Prompt
+   │                 │
+   └─────────────────┘
+                                                      │
+图片 ─ 校验/预处理 ─┬─ PaddleOCR ─┐                  │
+                    └─ Qwen3-VL ──┴─ 证据融合 ───────┘
+                                                      │
+                                    enbot-optuna:7b / Ollama
+                                                      │
+                                      FastAPI / 飞书 / Postman
 ```
 
-通过安全传输方式，把完整模型目录放到 `models/` 下，把 TXT/XLSX 放到 `knowledge_data/` 下；若知识库实际位于其他目录，稍后在 `.env` 中填写绝对路径。可选择复制现成 `chroma_db/` 以省去重建，但必须与当前 Embedding 模型匹配，并在 Linux 上通过实际问答验证。**要从原始文档重建时，不要预先创建空的 `chroma_db/` 目录**：当前代码只要发现该目录存在就会尝试直接加载，不会自动重建。
+模型训练、Optuna 搜索和评测代码位于独立仓库：
+[corner-01/enbot-finetune](https://github.com/corner-01/enbot-finetune)。
 
-传输后先检查：
+## 运行要求
 
-```bash
-test -f models/Qwen3-8B-native/config.json
-test -f models/Qwen3-8B-native/model.safetensors.index.json
-test -f models/bge-reranker-v2-m3/model.safetensors
-find knowledge_data -type f \( -name '*.txt' -o -name '*.xlsx' \) | head
-```
+已验证开发环境：Windows 11、WSL2、Python 3.10/3.12、Docker Desktop、
+NVIDIA RTX 4070 Ti SUPER 16 GiB。
 
-若使用现成 Chroma，检查 `test -s chroma_db/chroma.sqlite3`；若从原始文档建库，确认上面 `find` 至少列出一个有效文件。模型目录必须包含 tokenizer、配置和全部权重分片，不是只拷贝一个 `.safetensors` 文件。
+- 16 GiB GPU 可通过模型分时加载或部分 CPU offload 完成开发演示。
+- 若希望 8B BF16 Embedding 与 7B Q4 生成模型同时完整驻留 GPU，建议 32 GiB 显存。
+- 建议系统内存不少于 32 GiB，磁盘可用空间不少于 100 GiB。
 
-### 2. 安装 Python 与 GPU 依赖
+## 快速开始
 
-服务器应先由供应商或管理员安装兼容的 NVIDIA 驱动，`nvidia-smi` 必须能显示 GPU。这里不提供驱动的通用安装命令，因为驱动版本取决于租用的镜像与显卡。
+### 1. 克隆并安装文本服务
 
-```bash
-sudo apt update
-sudo apt install -y curl python3.10 python3.10-venv python3-pip redis-server
-nvidia-smi
-python3.10 -m venv .venv
-source .venv/bin/activate
-python -m pip install --upgrade pip
-```
-
-在 [PyTorch 官方安装页面](https://pytorch.org/get-started/locally/)选择 Linux / Pip / Python / 与服务器驱动兼容的 CUDA，**先执行页面给出的 PyTorch 安装命令**，再执行：
-
-```bash
+```powershell
+git clone https://github.com/corner-01/enbot.git
+Set-Location enbot
+py -3.10 -m venv venv
+.\venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python -m pip check
-python -c "import torch; print('CUDA:', torch.cuda.is_available())"
+Copy-Item .env.example .env
 ```
 
-推荐的 GPU 档位必须看到 `CUDA: True`；否则先排查驱动和 PyTorch 安装，不能继续把 Embedding 设为 `cuda`。依赖文件使用版本范围，第一次验收通过后应保存实际安装版本以便复现。
+### 2. 准备本地资产
 
-### 3. 安装并启动 Ollama、Redis
+以下内容不会上传 GitHub，请按 `.env` 中的路径自行放置：
 
-按 [Ollama 官方 Linux 文档](https://docs.ollama.com/linux)安装；安装脚本会修改系统，先由服务器管理员审核：
+```text
+models/Qwen3-8B-native/
+models/bge-reranker-v2-m3/
+knowledge_data/
+deployment/ollama-optuna-v1/enbot-optuna-q4_k_m.gguf
+```
 
-```bash
-curl -fsSL https://ollama.com/install.sh | sh
-sudo systemctl enable --now ollama
-sudo systemctl enable --now redis-server
-# 将 enbot-optuna-q4_k_m.gguf 和对应 Modelfile 上传到服务器后执行：
-ollama create enbot-optuna:7b -f /服务器上的/Modelfile
+知识库必须是你有权使用的资料。不要把示例中的公司内部数据替换回公开仓库。
+
+### 3. 启动基础服务
+
+1. 启动 Docker Desktop。
+2. 启动 Milvus：
+
+```powershell
+.\scripts\09_start_milvus.ps1
+```
+
+3. 确认 Ollama 已运行，并导入本地 GGUF：
+
+```powershell
+ollama create enbot-optuna:7b -f deployment\ollama-optuna-v1\Modelfile
 ollama list
-redis-cli ping
 ```
 
-`redis-cli ping` 应返回 `PONG`。代码连接本机 `localhost:6379`；Redis 断开时会退化为进程内存，重启后会话不保留。Ollama 默认使用本机 `11434`，不应向公网开放。
+4. 首次构建 Milvus 索引：
 
-### 4. 配置并首次建库
-
-```bash
-cp .env.example .env
-nano .env
+```powershell
+.\venv\Scripts\python.exe -X utf8 scripts\rebuild_milvus_index.py --check
+.\venv\Scripts\python.exe -X utf8 scripts\rebuild_milvus_index.py --yes
 ```
 
-至少核对以下项（均相对于仓库根目录；使用绝对路径也可以）：
+### 4. 启动文本 API
 
-```dotenv
-OLLAMA_MODEL=enbot-optuna:7b
-OLLAMA_NUM_GPU=
-KNOWLEDGE_FILE=./knowledge_data
-CHROMA_PATH=./chroma_db
-EMBEDDING_MODEL_PATH=./models/Qwen3-8B-native
-EMBEDDING_DEVICE=cuda
-RERANKER_MODEL_PATH=./models/bge-reranker-v2-m3
-RERANKER_ENABLED=true
-RAGAS_DO_NOT_TRACK=true
+```powershell
+.\venv\Scripts\python.exe -m uvicorn app.service_api:app `
+  --host 127.0.0.1 --port 8000 --workers 1
 ```
 
-切换 Embedding 模型或改变其向量规则时，要用原始文档重新建 Chroma；不要混用旧索引。首次没有 `chroma_db/` 时，服务启动会读取 `KNOWLEDGE_FILE` 的 TXT/XLSX 自动建库，知识量大时可能耗时较长。确保运行账号对项目目录有读写权限。`.env` 不得提交到仓库。
+验证：
 
-### 5. 启动与验收
-
-前四步只需部署时做一次。以后手动启动时，在**服务器终端 A**按顺序运行以下命令；先确认 Ollama、Redis 正常，再启动 EnBot：
-
-```bash
-cd ~/enbot
-sudo systemctl start ollama
-sudo systemctl start redis-server
-redis-cli ping
-ollama list
-source .venv/bin/activate
-python -X utf8 main.py
+```powershell
+curl.exe http://127.0.0.1:8000/health/live
+curl.exe http://127.0.0.1:8000/health/ready
 ```
 
-`redis-cli ping` 应显示 `PONG`；`ollama list` 应列出 `enbot-optuna:7b`。首次启动会加载本地模型；如果没有现成的 `chroma_db/`，还会用知识库文件建索引，需等待直到终端显示服务监听 `http://127.0.0.1:8000`。**不要关闭终端 A**，关闭会停止手动启动的服务。
+Swagger：<http://127.0.0.1:8000/docs>
 
-另开一个**服务器终端 B**，执行下面两条检查命令：
+### 5. 可选：启动多模态图片 API
 
-```bash
-curl -fsS http://127.0.0.1:8000/
-curl -fsS -X POST http://127.0.0.1:8000/chat \
-  -H 'Content-Type: application/json' \
-  -d '{"query":"HESS-HY-T-4~20K-M逆变器显示的电网侧数据不对","evaluate":false,"debug":false}'
+视觉服务使用独立虚拟环境，避免 PaddleOCR 与主服务依赖冲突：
+
+```powershell
+py -3.10 -m venv services\vision\.venv
+services\vision\.venv\Scripts\python.exe -m pip install `
+  -r services\vision\requirements.txt
+.\scripts\11_start_vision_api.ps1
 ```
 
-第一条应包含 `"status":"ok"`，第二条应包含 `"status":"success"`，并给出与知识库相符的答案。**第一条成功不等于知识库正常**：如果第二条失败或只给出通用回答，回到终端 A 查看报错，检查模型目录、`.env` 中的知识库路径和 `chroma_db/` 是否为空。可再运行 `nvidia-smi` 查看显存占用。
+Swagger：<http://127.0.0.1:8011/docs>。调用方法见
+[services/vision/API.md](services/vision/API.md)。
 
-如需从**自己的电脑**使用 Postman，而不是在服务器上执行 `curl`，先在自己电脑的终端建立 SSH 隧道（替换账号和 IP，保持这个终端打开）：
+## 测试
 
-```bash
-ssh -L 18000:127.0.0.1:8000 <登录账号>@<服务器IP>
+主项目：
+
+```powershell
+.\venv\Scripts\python.exe -X utf8 -m unittest discover -s tests -v
 ```
 
-随后在自己电脑浏览器打开 `http://127.0.0.1:18000/docs`；Postman 选择 **POST**，地址填 `http://127.0.0.1:18000/chat`，Body 选择 **raw → JSON**，粘贴上面 `-d` 后面的 JSON。现有 `/chat` 没有身份认证，且会话 ID 固定为 `default`；**未加鉴权、用户隔离和 HTTPS 前，不能直接公开 8000 端口或作为多用户公网服务**。
+视觉模块：
 
-### 6. 验收后设置开机自启
-
-确认第 5 步问答测试通过后，回到**终端 A 按 `Ctrl+C` 停止手动服务**，避免占用 8000 端口。然后在服务器终端执行 `sudo nano /etc/systemd/system/enbot.service`，粘贴以下内容。把三处 `<登录账号>` 替换成服务器实际登录账号；如果仓库不在该账号的 `/home/...` 目录，也要改成真实绝对路径。粘贴后按 `Ctrl+O`、回车、`Ctrl+X` 保存退出。
-
-```ini
-[Unit]
-Description=EnBot API
-After=network-online.target ollama.service redis-server.service
-Wants=network-online.target
-
-[Service]
-Type=simple
-User=<登录账号>
-WorkingDirectory=/home/<登录账号>/enbot
-ExecStart=/home/<登录账号>/enbot/.venv/bin/python -X utf8 main.py
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
+```powershell
+.\services\vision\.venv\Scripts\python.exe -X utf8 `
+  -m unittest discover -s tests -p "test_vision*.py" -v
 ```
 
-保存后在服务器执行：
+## 目录说明
 
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now enbot
-sudo systemctl status enbot --no-pager
-sudo journalctl -u enbot -n 100 --no-pager
+```text
+app/                 FastAPI、对话服务和反馈存储
+rag/                 Milvus、混合检索、重排与 RAG 评测
+services/vision/     OCR、VLM、证据融合和图片 API
+integrations/        飞书机器人接入
+evaluation/          可复用评测代码；私有样本和逐条输出不公开
+deployment/          Ollama 与服务部署模板
+scripts/             启动、索引构建和环境检查脚本
+tests/               单元与回归测试
+docs/                架构、接口、评测和发布说明
 ```
 
-看到 `active (running)` 后，再执行第 5 步的两条 `curl` 命令；若失败，用 `sudo journalctl -u enbot -n 100 --no-pager` 查看原因。以后服务随服务器开机自动启动；手动重启用 `sudo systemctl restart enbot`。该项目尚无经压测的并发、认证和监控方案；对外提供服务前需另行补齐。
+## 安全与数据边界
+
+- 复制 `.env.example` 生成 `.env`，不要在模板中填写真实密钥。
+- API 默认只监听 `127.0.0.1`；对外提供服务时应使用 HTTPS、反向代理、API Key 和防火墙。
+- 原始知识库、评测问题、逐条生成结果、模型文件和数据库均被 `.gitignore` 排除。
+- 公开仓库不提供任何训练、验证、测试、holdout 或评测结果文件。
+- 公开前请阅读 [docs/PUBLIC_RELEASE.md](docs/PUBLIC_RELEASE.md)。
+
+## License
+
+当前仓库暂未附带开源许可证。在代码归属和公开授权确认前，请勿假定可以复制、
+再分发或用于商业用途。

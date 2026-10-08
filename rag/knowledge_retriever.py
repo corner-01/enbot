@@ -25,11 +25,17 @@ load_dotenv()
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 _knowledge_retriever_cache: Optional[BaseRetriever] = None
+_remote_knowledge_retriever_cache: Optional[BaseRetriever] = None
 
 
 def _env_int(name: str, default: int) -> int:
     value = os.getenv(name, "").strip()
     return int(value) if value else default
+
+
+def _env_float(name: str, default: float) -> float:
+    value = os.getenv(name, "").strip()
+    return float(value) if value else default
 
 
 class LocalSentenceEmbeddings(Embeddings):
@@ -117,6 +123,11 @@ def _record_text(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, default=str).strip()
 
 
+def _record_id(source: str, row: Optional[int] = None) -> str:
+    """Build a stable parent-record id shared by all chunks of one record."""
+    return f"{source}::row:{row}" if row is not None else f"{source}::document"
+
+
 def _json_qa_document(
     record: Any,
     *,
@@ -142,18 +153,22 @@ def _json_qa_document(
             "source": source,
             "row": row_index,
             "format": "instruction_input_output",
+            "record_id": _record_id(source, row_index),
         },
     )
 
 
-def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
-    """Load TXT/XLSX/JSON sources and split them for dense and BM25 search."""
+def _load_knowledge_corpus(
+    folder_path: str | Path,
+) -> tuple[list[Document], dict[str, Document]]:
+    """Load source records and return searchable chunks plus full parents."""
     root_path = Path(folder_path).expanduser()
     if not root_path.exists():
         print(f"[WARN] Knowledge source path does not exist: {root_path}")
-        return []
+        return [], {}
 
     raw_documents: list[Document] = []
+    parent_documents: dict[str, Document] = {}
     seen_content: set[str] = set()
     duplicate_count = 0
     invalid_record_count = 0
@@ -168,6 +183,11 @@ def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
         if len(content) < 10:
             invalid_record_count += 1
             return
+        record_id = str((document.metadata or {}).get("record_id", "")).strip()
+        if record_id:
+            # Keep aliases for duplicate sources. An older vector index may still
+            # return the duplicate filename even though only one copy is indexed.
+            parent_documents.setdefault(record_id, _sanitize_document(document))
         if content in seen_content:
             duplicate_count += 1
             return
@@ -187,7 +207,13 @@ def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
                 text = file_path.read_text(encoding="utf-8").strip()
                 if text:
                     append_unique(
-                        Document(page_content=text, metadata={"source": source})
+                        Document(
+                            page_content=text,
+                            metadata={
+                                "source": source,
+                                "record_id": _record_id(source),
+                            },
+                        )
                     )
             elif suffix == ".xlsx":
                 dataframe = pd.read_excel(file_path, engine="openpyxl")
@@ -204,6 +230,9 @@ def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
                             metadata={
                                 "source": source,
                                 "row": int(row_index) + 2,
+                                "record_id": _record_id(
+                                    source, int(row_index) + 2
+                                ),
                             },
                         )
                     )
@@ -226,7 +255,7 @@ def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
             f"[WARN] No usable TXT/XLSX/JSON documents found under {root_path} "
             f"(files checked: {file_count})"
         )
-        return []
+        return [], {}
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=_env_int("RAG_CHUNK_SIZE", 800),
@@ -241,15 +270,22 @@ def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
         f"{len(raw_documents)} unique records, {len(chunks)} chunks, "
         f"{duplicate_count} duplicates and {invalid_record_count} invalid records skipped"
     )
+    return chunks, parent_documents
+
+
+def load_knowledge_chunks(folder_path: str | Path) -> list[Document]:
+    """Load TXT/XLSX/JSON sources and return dense/BM25 search chunks."""
+    chunks, _ = _load_knowledge_corpus(folder_path)
     return chunks
 
 
 def reset_knowledge_retriever_cache() -> None:
-    global _knowledge_retriever_cache
+    global _knowledge_retriever_cache, _remote_knowledge_retriever_cache
     _knowledge_retriever_cache = None
+    _remote_knowledge_retriever_cache = None
 
 
-def get_knowledge_retriever(
+def get_local_knowledge_retriever(
     force_rebuild: bool = False,
     raise_on_error: bool = False,
 ) -> Optional[BaseRetriever]:
@@ -274,7 +310,7 @@ def get_knowledge_retriever(
 
         print(f"[INFO] Loading local embedding model: {embedding_path}")
         embeddings = LocalSentenceEmbeddings(model_path=embedding_path)
-        chunks = load_knowledge_chunks(folder_path)
+        chunks, parent_documents = _load_knowledge_corpus(folder_path)
 
         vectorstore, active_backend, created = create_or_load_vector_store(
             settings=settings,
@@ -296,11 +332,24 @@ def get_knowledge_retriever(
             vectorstore=vectorstore,
             dense_retriever=base_retriever,
             documents=chunks,
+            parent_documents=parent_documents,
             reranker_path=reranker_path,
             dense_k=dense_k,
             lexical_k=_env_int("RAG_LEXICAL_K", 50),
             rerank_k=_env_int("RAG_RERANK_K", 10),
             final_k=_env_int("RAG_FINAL_K", 2),
+            rrf_k=_env_float("RAG_RRF_K", 60.0),
+            dense_weight=_env_float("RAG_DENSE_WEIGHT", 1.0),
+            lexical_weight=_env_float("RAG_LEXICAL_WEIGHT", 1.0),
+            rerank_relative_threshold=_env_float(
+                "RAG_RERANK_RELATIVE_THRESHOLD", 0.8
+            ),
+            rerank_absolute_threshold=_env_float(
+                "RAG_RERANK_ABSOLUTE_THRESHOLD", 0.1
+            ),
+            rerank_min_score=_env_float("RAG_RERANK_MIN_SCORE", -1.0),
+            rerank_tie_epsilon=_env_float("RAG_RERANK_TIE_EPSILON", 0.0001),
+            parent_full_max_chars=_env_int("RAG_PARENT_FULL_MAX_CHARS", 12000),
         )
         retriever = KnowledgeRetriever(
             base_retriever=base_retriever,
@@ -318,3 +367,27 @@ def get_knowledge_retriever(
         if raise_on_error:
             raise
         return None
+
+
+def get_knowledge_retriever(
+    force_rebuild: bool = False,
+    raise_on_error: bool = False,
+) -> Optional[BaseRetriever]:
+    """Return the configured local or remote knowledge retriever.
+
+    Rebuild operations always target the local index. Production primary nodes
+    select the retrieval GPU node with RETRIEVAL_MODE=remote.
+    """
+    mode = os.getenv("RETRIEVAL_MODE", "local").strip().casefold()
+    if force_rebuild or mode != "remote":
+        return get_local_knowledge_retriever(
+            force_rebuild=force_rebuild,
+            raise_on_error=raise_on_error,
+        )
+
+    global _remote_knowledge_retriever_cache
+    if _remote_knowledge_retriever_cache is None:
+        from rag.remote_retriever import RemoteKnowledgeRetriever
+
+        _remote_knowledge_retriever_cache = RemoteKnowledgeRetriever.from_env()
+    return _remote_knowledge_retriever_cache

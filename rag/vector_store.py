@@ -1,22 +1,13 @@
-"""Vector-store backend selection for EnBot RAG.
-
-Milvus is the primary backend. Chroma remains available as a controlled
-fallback so the existing local demo can still start while Milvus is being
-deployed or during rollback.
-"""
+"""Milvus vector-store integration for EnBot RAG."""
 
 from __future__ import annotations
 
 import os
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Any, Sequence
 
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
-
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 def _env_int(name: str, default: int) -> int:
@@ -27,8 +18,6 @@ def _env_int(name: str, default: int) -> int:
 @dataclass(frozen=True)
 class VectorStoreSettings:
     backend: str
-    fallback_backend: str
-    chroma_path: Path
     milvus_uri: str
     milvus_token: str
     milvus_db_name: str
@@ -39,19 +28,10 @@ class VectorStoreSettings:
     @classmethod
     def from_env(cls) -> "VectorStoreSettings":
         backend = os.getenv("VECTOR_STORE", "milvus").strip().lower()
-        fallback = os.getenv("VECTOR_STORE_FALLBACK", "chroma").strip().lower()
-        if backend not in {"milvus", "chroma"}:
-            raise ValueError("VECTOR_STORE must be 'milvus' or 'chroma'")
-        if fallback not in {"", "milvus", "chroma"}:
-            raise ValueError(
-                "VECTOR_STORE_FALLBACK must be empty, 'milvus', or 'chroma'"
-            )
+        if backend != "milvus":
+            raise ValueError("VECTOR_STORE must be 'milvus'")
         return cls(
             backend=backend,
-            fallback_backend=fallback,
-            chroma_path=Path(
-                os.getenv("CHROMA_PATH", str(PROJECT_ROOT / "chroma_db"))
-            ).expanduser(),
             milvus_uri=os.getenv(
                 "MILVUS_URI", "http://127.0.0.1:19530"
             ).strip(),
@@ -153,72 +133,15 @@ def _create_or_load_milvus(
     return vectorstore, True
 
 
-def _create_or_load_chroma(
-    settings: VectorStoreSettings,
-    embeddings: Embeddings,
-    documents: Sequence[Document],
-    force_rebuild: bool,
-) -> tuple[Any, bool]:
-    from langchain_chroma import Chroma
-
-    sqlite_file = settings.chroma_path / "chroma.sqlite3"
-    if sqlite_file.is_file() and not force_rebuild:
-        vectorstore = Chroma(
-            persist_directory=str(settings.chroma_path),
-            embedding_function=embeddings,
-        )
-        print(f"[OK] Loaded legacy Chroma index: {settings.chroma_path}")
-        return vectorstore, False
-
-    if force_rebuild and settings.chroma_path.exists():
-        raise RuntimeError(
-            "Automatic destructive rebuild of Chroma is disabled. "
-            "Use Milvus for rebuilds or move the old Chroma directory manually."
-        )
-    if not documents:
-        raise RuntimeError(
-            "Chroma index does not exist and no source documents were loaded"
-        )
-    vectorstore = Chroma.from_documents(
-        documents=list(documents),
-        embedding=embeddings,
-        persist_directory=str(settings.chroma_path),
-    )
-    print(f"[OK] Built legacy Chroma index: {settings.chroma_path}")
-    return vectorstore, True
-
-
 def create_or_load_vector_store(
     settings: VectorStoreSettings,
     embeddings: Embeddings,
     documents: Sequence[Document],
     force_rebuild: bool = False,
 ) -> tuple[Any, str, bool]:
-    """Return ``(vectorstore, active_backend, created)``.
+    """Return ``(vectorstore, active_backend, created)`` for Milvus."""
 
-    A fallback is attempted only for ordinary startup. Explicit rebuilds never
-    fall back because doing so could rebuild the wrong backend unnoticed.
-    """
-
-    def load(backend: str) -> tuple[Any, bool]:
-        if backend == "milvus":
-            return _create_or_load_milvus(
-                settings, embeddings, documents, force_rebuild
-            )
-        return _create_or_load_chroma(
-            settings, embeddings, documents, force_rebuild
-        )
-
-    try:
-        vectorstore, created = load(settings.backend)
-        return vectorstore, settings.backend, created
-    except Exception as primary_error:
-        fallback = settings.fallback_backend
-        if force_rebuild or not fallback or fallback == settings.backend:
-            raise
-        print(
-            f"[WARN] {settings.backend} unavailable: {primary_error}. "
-            f"Falling back to {fallback}."
-        )
-        vectorstore, created = load(fallback)
-        return vectorstore, fallback, created
+    vectorstore, created = _create_or_load_milvus(
+        settings, embeddings, documents, force_rebuild
+    )
+    return vectorstore, settings.backend, created

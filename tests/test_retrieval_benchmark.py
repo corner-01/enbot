@@ -19,6 +19,24 @@ class RetrievalBenchmarkTests(unittest.TestCase):
         ]
         self.assertEqual(first_relevant_rank(case, documents), 0)
 
+    def test_equivalent_document_is_accepted(self):
+        case = {
+            "expected_source": "raw.json",
+            "expected_row": 2,
+            "acceptable_documents": [
+                {"source": "raw.json", "row": 2},
+                {"source": "consolidated.json", "row": 7},
+            ],
+        }
+        documents = [
+            {
+                "source": "consolidated.json",
+                "row": 7,
+                "preview": "same answer in a consolidated record",
+            }
+        ]
+        self.assertEqual(first_relevant_rank(case, documents), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -40,16 +40,20 @@ def first_relevant_rank(case: Dict[str, Any], documents: List[Dict[str, Any]]) -
     expected_model = case.get("expected_model", "").upper()
     expected_source = case.get("expected_source", "")
     expected_row = case.get("expected_row")
+    acceptable_documents = case.get("acceptable_documents") or [
+        {"source": expected_source, "row": expected_row}
+    ]
     for rank, document in enumerate(documents, start=1):
         text = document.get("preview", "").lower()
         model = document.get("model", "").upper()
         term_matches = not expected_terms or any(term in text for term in expected_terms)
         model_matches = not expected_model or model == expected_model
-        source_matches = (
-            not expected_source or document.get("source", "") == expected_source
+        document_matches = any(
+            (not expected.get("source") or document.get("source", "") == expected["source"])
+            and (expected.get("row") is None or document.get("row") == expected["row"])
+            for expected in acceptable_documents
         )
-        row_matches = expected_row is None or document.get("row") == expected_row
-        if term_matches and model_matches and source_matches and row_matches:
+        if term_matches and model_matches and document_matches:
             return rank
     return 0
 

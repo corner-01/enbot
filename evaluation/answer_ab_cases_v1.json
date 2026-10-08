@@ -1,0 +1,519 @@
+{
+  "metadata": {
+    "created_at": "2026-09-29T02:28:01.573219+00:00",
+    "purpose": "M3 answer-level no-RAG versus Milvus-RAG development A/B",
+    "source_set": "D:\\telebot\\evaluation\\retrieval_cases_v3.json",
+    "case_count": 60,
+    "holdout_used": false,
+    "policy": "Development A/B only. Holdout V2 remains closed."
+  },
+  "cases": [
+    {
+      "name": "ANSWER-AB-001",
+      "query": "Will Force Discharge damage my battery life?",
+      "reference": "No, as long as you set a reasonable \"Discharge Cut-off SOC\" (e.g., 20%), the BMS will protect the battery from deep discharge. Weekly forced charging is also recommended to maintain health.[View Guide](https://hanchuess-file-eu.oss-eu-central-1.aliyuncs.com/Knowledge_data_base/shouce/Hanchu%20Ess%20-%20How%20to%20Setup%20Force%20Discharging%20To%20The%20App.pdf#page=4)",
+      "expected_source": "120.json",
+      "expected_row": 20,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-002",
+      "query": "1. How to install CESS-HV-9.4K battery?",
+      "reference": "This is CESS-HV-9.4K battery. During its installation, pay attention to the following points. \nMake sure the ground is level and strong enough to bear the weight of products.\nBefore you start connecting cables, make sure that the inverter and battery are entirely switched off!\nMake sure there is no water source above or near the battery, including downspouts, sprinklers, or faucets.\nThe altitude to install the equipment shall be lower than the maximum working altitude 2000m.\nInstall the equipment away from electromagnetic interference. If there is any radio or wireless communication device below 30MHz near the equipment, make sure that the equipment is at least 30m far away from the wireless device.\nStep 1: Locate drill holes on the floor\nPlace the base along the wall and the base distance from the wall is 25-55mm. There are positioning holes on all sides of the base. Locating drill holes on the floor using the base as a template, mark the positions of the 4 holes, and then drill 10mm holes to ensure that the depth of the holes exceeds 50mm. The following link is a schematic diagram of step 1. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626153037004.png\nStep 2: Fix the base\nFit the expansion tubes into the holes, pull them tight, and then use the expansion screws (packaged with expansion tube for use) to install and secure the base to the floor. Note the left and right orientation of the base. The following link is a schematic diagram of step 2. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626153156101.png\nStep 3: Install the battery\nInstall the module and BDU in order from bottom to top. Observed from both sides of the battery system, make sure that the locking holes on both sides of the battery system overlap, if not, you need to re-adjust the position of the battery to make it overlap. The following link is a schematic diagram of step 3. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626153324524.png\nStep 4: Install the anti tipping bracket\nThere are threaded holes on the left and right sides of the BDU. Using the M4x12 screws to install the anti tipping bracket to it. During installation, take care to adjust the position of the anti-tipping bracket. The following link is a schematic diagram of step 4. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626153434749.png\nStep 5: Locate drill holes on the wall\nUsing the anti-tipping brackets as a template, use a marker pen to locate on the wall, then drill holes and install expansion screws. Before locking anti tipping biracket, complete power cable connection and communication connection. Note that you need to take down the BDU and a module when drilling and give the battery system a good protection to prevent foreign objects from entering and damaging the equipment. The following link is a schematic diagram of step 5. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626153521171.png\nStep 6: Fix the battery modules\nThere are screw holes on the left and right sides of the battery system. Using the M4x12 screws to lock the BDU, modules and base. The distance between the battery and the inverter should be about 400mm. The following link is a schematic diagram of step 6. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626153600707.png\nNote:\n1) Install the battery system in the order of base, module, BDU, pay attention to the up and down direction, please do not reverse.\n(2) High voltage products of different models cannot be mixed and stacked. High-voltage stacked modules must be of the same module with the same cell capacity and SOC.\n3) With the exception of new battery modules that can be stacked directly for the first time, all other used batteries must be discharged to cutoff voltage or fully chargedand meet capacity requirements before stacking.\n4) When connecting battery systems in parallel, ensure that tlhe usable energy of each battery system is the same.",
+      "expected_source": "CESS-HV-9.4K.json",
+      "expected_row": 23,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-003",
+      "query": "1. What are the proper steps to remove the AC connector from the CESS-HY-25~50K series inverter?\n2. How to remove the AC connector from the CESS-HY-25~50K series inverter?",
+      "reference": "This is an inverter of the CESS-HY-25~50K series. Below are the steps of removing the AC Connector:\n① Hold the unlocking buckle with one hand and rotate it in the marked direction, and rotate the nut in the opposite direction with the other hand.\n② Use a screwdriver to align the unlocking position, press and hold the main body and pull back to complete the removal.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/CESS-HY-25~50K/20250616090632345.png\n(CAUTION: Please distinguish the on-grid and back-up port, and don’t mix up the on-grid port and back-up port when making the connection.)",
+      "expected_source": "CESS-HY-25~50K_user-manual.json",
+      "expected_row": 63,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-004",
+      "query": "1. What is the Schematic Topology of 7kW AC Charger in the HC-EV-AC-7/11/22K-S0 EV charger?\n2. What is the Schematic Topology of 7kW AC Charger in the HC-EV-AC-7/11/22K-S1 EV charger?",
+      "reference": "This is a HC-EV-AC-7/11/22K EV charger. Below is the Schematic Topology of 7kW AC Charger. The following link is a schematic diagram, which shows the Topology of 7kW AC Charger. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HC-EV-AC-071122K/20250626144135093.png",
+      "expected_source": "HC-EV-AC-071122K.json",
+      "expected_row": 6,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-005",
+      "query": "1. What protective equipment products should i prepare during HESS-Gateway-M1 installation process?",
+      "reference": "This is HESS-Gateway-M1. Protective equipment products must be worn and maintained during the installation process. The following link is a schematic diagram of protective equipment products during HESS-Gatwway-M1 installation process. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626171613696.png",
+      "expected_source": "HESS-Gateway-M1.json",
+      "expected_row": 4,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-006",
+      "query": "1. In grid wiring of HESS-HY-S-12K-S inverter, what are precautions for connecting the parallel connecting lines?",
+      "reference": "This is HESS-HY-S-12K-S inverter. And there are some precautions for connecting the parallel connecting lines. In GRID wiring, Parallel connection in single phase: ensure L-to-L, N-to-N and PE-to-PE connection for all solar storage inverters, and that the connection is correct with the same wiring length and line diameter before power on so as to avoid the abnormal operation of parallel system output casused by wrong connection. Meanwhile, it is not allowed to have multiple different AC source inputs to avoid damage to the external equipment of the inverter. The consistency and uniqueness of AC source input shall be ensured. \nParallel connection in three-phase: ensure N-to-Nand PE-to-PE connection for all solar storage inverters. The L lines of all inverters connected to the same phase need to bee connected together. But L lines of different phases cannot be joined together. Other connectionprecautions are the same as parallel\nconnection in single phase. For specific wiring, please refer to 2.4.4Wiring Diagram.",
+      "expected_source": "HESS-HY-S-12K-S_user-manual.json",
+      "expected_row": 33,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-007",
+      "query": "1. Does the HESS-HY-S-3~6K inverter include Export active power control?",
+      "reference": "This is a HESS-HY-S-3~6K inverter. The product is equipped with the export active power limit function, so as to meet the requirements of some national standards or grid standards for limiting the output power at the grid connection point. The export active power control solution measures the active power at the point where the customer’s installation is connected to the distribution system (point of grid connection) and then uses this information to control the inverter’s output active power in order to prevent the export active power to the distribution system from exceeding the agreed export capacity. \nThe smart meter that can be used with this product must be approved by Hanchu ESS. For more information about the smart meter, please contact the service.",
+      "expected_source": "HESS-HY-S-3~6K.json",
+      "expected_row": 33,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-008",
+      "query": "1. Can I select grid participation in battery charging on HESS-HY-S-6K-S inverter's \"Work Mode Setup\" on LCD home screen settings?",
+      "reference": "This is HESS-HY-S-6K-S inverter. On its LCD home screen, we can click on the settings in the menu bar at the bottom of the screen to enter the setup interface,\nincluding the basic settings, work mode setup, battery setup, on grid setup, advanced setup of the five major setup items. The following link is a schematic diagram of its LCD home screen. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250616102835306.png \nWork Mode Setup includes Work Mode and Peak Shaving. \nOn Work Mode, there are some parameters including Hybrid grid mode, PV energy manage, Battery energy manage, Parallel Mode and Output phase voltage. The following link is a schematic diagram of \"work mode\" interface. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250616135219994.png\n\"Grid charging enable\" refers to \"Selectable grid participation in battery charging\"",
+      "expected_source": "HESS-HY-S-6K-S_user-manual.json",
+      "expected_row": 62,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-009",
+      "query": "1. Where can I get the figure of 5-24 RJ45 terminal connection sequence and definition on the HESS-HV-T-15/20K M4 series hybrid inverter?\n2. what is the definition of each terminal connection sequence on the HESS-HV-T-15/20K M4 series hybrid inverter?",
+      "reference": "This is an inverter of the HESS-HV-T-15/20K M4 series. Below is a figure of 5-24 RJ45 terminal connection sequence and definition:\n1. No.1's color is Orange & White, which has no Meter Side and Battery Side is RS485_A3.\n2. No.2's color is Orange , which has no Meter Side and Battery Side is RS485_B3.\n3. No.3's color is Green & White, which has no Battery Side and Meter Side is RS485_B2.\n4. No.4's color is Blue, which has no Battery Side and Meter Side is CANH_B.\n5. No.5's color is Blue & White, which has no Battery Side and Meter Side is CANL_B.\n6. No.6's color is Green, which has no Battery Side and Meter Side is RS485_A2.\n7. No.7's color is Brown & White, which has no Battery Side and Meter Side is RS485_B2.\n8. No.8's color is Brown , which has no Battery Side and Meter Side is RS485_A2.\nThe following link provides detailed information.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HESS-HY-T-15~20K-M4/20250618151455737.png",
+      "expected_source": "HESS-HY-T-15~20K-M4_user-manual.json",
+      "expected_row": 72,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-010",
+      "query": "1. What are the detailed requirements for the secondary protection ground cable of the HESS-HY-T-5~12K inverter?",
+      "reference": "This is a HESS-HY-T-5~12K inverter. Below is the requirements for the secondary protection ground cable. The following link is a corresponding description list of the requirements for the secondary protection ground cable. 1. https://oss-cdn.hanchuess.com/Knowledge_data_base/user_manual/HESS-HY-S-3~6K/additional_grounding_require.png",
+      "expected_source": "HESS-HY-T-5~12K.json",
+      "expected_row": 62,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-011",
+      "query": "1. Can u give me some HOME-ESS-HV-2.7K battery maintenance safety requirements?",
+      "reference": "This is HOME-ESS-HV-2.7K battery. Here are some battery maintenance safety requirements. When the equipment is running, a high voltage may cause electric shocks and result in death, serious injury or property damage. Before performing maintenance, turn off the equipment and strictly follow the safety\nprecautions listed in this manual and other related documents.\nEnsure that you are familiar with the contents of this manual and have appropriate tools and test equipment to perform maintenance.\nBefore performing maintenance, turn off the equipment according to the instructions and wait for a certain period of time to ensure that the equipment is power-off.\nDuring maintenance, prevent unnecessary personnel from getting close to the maintenance site.\nTemporary warning signs or fences must be erected to isolate the site.\nIf the equipment fails, please contact your dealer in time to deal with it.\nThe equipment can only be power-on again after the fault has been dealt with. Otherwise, the equipment may have some problems or become damaged.\nDo not dissemble the product without authorization. There is a danger of electric shocks and the corresponding failure is not covered by the warranty.\nMaintenance personnel should have received the professional training and use protective tools to conduct maintenance.\nWhen it is necessary to move or rewire, the input power must be cut off. Wait for 5 minutes to ensure that the internal energy of the machine has been discharged. The maintenance should be started after confirming with a multimeter that there is no dangerous voltage and no parts need to be repaired inside the machine.\nMaintenance of batteries should be performed or supervised by someone who is familiar with batteries and required precautions.\nPlease use the same type of cell when replacing cells.\nAfter maintenance, immediately check that no tools or other parts have been left inside the equipment.\nIf the equipment has not been used for a long time, you need to store and charge the battery according to this manual.\nAll operators of the energy storage system shall comply with the user manual. Any equipment damage caused by neglecting or misreading the user manual, will void the product warranty.",
+      "expected_source": "HOME-ESS-HV-2.7K.json",
+      "expected_row": 50,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-012",
+      "query": "1. What is the correct shutdown sequence for parallel HOME-ESS-HV-5.12K battery systems?\n2. How long can the HOME-ESS-HV-5.12K battery sit powered off without damage?",
+      "reference": "This is HOME-ESS-HV-5.12K battery. Here is equipment debugging. \n5. Equipment Power Down\n1) First, turn off the inverter.\n2) Turn off the power switch of the subordinate battery system and the primary battery system in turn. The battery system is in \"Standby\" after completing \"Power off\".\n3) Turn off the circuit breaker switch on the BDU in the order of the Primary Battery System, Subordinate Battery System 1, Subordinate Battery System 2 and SubordinateBattery System 3. \nThe following link is a schematic diagram of how to do equipment power down. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250625153050475.png\nNote: There is an inherent self-discharge loss of the battery system after it has been de-energised. If the battery system does not require work, it is recommended that the button be switched off and the circuit breaker be set to OFF, otherwise damage to the battery due to over-discharge may result.",
+      "expected_source": "HOME-ESS-HV-5.12K.json",
+      "expected_row": 36,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-013",
+      "query": "1. What're HOME-ESS-HV-5.3K battery charging requirements after over-discharge?",
+      "reference": "This is HOME-ESS-HV-5.3K battery. Here're some charging requirements after over-discharge. The battery stops discharging there is still static power consumpttion of the internal battery module and its own self-discharge loss, if there is no charge for a long time to replenish, it may lead to battery damage due to over-discharge. When the battery SOC is low, it needs to be replenished according to the maximum interval in the table in the following link. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250624100543031.png\nWe do not provide warranty service for permanent battery failure due to overdue recharging by the customer.",
+      "expected_source": "HOME-ESS-HV-5.3K.json",
+      "expected_row": 36,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-014",
+      "query": "1. What is the installation space of the HOME-ESS-LV-3.2K battery?\n2. Give me a diagram of the installation space of the HOME-ESS-LV-3.2K battery?",
+      "reference": "This is a HOME-ESS-LV-3.2K battery. For installation space, leave enough space to install the battery. When the battery is mounted on a wall, do not place any objects\nunder the battery. At least 300 mm of space should be left around each unit and the vertical distance between them should be in the range of 0.4 m - 10 m. \nInstallation space diagram as shown below.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HOME-ESS-LV-3.2K/20250623154140778.png",
+      "expected_source": "HOME-ESS-LV-3.2K.json",
+      "expected_row": 21,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-015",
+      "query": "1. Can u show me the system general wiring diagram of HOME-ESS-LV-3.68K battery?",
+      "reference": "This is HOME-ESS-LV-3.68K battery. Before connecting the cables, use a multimeter to measuree cable continuity, short circuits, and verify positive\nand negative terminals and cable labelling. The following link is a system general wiring diagram of HOME-ESS-LV-3.68K battery. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250620154701273.png",
+      "expected_source": "HOME-ESS-LV-3.68K (1).json",
+      "expected_row": 27,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-016",
+      "query": "1. What are steps of HOME-ESS-LV-3.68K battery ground connection? Can u show me a schematic diagram of these steps?",
+      "reference": "This is HOME-ESS-LV-3.68K battery. Here are some steps of battery ground connection. \nStep 1: Crimp the ground terminal. Customer needs to prepare the area of the grounding cable shall be at least 6 mm² , use a ground screw and\nterminal to connect the ground cable. The bolt locking torque is 21NM. The following link is a schematic diagram of crimping method. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250620160819976.png\nStep 2: Ground the battery with a ground cable through the ground screw and terminal. The following link is a schematic diagram of step 2. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250620160953601.png",
+      "expected_source": "HOME-ESS-LV-3.68K.json",
+      "expected_row": 29,
+      "acceptable_documents": [
+        {
+          "source": "HOME-ESS-LV-3.68K.json",
+          "row": 29
+        },
+        {
+          "source": "HOME-ESS-LV-3.68K (1).json",
+          "row": 29
+        }
+      ]
+    },
+    {
+      "name": "ANSWER-AB-017",
+      "query": "1. Introduction to the Definition of Indicator Lights in HOME-ESS-LV-5.12K battery.\n2. When the state is Running lights in HOME-ESS-LV-5.12K battery, what are the Capacity Indicator Lights?",
+      "reference": "This is a HOME-ESS-LV-5.12K battery. Below is Capacity Indicator in the Definition of Indicator Lights. When the state is Running lights, the Capacity indicator lights are shown as the following link. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HOME-ESS-LV-5.12K/20250625105821123.png",
+      "expected_source": "HOME-ESS-LV-5.12K.json",
+      "expected_row": 50,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-018",
+      "query": "1. What are dimension and weight the HOME-ESS-LV-9.4K battery model?\n2. Where can one access detailed information about the product dimension and weight of HOME-ESS-LV-9.4K battery model?",
+      "reference": "This is a HOME-ESS-LV-9.4K battery. About product dimension and weight, width is 484mm, depth is 165mm, height is 302mm and weight is 34.9kg\nThe following links provide detailed information.\n1. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HOME-ESS-LV-3.2K/20250630110245791.png\n2. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HOME-ESS-LV-3.2K/20250630110306199.png",
+      "expected_source": "HOME-ESS-LV-9.4K.json",
+      "expected_row": 14,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-019",
+      "query": "[APP side]Home page",
+      "reference": "## [APP side]Home page->Navigation bar, status bar\n### [APP side]Home page->Navigation bar, status bar->Power station switching\nClick **\"Power Station Switch\" **, select the required power station to complete the switch, as shown in the figure.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974550-520cc9a1-f2e8-47de-95b7-4a57963317be.png)\n\n### [APP side]Home page->Navigation bar, status bar->Search\nClick **\"Search\" **to enter the search page, you can quickly find power plants and equipment, as shown in the figure.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974650-6552ea4b-6c69-4d2c-a18c-9085e41460dc.png)\n\n### [APP side]Home page->Navigation bar, status bar->Add power station->Add\nClick **\"Add\" **, you can create power plants, add equipment, add heat pumps, apply for quality assurance, as shown in the figure.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889975001-626ed7fa-65ce-44b5-a413-ac8ca2e0ca6e.png)\n\n### [APP side]Home page->Navigation bar, status bar->Device SN switch\nClick on **\"SN\" **to switch the required device, as shown in the figure.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889975002-1eb411d0-8622-4e38-9db4-3eb19c70fe0a.png)\n\n### [APP side]Home page->Navigation bar, status bar->Working mode\nReal-time display of the current device's working mode and status\n\n## [APP side]Home page->Scene\n### [APP side]Home page->Scene->Home page->Data\n1. Real-time data of devices such as power grids, batteries, loads, photovoltaics, and charging piles can be viewed\n2. SOC information display, understand the real-time SOC status of the battery\n\n### [APP side]Home page->Scene->Status\n1. Understanding equipment status through energy flow direction\n2. Battery charge and discharge status display\n\n### [APP side]Home page->Scene->Weather\n1. Weather display\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889975917-75953d0e-e729-4995-a08d-85e26c89caba.png)\n\n## [APP side]Home page->Functional area\nThe homepage function area displays analysis, events, and control functions, as shown in the figure.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976078-742979f5-3c99-485d-a508-17f791809052.png)\n\n### [APP side]Home page->Functional area->Analysis\nClick \" **Analysis **\" to enter the Data Analysis page, where you can view the historical, statistical, and revenue data of the device in three dimensions, as shown in the figure.\n\n### [APP side]Home page->Functional area->Event\nClick \" **Events **\" to enter the event list page to view all event alerts, as shown in the figure.\n\n### [APP side]Home page->Functional area->Control\nClick \" **Control **\" to enter the remote cloud control page, and set the basic, energy storage, function, power grid parameters, active/reactive power, and dynamic adjustment, as shown in the figure.\n\n| **Tab** | **Function** | **Operating instructions** |\n| --- | --- | --- |\n| Home Function Area | Analysis | 1. Click \"Analysis\" to enter the analysis page to view relevant data in history, statistics, and revenue dimensions. |\n| | Alarm | 1. Click \"Alarm\" to enter the alarm page to view device alarm prompts. |\n| | Control | 1. Click \"Control\" to enter the control page where you can perform basic settings, energy storage settings, function settings, power grid parameter settings, active power settings, reactive power settings, and dynamic adjustment of the equipment. |\n\n\n## [APP side]Home page->Data\nData items for **\"today\", \"total\" **two dimensions of data display\n\n### [APP side]Home page->Data->Today's data\nDisplay today's data for self-use, energy ratio, revenue, photovoltaic, load, battery discharge, and feed-in data dimensions\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976588-50236328-e831-4c29-a0a3-e5c1aa0277f3.png)\n\n### [APP side]Home page->Data->Aggregate data\nDisplay aggregate data for self-use, energy ratio, revenue, photovoltaic, load, battery discharge, and feed-in dimensions\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976934-b408b403-21d7-446e-87dd-308ad4c65516.png)\n\n[https://lvbsk03ee00.feishu.cn/sync/OHErdYMXPszD3zbXTp1ckMOPntD](https://lvbsk03ee00.feishu.cn/sync/OHErdYMXPszD3zbXTp1ckMOPntD)",
+      "expected_source": "[APP side]Update instructions.json",
+      "expected_row": 7,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-020",
+      "query": "[WEB side]Instructions->Monitoring->Home page",
+      "reference": "The home page provides general distributors an overview of their subordinate merchants, user installed capacity, and statistical data. They can view alarms and new equipment by city dimension, and can also perform global searches on this page to directly view expected devices and stations.\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1737357041651-4976065f-bbb0-4fb6-8201-355d08c2d695.png)\n| **<font style=\"color:#FFFFFF;\">Label</font>** | **<font style=\"color:#FFFFFF;\">Module Name</font>** | **<font style=\"color:#FFFFFF;\">Description</font>** |\n| :---: | :---: | --- |\n| A | Navigation bar | The navigation bar includes monitoring, business, maintenance, and service. Click to jump to the corresponding page. |\n| B | Overview of installed capacity | The new added and total installed capacity of the device will be reflected here. |\n| C | Quick Action Bar | Common operations will be displayed here, click to operate. |\n| D | Overview of real-time data | Real-time data and energy flow gragh is shown. |\n| E | Rank of station | Top three generation, and revenue stations and their data is shown. |",
+      "expected_source": "hanchu_raw_dataset.json",
+      "expected_row": 66,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-021",
+      "query": "1. How to do iESS-M1/M3/M5 smart meter's WiFi configuration?",
+      "reference": "This is iESS-M1/M3/M5 smart meter. There are some steps of its WiFi configuration. \nPlease download the HNAHCU ESS app by scanning the QR code or from the APP Store.\nStep 1: Select the home WiFi network you want to connect to (not 5G WiFi) and enter your WiFi password.\nStep 2: Turn on your phone's Bluetooth, then select the devicees you want to bind. Tap \"Add\" to add the devices to your station. \nThe following link is a schematic diagram of step 2. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250627103301045.png\nStep 3: After the devices are connected to the network and bound successfully, you will see the page shown in the schematic diagram in the following link. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250627103506488.png",
+      "expected_source": "iESS-M1.json",
+      "expected_row": 12,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-022",
+      "query": "三相逆变器HESS-HY-T-5~12K安装视频",
+      "reference": "https://oss-cdn.hanchuess.com/Knowledge_data_base/Hanchu_pulic_documentation/Product_installation_video(3D)/Installation_video/Three%20phase%20hybrid%20inverter.mp4",
+      "expected_source": "oss文件.json",
+      "expected_row": 9,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-023",
+      "query": "我有一个低压电池，电池型号为HOME-ESS-LV-3.68K/HOME-ESS-LV-9.4K。我的电池出现了“充电MOS故障”告警，该告警的触发原因是什么？有没有对应的解决办法，解决办法是什么？",
+      "reference": "您好，“充电MOS故障”告警的触发原因是：充电MOS故障。对应的解决办法为：关闭电池，联系hanchu技术支持。",
+      "expected_source": "低压电池告警切片.json",
+      "expected_row": 80,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-024",
+      "query": "What should I do if my Hanchu Three Phase Hybrid inverter shows Error Code 32?",
+      "reference": "Abnormal Frequency Change.Action:Restart the inverter. If frequent, installer may need to adjust parameters for local grid instability.View Guide](https://hanchuess-file-eu.oss-eu-central-1.aliyuncs.com/Knowledge_data_base/shouce/Hanchu%20Three%20Phase%20Hybrid%20-%206-8-10-12K%20-%20Error%20Codes%20QA%20Customer%20Friendly.pdf#page=6)",
+      "expected_source": "单相逆变器问答.json",
+      "expected_row": 103,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-025",
+      "query": "低压电池的采集器蓝灯闪烁是什么意思？\nBAT-Logger蓝灯闪烁是什么意思？",
+      "reference": "BAT-Logger是hanchu公司的采集器，可搭配部分低压电池使用。关于该设备的 LED 指示灯状态说明，不同灯语代表的含义不同：\n蓝色闪烁：设备正在配网。\nhttps://oss-cdn.hanchuess.com/Knowledge_data_base/LED_indicators/Logger/BAT-Logger_LED_indicators.png",
+      "expected_source": "售后.json",
+      "expected_row": 19,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-026",
+      "query": "Why dont i have pv inverter on the home page？",
+      "reference": "您有可能还未绑定设备，绑定设备的路径为：打开hanchu app，点击“HOME”页面右上角的“+”，添加设备。",
+      "expected_source": "场景化问答(1).json",
+      "expected_row": 155,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-027",
+      "query": "Why don't the batteries stay balanced？",
+      "reference": "充电放电末端电芯间出现压差是正常的，系统会内部会做均衡动作。",
+      "expected_source": "场景化问答.json",
+      "expected_row": 171,
+      "acceptable_documents": [
+        {
+          "source": "场景化问答.json",
+          "row": 171
+        },
+        {
+          "source": "场景化问答(1).json",
+          "row": 171
+        }
+      ]
+    },
+    {
+      "name": "ANSWER-AB-028",
+      "query": "跨区容量计算的方法之一——流域法flow-based是什么？",
+      "reference": "不是给“每个边境口岸”单独分名额，而是盯着“可能堵车的路段”给名额。电力里，“车=电”，“路=输电线路”，“堵车的路段=可能拥塞的关键线路”。\n为什么这么干？\n电从A国到B国，不只走一条线，真实潮流会在整张网里分散流动。\n如果你只给“边境口岸”按条数分额（老办法 NTC），常常浪费路：有的路空着，有的路堵死。\n流域法改成：看哪些路段会堵，把它们的“还能再过多少车（电）”当成约束，一起算。\n具体怎么做（用交通比喻）\n挑路段：先挑出可能会堵的路段（关键线路）。\n量影响：任何一个口岸多放1辆车，会让每条路段多挤多少？（这就是“影响系数”）\n定剩余：每条易堵路段还能承受多少辆车？（“剩余空间”）\n一起算：撮合交易时，让车尽量多地、聪明地分流，但任何路段都不能超载。\n结果：能用到更多真实可用的路，总体更省钱、更高效、更安全。\n和老办法的区别（超直白版）\n老办法 NTC：每个口岸各发各的“今天最多能过 X 辆”，互相不管 → 容易浪费。\n流域法 FB：大家共同争取“那些会堵的路段”的剩余空间 → 更贴近物理、可交易空间通常更大。\n对价格意味着什么？\n不堵时：各地价格更容易靠近（因为电能顺着空路段流过去）。\n一旦某条关键路段“卡脖子”：出现价格差，差的大小就反映哪里在“堵”。",
+      "expected_source": "垂直领域(1).json",
+      "expected_row": 195,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-029",
+      "query": "N-PE（接地检测）",
+      "reference": "hanchu逆变器的接地检测功能，有开启和关闭两个状态，是检测逆变器N线和PE线连接是否正常",
+      "expected_source": "垂直领域.json",
+      "expected_row": 3,
+      "acceptable_documents": [
+        {
+          "source": "垂直领域.json",
+          "row": 3
+        },
+        {
+          "source": "垂直领域(1).json",
+          "row": 3
+        }
+      ]
+    },
+    {
+      "name": "ANSWER-AB-030",
+      "query": "你们公司的电池产品有哪些？\n你们公司的储能产品有哪些",
+      "reference": "# Hanchu公司的电池产品\n## 1. 低压电池系列（LV Series）\n- HOME-ESS-LV-3.2K：适合中等规模的家庭储能，具备高效能量存储和释放能力。\n- HOME-ESS-LV-3.68K：适合中等规模的家庭储能，具备高能量密度与高效的充放效率。\n- HOME-ESS-LV-5.12K-S：提供更高的储能容量，支持灵活扩展，适合较大规模的家庭能源管理。\n- HOME-ESS-LV-9.4K：高性能储能电池，具备100A的快速充放电能力，放电深度高达95%，适合对能源管理有较高要求的家庭。\n## 2. 高压电池系列（HV Series）\n- HOME-ESS-HV-2.7K：高压储能电池，适用于需要更高输出功率的场景，如小型商业和工业应用。\n- HOME-ESS-HV-5.3K：提供更大的储能容量和更高的输出功率，适合中大型商业应用。\n- CESS-HV-9.4K：专为小型商业和工业应用定制开发的高压堆叠电池，使用性能更高的刀片电芯，最高可扩容至451.2kWh，最大充放电电流可达100A。\n## 3. C&I系列（CESS Series）\n- CESS-215K-S、CESS-418K-S：具备高性能、高安全、灵活部署和极简安装的特点，能够迅速适应不同的企业场景需求。",
+      "expected_source": "市场与解决方案.json",
+      "expected_row": 29,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-031",
+      "query": "Battery Safety of HOME-ESS-LV-3.68K",
+      "reference": "IEC 62619/CE-EMC/CE-RED",
+      "expected_source": "硬件产品基本参数.json",
+      "expected_row": 121,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-032",
+      "query": "HESS-HY-T-4~20K逆变器如何兼容旁路光伏逆变器？",
+      "reference": "### HESS-HY-T-4~20K逆变器与已有光伏逆变器的兼容解决方案\n汉储HESS-HY-T-4~20K逆变器提供与已有光伏逆变器的兼容解决方案，下面我会详细解释。\n1. **AC耦合安装**：\n- HESS-HY-T-4~20K逆变器支持AC耦合安装，这意味着它可以与现有的旁路光伏逆变器协同工作。通过AC耦合，光伏系统产生的电力会根据hanchu逆变器的工作模式进行协调，分配至负载，电池，或电网。\n- 在这种配置中，已有光伏逆变器可以作为储能系统的一部分，优化能源使用，提高系统的灵活性和可靠性。\n2. **智能电表集成**：\n- 该逆变器支持与智能电表（iESS-M1）集成，这有助于实时监控和管理能源流动。通过将智能电表接在已有光伏逆变器上，系统可以更精确获取旁路光伏的数据，确保能源的高效利用。\n3. **安装指南**：\n- 在安装过程中，您需要确保所有连接正确无误，包括光伏逆变器、储能逆变器、智能电表以及负载之间的连接。建议您参考Hanchu提供的安装指导进行操作。\n希望这些信息对您有所帮助！如果您有其他问题或需要进一步的帮助，请随时告诉我。具体操作流程可以参考以下视频\nhttps://oss-cdn.hanchuess.com/frontend/document/install/Three-Phase%20Inverter%20%2B%20Smart%20Meter%EF%BC%88SDM630%EF%BC%89%2B%20AC%20Coupling%20Installation%20Guide.mp4",
+      "expected_source": "硬件产品基础操作.json",
+      "expected_row": 8,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-033",
+      "query": "怎么设置各个时间段的工作模式？",
+      "reference": "在“Weekly Mode”页面的“Time of use”模块，找到相应的时间段，点击下拉图标，在“Work Mode”中找到您需要的工作模式来进行设置。",
+      "expected_source": "策略.json",
+      "expected_row": 41,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-034",
+      "query": "British Gas公司的PeakSave Sundays是什么？它的机制是怎样的？",
+      "reference": "PeakSave Sundays既不是买电产品也不是卖电产品，它是British Gas公司推出的一项激励用电计划。适合周日用电多的用户，用户家里需配有智能电表。它不是一款独立的电价产品，需要同British Gas公司的其他电价产品搭配使用。它的机制为：每周日11:00-16:00电费半价，standing charge不变。“半价电价 = 用户主套餐电价 × 50%”。",
+      "expected_source": "英国电价产品汇集.json",
+      "expected_row": 27,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-035",
+      "query": "What should I do if my Hanchu EV Charger shows \"PP signal disconnect\" error?",
+      "reference": "The connector is not properly inserted or connected .\nAction: Ensure the charging cable is fully inserted into your vehicle's port.[View Guide](https://hanchuess-file-eu.oss-eu-central-1.aliyuncs.com/Knowledge_data_base/shouce/Hanchu%20EV%20Charger%20-%20Error%20Codes%20QA%20Customer%20Friendly.pdf#page=7)",
+      "expected_source": "通用手册、强制放电、电网充电1.json",
+      "expected_row": 172,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-036",
+      "query": "What should I do if my Hanchu 9.4kWh battery I see an insulation fault alarm?",
+      "reference": "Insulation problem detected. Safety hazard.\nAction: Stop using immediately. Contact installer.\n[View Guide](https://hanchuess-file-eu.oss-eu-central-1.aliyuncs.com/Knowledge_data_base/shouce/Hanchu%209.4kWh%20-%20Low%20Voltage%20Battery%20Error%20Codes%20QA%20Customer%20Friendly.pdf#page=6)",
+      "expected_source": "问题.json",
+      "expected_row": 97,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-037",
+      "query": "如何设置设备在低电价时充电？",
+      "reference": "### 如何设置设备在低电价时充电？\n为了在低电价时段为您的设备充电，您可以按照以下步骤进行设置：\n#### 1. **检查电价时段**\n- **了解电价时段**：首先，您需要了解您家接入的电价是峰谷电价。通常，低谷时段电价较低，适合充电。\n#### 2. **设置user-defined模式**\n- **填写电价**：\n进入电站编辑页面，根据实际峰谷电价，填写买入价格和卖出价格\n- **设置充电时间段**：\n1. 在Hanchu APP或Web界面中，进入“device”>“inverter”>“energy storage settigns”>“working mode”切换至user-defined模式。\n2. 在user-defined模式下，将低电价时段设置为充电时间段。例如，设置23:00至7:00为充电时间段。\n3. 在该时段内，系统将以最大充电功率给储能充电。\n#### 3. **优化充电设置**\n- **设置充电参数**：\n1. 您可以为每个时间段设置工作模式和参数。例如，设置充电功率、充电截止SOC等。\n2. 确保充电设置符合您的需求，以最大化节省电费。\n#### 4. **监控与调整**\n- **监控充电情况**：定期监控电池的充放电情况，确保充电按预设的低电价时段进行。\n- **调整设置**：根据实际使用情况和电价变化，及时调整自定义计划。\n### 总结\n通过设置user-defined模式，您可以在低电价时段为设备充电，从而节省电费。确保您了解当地的电价时段，并根据这些时段设置执行计划。如果您在设置过程中遇到任何问题，建议联系Hanchu的技术支持团队获取帮助。\n希望这些信息对您有所帮助！如果您有其他问题或需要进一步的帮助，请随时告知。",
+      "expected_source": "预设问题.json",
+      "expected_row": 15,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-038",
+      "query": "Can I use Force Discharge and Grid Charge at the same time?",
+      "reference": "No, you cannot charge and discharge simultaneously in the same time slot. You must set different Time Periods for charging (Grid Charge) and discharging (Force Discharge).[View Guide](https://hanchuess-file-eu.oss-eu-central-1.aliyuncs.com/Knowledge_data_base/shouce/Hanchu%20Ess%20-%20How%20to%20Setup%20Force%20Discharging%20To%20The%20App.pdf#page=4)",
+      "expected_source": "120.json",
+      "expected_row": 22,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-039",
+      "query": "1. Can u give me some CESS-HV-9.4K battery maintenance safety requirements?",
+      "reference": "This is CESS-HV-9.4K battery. Here are some battery maintenance safety requirements. When the equipment is running, a high voltage may cause electric shocks and result in death, serious injury or property damage. Before performing maintenance, turn off the equipment and strictly follow the safety precautions listed in this manual and other related documents.\nEnsure that you are familiar with the contents of this manual and have appropriate tools and test equipment to perform maintenance.\nBefore performing maintenance, turn off the equipment according to the instructions and wait for a certain period of time to ensure that the equipment is power-off.\nDuring maintenance, prevent unnecessary personnel from getting close to the maintenance site.\nTemporary warning signs or fences must be erected to isolate the site.\nIf the equipment fails, please contact your dealer in time to deal with it.\nThe equipment can only be power-on again after the fault has been dealt with. Otherwise, the equipment may have some problems or become damaged.\nDo not dissemble the product without authorization. There is a danger of electric shocks and the corresponding failure is not covered by the warranty.\nMaintenance personnel should have received the professional training and use protective tools to conduct maintenance.\nWhen it is necessary to move or rewire, the input power must be cut off. Wait for 5 minutes to ensure that the internal energy of the machine has been discharged. The maintenance should be started after confirming with a multimeter that there is no dangerous voltage and no parts need to be repaired inside the machine.\nMaintenance of batteries should be performed or supervised by someone who is familiar with batteries and required precautions.\nPlease use the same type of cell when replacing cells.\nAfter maintenance, immediately check that no tools or other parts have been left inside the equipment.\nIf the equipment has not been used for a long time, you need to store and charge the battery according to this manual.\nAll operators of the energy storage system shall comply with the user manual. Any equipment damage caused by neglecting or misreading the user manual, will void the product warranty.",
+      "expected_source": "CESS-HV-9.4K.json",
+      "expected_row": 43,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-040",
+      "query": "1. Where can I access the \"Country code (Safety code)\" setting on the CESS-HY-25~50K series hybrid inverter?",
+      "reference": "This is an inverter of the CESS-HY-25~50K series. Here is the Country Code (Safety Code) Setting: Please set \"Country code (Safety code)\" under the menu \"Safety Set\" in \" Advanced Settings \".Refer to “7.3 Advanced Setting” for more information.",
+      "expected_source": "CESS-HY-25~50K_user-manual.json",
+      "expected_row": 101,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-041",
+      "query": "1. What is the Schematic Topology of 11/22kW AC Charger in the HC-EV-AC-7/11/22K-S0 EV charger?\n2. What is the Schematic Topology of 11/22kW AC Charger in the HC-EV-AC-7/11/22K-S1 EV charger?",
+      "reference": "This is a HC-EV-AC-7/11/22K EV charger. Below is the Schematic Topology of 11/22kW AC Charger. The following link is a schematic diagram, which shows the Topology of 11/22kW AC Charger. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HC-EV-AC-071122K/20250626144415956.png",
+      "expected_source": "HC-EV-AC-071122K.json",
+      "expected_row": 7,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-042",
+      "query": "1. How to install HESS-Gateway-M1?",
+      "reference": "This is HESS-Gateway-M1. Before you start connecting cables, make sure that gateway and the equipment is fully switched off! Make sure the wall is strong enough to bear the weight of the gateway.\nStep 1: Locate drill holes in the wall\nUse the bracket as a template to make positioning holes in the wall, mark the positions of the 4 holes, and then drill 10mm holes to ensure that the depth of the holes is greater than 50mm. The bracket should be placed at least 500mm above the ground. The following link is a schematic diagram of step 1. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626172102802.png\nStep 2: Fix the wall mount bracket\nFix the expansion tubes into the holes, pull them tight, and then use the expansion screws (packaged with expansion tube for use) to install and secure the wall mount bracket to the wall. The following link is a schematic diagram of step 2. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626172343455.png\nStep 3: Fix the gateway\nThere is a hook design on the back of the gateway. Align and fix it to the positioning groove of the Wall mount bracket, and secure it with M4*14 screws. Make sure there is enough space around the gateway. The following link is a schematic diagram of step 3. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250626172451101.png",
+      "expected_source": "HESS-Gateway-M1.json",
+      "expected_row": 6,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-043",
+      "query": "1. Which type of damage of HESS-HY-S-12K-S inverter ur company shall not be liable for?",
+      "reference": "This is HESS-HY-S-12K-S inverter. The Company shall not be liable for damage caused by: 1. Damage caused by improper use or use in a wrong location. 2. Photovoltaic modules with an open circuit voltage exceeding the maximum permissible voltage. 3. Damage caused by the operating temperature exceeding the restricted operating temperature range. 4. Dismantling and repair of the inverter by unauthorised persons. 5. Damage caused by force majeure: damage during transport or handling of the inverter.",
+      "expected_source": "HESS-HY-S-12K-S_user-manual.json",
+      "expected_row": 88,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-044",
+      "query": "1. What are the four energy management modes provided by the HESS-HY-S-3~6K inverter?\n2. What factors determine the energy management modes of the HESS-HY-S-3~6K inverter?",
+      "reference": "This is a HESS-HY-S-3~6K inverter. The product's Energy Management Mode depends on photovoltaic energy and user preferences, offering four selectable modes: Self-Consumption mode, Back-up mode, User-defined mode, and Off-grid mode.",
+      "expected_source": "HESS-HY-S-3~6K.json",
+      "expected_row": 41,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-045",
+      "query": "1. How to connect the live, neutral and ground wires in HESS-HY-S-6K-S inverter's GRID&LOAD&GEN connection?",
+      "reference": "This is HESS-HY-S-6K-S inverter. We should connect the live,neutral and ground wires in GRID&LOAD&GEN connection according to the cables' position and order shown in the diagram in the following link. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250613133720026.png",
+      "expected_source": "HESS-HY-S-6K-S_user-manual.json",
+      "expected_row": 18,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-046",
+      "query": "1. What's the steps of connecting other cables on the HESS-HV-T-15/20K M4 series hybrid inverter?\n2. How to connect other cables on the HESS-HV-T-15/20K M4 series hybrid inverter?",
+      "reference": "This is an inverter of the HESS-HV-T-15/20K M4 series. Here is the steps of connecting other cables: \n① Thread the cable of appropriate length through the swivel nut and the housing. Remove the cable jacket and strip the wire insulation.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HESS-HY-T-15~20K-M4/20250617172637571.png\n② (Optional) When using a multi-core multi-strand copper wire cable, connect the AC wire head to the cord end terminal (hand-tight). In case of single-strand copper wire, skip this step.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HESS-HY-T-15~20K-M4/20250617172652237.png\n③ Fix all the wires to the terminal plug according to the assignment and tighten to a torque of 1.2+/-0.1N·m with a screwdriver.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HESS-HY-T-15~20K-M4/20250617172704591.png\n④ Pull the wires outward to check whether they are firmly installed.Insert the terminal block into the connector until it snaps into place with an audible click.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HESS-HY-T-15~20K-M4/20250617172727652.png\n⑤ Fasten the swivel nut.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HESS-HY-T-15~20K-M4/20250617172749214.png",
+      "expected_source": "HESS-HY-T-15~20K-M4_user-manual.json",
+      "expected_row": 69,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-047",
+      "query": "1. Does the HESS-HY-T-5~12K inverter include Back-up function?",
+      "reference": "This is a HESS-HY-T-5~12K inverter. The product is equipped with a back-up function which also called as an emergency power supply (EPS). The back-up function ensures that the inverter forms a three-phase back-up grid that uses energy from the battery and the PV system that is directly connected to the inverter to supply the critical load in the event of a utility grid failure. \nIn the event of a grid failure, the product disconnects from the grid. The product provides a standalone grid and the backup loads, which connect to EPS connector, continue to be supplied by the energy stored in the battery and the PV modules.\nThe charging of the battery is ensured by the existing PV system during back-up operation.\nAs soon as the utility grid is available again, the product will automatically connect to the grid and the loads are supplied with energy from the utility grid.",
+      "expected_source": "HESS-HY-T-5~12K.json",
+      "expected_row": 41,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-048",
+      "query": "1. Can u show me a diagram of HOME-ESS-HV-2.7K battery module parameters?",
+      "reference": "This is HOME-ESS-HV-2.7K battery. The following link is a diagram of HOME-ESS-HV-2.7K battery module parameters. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250624141953351.png",
+      "expected_source": "HOME-ESS-HV-2.7K.json",
+      "expected_row": 19,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-049",
+      "query": "1. Can u show me a schematic diagram of system general wiring of a single HOME-ESS-HV-5.12K battery system?",
+      "reference": "This is HOME-ESS-HV-5.12K battery. The following link is a schematic diagram of system general wiring of a single HOME-ESS-HV-5.12K battery system. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250625142926169.png",
+      "expected_source": "HOME-ESS-HV-5.12K.json",
+      "expected_row": 26,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-050",
+      "query": "1. What's the definition of HOME-ESS-HV-15.9~63.6K battery system?",
+      "reference": "This is HOME-ESS-HV-5.3K battery. The model of a battery system is HOME-ESS-HV-15.9~63.6K. The following link is a diagram of the battery system. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250625163050867.png",
+      "expected_source": "HOME-ESS-HV-5.3K.json",
+      "expected_row": 12,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-051",
+      "query": "1. What are HOME-ESS-LV-3.2K battery environment requirements?",
+      "reference": "This is HOME-ESS-LV-3.2K battery. Here's some battery storage information. The battery is required to be stored in a temperature range from 0°C to 40°C. Routine maintenance is required for batteries that have been stored for a long time. Depending on the storage time of the battery and the storage environment, Please charge the battery to the corresponding SOC at 0.2C as required by the table below in the following link. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250624100014207.png\n● After a long-time storage, the battery should be inspected and tested by professionals before use.\n● During the storage period, record temperature, humidity and storage environment in accordance with storage requirements in this manual.\n● Long-term storage of batteries is not recommended, which will cause capacity loss. Generally, after 12 months of storage at the recommended storage temperature, an irreversible capacity loss of lithium batteries is 3%~10%.\n● The batteries should be stored in accordance with the labels on the packaging box and should not be inverted or placed sideways.\n● The battery boxes should be stacked according to the stacking requirements on the outer packaging.\n● When handling the battery, take care not to damage the battery.\n● Storage Environment Requirements:\nAmbient temperature: short-term storage (less than 1 month)0°C~40°C, long-term storage (more than 1 month) 5°C~35°C. Recommended storage temperature: 20°C~30°C.\nRelative humidity: 5%RH~60%RH.\nStore products in a dry, clean and ventilated place. Keep them away from dust, direct sunlight, rain, vapor or groundwater.\nAvoid contact with corrosive organic solvents, gases and other substances.",
+      "expected_source": "HOME-ESS-LV-3.2K.json",
+      "expected_row": 44,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-052",
+      "query": "1. Can u show me a schematic diagram of how to connect HOME-ESS-LV-3.68K battery's RS485 communication cable?\n2. Can u show me a schematic diagram of HOME-ESS-LV-3.68K battery communication parallel?",
+      "reference": "This is HOME-ESS-LV-3.68K battery. Use the RS485 communication cable to connect the battery in sequence through the RS485 port. The following link is a schematic diagram of connecting the RS485 communication cable. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250620162546372.png\nThe following link is a schematic diagram of HOME-ESS-LV-3.68K battery communication parallel. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250620163020738.png",
+      "expected_source": "HOME-ESS-LV-3.68K (1).json",
+      "expected_row": 33,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-053",
+      "query": "1. What're HOME-ESS-LV-5.12K battery environment requirements?",
+      "reference": "This is HOME-ESS-LV-5.12K battery. Here's some battery storage information. The battery is required to be stored in a temperature range from O°C to +40°C. Routine maintenance is required for batteries that have been stored for a long time. Depending on the storage time of the battery and the storage environment, Please charge the battery to the corresponding SOC at 0.2C as required by the table below in the following link. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250624100014207.png\nAfter a long-time storage, the battery should be inspected and tested by professionals before use.\nDuring the storage period, record temperature, humidity and storage environment in accordance with storage requirements in this manual.\nLong-term storage of batteries is not recommended, which will cause capacity loss. Generally, after 12 months of storage at the recommended storage temperature, an irreversible capacity loss of lithium batteries is 3%~10%.\nThe batteries should be stored in accordance with the labels on the packaging box and should not be inverted or placed sideways.\nThe battery boxes should be stacked according to the stacking requirements on the outer packaging.\nWhen handling the battery, take care not to damage the battery.\nStorage Environment Requirements:\nAmbient temperature: short-term storage (less than 1 month)O°C~~40°C, long-term storage (more than 1 month)5°C~35°C. Recommended storage temperature: 20°C~30°C.\nRelative humidity: 5%RH~60%RH.\nStore products in a dry, clean and ventilated place. Keep them away from dust, direct sunlight, rain, vapor or groundwater.\nAvoid contact with corrosive organic solvents, gases and other substances.",
+      "expected_source": "HOME-ESS-LV-5.12K.json",
+      "expected_row": 58,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-054",
+      "query": "1. How to connect the CAN communication cable of HOME-ESS-LV-9.4K battery?",
+      "reference": "This is a HOME-ESS-LV-9.4K battery. Below is the guide of connecting the CAN communication cable:\nUse the CAN communication cable to connect the inverter withthe primary through CAN port.\nhttps://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/HOME-ESS-LV-3.2K/20250630130356730.png",
+      "expected_source": "HOME-ESS-LV-9.4K.json",
+      "expected_row": 33,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-055",
+      "query": "[APP side]**Register and log in**",
+      "reference": "## [APP side]**Register and log in**->Register\n1. If you don't have an account yet, please click \" **Register **\" to register, as shown in the picture:\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969572-2ee3b3d4-407b-4506-bad4-163c04311136.png)\n\n1. In order to provide you with the basic functions of our products/services, you need to authorize and agree to the \" **Privacy Policy **\" and \" **Terms and Conditions **\". We promise to strictly keep user information confidential and will not disclose user's private information to third parties unless authorized by the user or required by law.\n2. Fill in account info\n    1. After filling in the registration information, click \" **get verification code **\", as shown in the figure.\n\nTip: Please contact your installer to obtain the Business Code.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969510-2cf26723-733a-4db4-bc05-1e88a7d996a7.png)\n\n    2. We will send a verification code to your email. Fill in the verification code and click \" **Confirm **\" to log in, as shown in the picture.\n\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969624-af8f5542-7d0d-446c-a748-9962b135917b.png)\n\n3. If you are already registered, you can log in directly. Then you can go to \" **Add Device **\".",
+      "expected_source": "[APP side]Update instructions.json",
+      "expected_row": 3,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-056",
+      "query": "[WEB side]Instructions->Maintenance->Device upgrade->Single upgrade of inverter",
+      "reference": "Click the upgrade button in the device list, and choose the software that need to be upgraded.\nPlease note that only online devices can be selected for upgrading.\n+ <u>[WEB side]Instructions->Maintenance->Device upgrade->Single upgrade of inverter->Step 1</u>, find the device and click upgrade.\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1714287819056-2ae6a575-e159-4c5f-aeb4-018ed4966b0c.png)\n+ <u>[WEB side]Instructions->Maintenance->Device upgrade->Single upgrade of inverter->Step 1->Step 2</u>, choose the software that need to be upgraded and click confirm, the upgrading process would be shown in the records.\n![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1714286206479-52335ccc-8ba0-400b-b6b4-97c396d6bf24.png)",
+      "expected_source": "hanchu_raw_dataset.json",
+      "expected_row": 109,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-057",
+      "query": "1. Can u show me a schematic diagram of display interface on iESS-M1/M3/M5 smart meter's screen?",
+      "reference": "This is iESS-M1/M3/M5 smart meter. The following link is a schematic diagram of its screen which includes indicator area and display area. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250627101121775.png\nThe following link is a schematic diagram of its diaplay interface. 1. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250627102735750.png 2. https://oss-cdn.hanchuess.com//Knowledge_data_base/user_manual/20250627102913835.png",
+      "expected_source": "iESS-M1.json",
+      "expected_row": 10,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-058",
+      "query": "高压电池，型号CESS-HV-9.4k的 Quick Installation Guide",
+      "reference": "https://oss-cdn.hanchuess.com/Knowledge_data_base/Hanchu_pulic_documentation/Mass-produced_products/Battery/CESS-HV-9.4K/Quick_Installation_Guide%2Buser_manual/CESS-HV-9.4K%28HanchuEss%29Quick%20Installation%20Guide%20v2-20250123%28%E8%A1%A5%E5%85%85%E5%AE%89%E5%85%A8%E9%A3%8E%E9%99%A9%29.pdf",
+      "expected_source": "oss文件.json",
+      "expected_row": 96,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-059",
+      "query": "我有一个低压电池，电池型号为HOME-ESS-LV-3.2K/HOME-ESS-LV-9.4K/HOME-ESS-LV-5.12K/HOME-ESS-LV-3.68K。我的电池出现了“SPI通信失效”告警，该告警的触发原因是什么？有没有对应的解决办法，解决办法是什么？",
+      "reference": "您好，“SPI通信失效”告警的触发原因是：SPI通信失效。对应的解决办法为：关闭电池，联系hanchu技术支持。",
+      "expected_source": "低压电池告警切片.json",
+      "expected_row": 65,
+      "acceptable_documents": null
+    },
+    {
+      "name": "ANSWER-AB-060",
+      "query": "What should I do if my Hanchu Three Phase 15/20K inverter shows \"Relay Check Fail\" error?",
+      "reference": "Internal relay self-check failed (or N/PE connection poor).\nAction: Measure voltage between N&PE (should be <10V). Restart inverter.\n[View Guide](https://hanchuess-file-eu.oss-eu-central-1.aliyuncs.com/Knowledge_data_base/shouce/Hanchu%20Three%20Phase%20Hybrid%20-%2015-20K%20-%20Error%20Codes%20QA%20Customer%20Friendly.pdf#page=7)",
+      "expected_source": "单相逆变器问答.json",
+      "expected_row": 133,
+      "acceptable_documents": null
+    }
+  ]
+}

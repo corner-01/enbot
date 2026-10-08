@@ -1,0 +1,495 @@
+[
+  {
+    "query": "Will Force Discharge damage my battery life?",
+    "expected_source": "120.json",
+    "expected_row": 20,
+    "name": "DEV3-POS-001"
+  },
+  {
+    "query": "1. How to install CESS-HV-9.4K battery?",
+    "expected_source": "CESS-HV-9.4K.json",
+    "expected_row": 23,
+    "name": "DEV3-POS-002"
+  },
+  {
+    "query": "1. What are the proper steps to remove the AC connector from the CESS-HY-25~50K series inverter?\n2. How to remove the AC connector from the CESS-HY-25~50K series inverter?",
+    "expected_source": "CESS-HY-25~50K_user-manual.json",
+    "expected_row": 63,
+    "name": "DEV3-POS-003"
+  },
+  {
+    "query": "1. What is the Schematic Topology of 7kW AC Charger in the HC-EV-AC-7/11/22K-S0 EV charger?\n2. What is the Schematic Topology of 7kW AC Charger in the HC-EV-AC-7/11/22K-S1 EV charger?",
+    "expected_source": "HC-EV-AC-071122K.json",
+    "expected_row": 6,
+    "name": "DEV3-POS-004"
+  },
+  {
+    "query": "1. What protective equipment products should i prepare during HESS-Gateway-M1 installation process?",
+    "expected_source": "HESS-Gateway-M1.json",
+    "expected_row": 4,
+    "name": "DEV3-POS-005"
+  },
+  {
+    "query": "1. In grid wiring of HESS-HY-S-12K-S inverter, what are precautions for connecting the parallel connecting lines?",
+    "expected_source": "HESS-HY-S-12K-S_user-manual.json",
+    "expected_row": 33,
+    "name": "DEV3-POS-006"
+  },
+  {
+    "query": "1. Does the HESS-HY-S-3~6K inverter include Export active power control?",
+    "expected_source": "HESS-HY-S-3~6K.json",
+    "expected_row": 33,
+    "name": "DEV3-POS-007"
+  },
+  {
+    "query": "1. Can I select grid participation in battery charging on HESS-HY-S-6K-S inverter's \"Work Mode Setup\" on LCD home screen settings?",
+    "expected_source": "HESS-HY-S-6K-S_user-manual.json",
+    "expected_row": 62,
+    "name": "DEV3-POS-008"
+  },
+  {
+    "query": "1. Where can I get the figure of 5-24 RJ45 terminal connection sequence and definition on the HESS-HV-T-15/20K M4 series hybrid inverter?\n2. what is the definition of each terminal connection sequence on the HESS-HV-T-15/20K M4 series hybrid inverter?",
+    "expected_source": "HESS-HY-T-15~20K-M4_user-manual.json",
+    "expected_row": 72,
+    "name": "DEV3-POS-009"
+  },
+  {
+    "query": "1. What are the detailed requirements for the secondary protection ground cable of the HESS-HY-T-5~12K inverter?",
+    "expected_source": "HESS-HY-T-5~12K.json",
+    "expected_row": 62,
+    "name": "DEV3-POS-010"
+  },
+  {
+    "query": "1. Can u give me some HOME-ESS-HV-2.7K battery maintenance safety requirements?",
+    "expected_source": "HOME-ESS-HV-2.7K.json",
+    "expected_row": 50,
+    "name": "DEV3-POS-011"
+  },
+  {
+    "query": "1. What is the correct shutdown sequence for parallel HOME-ESS-HV-5.12K battery systems?\n2. How long can the HOME-ESS-HV-5.12K battery sit powered off without damage?",
+    "expected_source": "HOME-ESS-HV-5.12K.json",
+    "expected_row": 36,
+    "name": "DEV3-POS-012"
+  },
+  {
+    "query": "1. What're HOME-ESS-HV-5.3K battery charging requirements after over-discharge?",
+    "expected_source": "HOME-ESS-HV-5.3K.json",
+    "expected_row": 36,
+    "name": "DEV3-POS-013"
+  },
+  {
+    "query": "1. What is the installation space of the HOME-ESS-LV-3.2K battery?\n2. Give me a diagram of the installation space of the HOME-ESS-LV-3.2K battery?",
+    "expected_source": "HOME-ESS-LV-3.2K.json",
+    "expected_row": 21,
+    "name": "DEV3-POS-014"
+  },
+  {
+    "query": "1. Can u show me the system general wiring diagram of HOME-ESS-LV-3.68K battery?",
+    "expected_source": "HOME-ESS-LV-3.68K (1).json",
+    "expected_row": 27,
+    "name": "DEV3-POS-015"
+  },
+  {
+    "query": "1. What are steps of HOME-ESS-LV-3.68K battery ground connection? Can u show me a schematic diagram of these steps?",
+    "expected_source": "HOME-ESS-LV-3.68K.json",
+    "expected_row": 29,
+    "acceptable_documents": [
+      {
+        "source": "HOME-ESS-LV-3.68K.json",
+        "row": 29
+      },
+      {
+        "source": "HOME-ESS-LV-3.68K (1).json",
+        "row": 29
+      }
+    ],
+    "label_note": "Both source files contain the same Q&A record.",
+    "name": "DEV3-POS-016"
+  },
+  {
+    "query": "1. Introduction to the Definition of Indicator Lights in HOME-ESS-LV-5.12K battery.\n2. When the state is Running lights in HOME-ESS-LV-5.12K battery, what are the Capacity Indicator Lights?",
+    "expected_source": "HOME-ESS-LV-5.12K.json",
+    "expected_row": 50,
+    "name": "DEV3-POS-017"
+  },
+  {
+    "query": "1. What are dimension and weight the HOME-ESS-LV-9.4K battery model?\n2. Where can one access detailed information about the product dimension and weight of HOME-ESS-LV-9.4K battery model?",
+    "expected_source": "HOME-ESS-LV-9.4K.json",
+    "expected_row": 14,
+    "name": "DEV3-POS-018"
+  },
+  {
+    "query": "[APP side]Home page",
+    "expected_source": "[APP side]Update instructions.json",
+    "expected_row": 7,
+    "name": "DEV3-POS-019"
+  },
+  {
+    "query": "[WEB side]Instructions->Monitoring->Home page",
+    "expected_source": "hanchu_raw_dataset.json",
+    "expected_row": 66,
+    "name": "DEV3-POS-020"
+  },
+  {
+    "query": "1. How to do iESS-M1/M3/M5 smart meter's WiFi configuration?",
+    "expected_source": "iESS-M1.json",
+    "expected_row": 12,
+    "name": "DEV3-POS-021"
+  },
+  {
+    "query": "三相逆变器HESS-HY-T-5~12K安装视频",
+    "expected_source": "oss文件.json",
+    "expected_row": 9,
+    "name": "DEV3-POS-022"
+  },
+  {
+    "query": "我有一个低压电池，电池型号为HOME-ESS-LV-3.68K/HOME-ESS-LV-9.4K。我的电池出现了“充电MOS故障”告警，该告警的触发原因是什么？有没有对应的解决办法，解决办法是什么？",
+    "expected_source": "低压电池告警切片.json",
+    "expected_row": 80,
+    "name": "DEV3-POS-023"
+  },
+  {
+    "query": "What should I do if my Hanchu Three Phase Hybrid inverter shows Error Code 32?",
+    "expected_source": "单相逆变器问答.json",
+    "expected_row": 103,
+    "name": "DEV3-POS-024"
+  },
+  {
+    "query": "低压电池的采集器蓝灯闪烁是什么意思？\nBAT-Logger蓝灯闪烁是什么意思？",
+    "expected_source": "售后.json",
+    "expected_row": 19,
+    "name": "DEV3-POS-025"
+  },
+  {
+    "query": "Why dont i have pv inverter on the home page？",
+    "expected_source": "场景化问答(1).json",
+    "expected_row": 155,
+    "name": "DEV3-POS-026"
+  },
+  {
+    "query": "Why don't the batteries stay balanced？",
+    "expected_source": "场景化问答.json",
+    "expected_row": 171,
+    "acceptable_documents": [
+      {
+        "source": "场景化问答.json",
+        "row": 171
+      },
+      {
+        "source": "场景化问答(1).json",
+        "row": 171
+      }
+    ],
+    "label_note": "Both source files contain the same Q&A record.",
+    "name": "DEV3-POS-027"
+  },
+  {
+    "query": "跨区容量计算的方法之一——流域法flow-based是什么？",
+    "expected_source": "垂直领域(1).json",
+    "expected_row": 195,
+    "name": "DEV3-POS-028"
+  },
+  {
+    "query": "N-PE（接地检测）",
+    "expected_source": "垂直领域.json",
+    "expected_row": 3,
+    "acceptable_documents": [
+      {
+        "source": "垂直领域.json",
+        "row": 3
+      },
+      {
+        "source": "垂直领域(1).json",
+        "row": 3
+      }
+    ],
+    "label_note": "Both source files contain the same Q&A record.",
+    "name": "DEV3-POS-029"
+  },
+  {
+    "query": "你们公司的电池产品有哪些？\n你们公司的储能产品有哪些",
+    "expected_source": "市场与解决方案.json",
+    "expected_row": 29,
+    "name": "DEV3-POS-030"
+  },
+  {
+    "query": "Battery Safety of HOME-ESS-LV-3.68K",
+    "expected_source": "硬件产品基本参数.json",
+    "expected_row": 121,
+    "name": "DEV3-POS-031"
+  },
+  {
+    "query": "HESS-HY-T-4~20K逆变器如何兼容旁路光伏逆变器？",
+    "expected_source": "硬件产品基础操作.json",
+    "expected_row": 8,
+    "name": "DEV3-POS-032"
+  },
+  {
+    "query": "怎么设置各个时间段的工作模式？",
+    "expected_source": "策略.json",
+    "expected_row": 41,
+    "name": "DEV3-POS-033"
+  },
+  {
+    "query": "British Gas公司的PeakSave Sundays是什么？它的机制是怎样的？",
+    "expected_source": "英国电价产品汇集.json",
+    "expected_row": 27,
+    "name": "DEV3-POS-034"
+  },
+  {
+    "query": "What should I do if my Hanchu EV Charger shows \"PP signal disconnect\" error?",
+    "expected_source": "通用手册、强制放电、电网充电1.json",
+    "expected_row": 172,
+    "name": "DEV3-POS-035"
+  },
+  {
+    "query": "What should I do if my Hanchu 9.4kWh battery I see an insulation fault alarm?",
+    "expected_source": "问题.json",
+    "expected_row": 97,
+    "name": "DEV3-POS-036"
+  },
+  {
+    "query": "如何设置设备在低电价时充电？",
+    "expected_source": "预设问题.json",
+    "expected_row": 15,
+    "name": "DEV3-POS-037"
+  },
+  {
+    "query": "Can I use Force Discharge and Grid Charge at the same time?",
+    "expected_source": "120.json",
+    "expected_row": 22,
+    "name": "DEV3-POS-038"
+  },
+  {
+    "query": "1. Can u give me some CESS-HV-9.4K battery maintenance safety requirements?",
+    "expected_source": "CESS-HV-9.4K.json",
+    "expected_row": 43,
+    "name": "DEV3-POS-039"
+  },
+  {
+    "query": "1. Where can I access the \"Country code (Safety code)\" setting on the CESS-HY-25~50K series hybrid inverter?",
+    "expected_source": "CESS-HY-25~50K_user-manual.json",
+    "expected_row": 101,
+    "name": "DEV3-POS-040"
+  },
+  {
+    "query": "1. What is the Schematic Topology of 11/22kW AC Charger in the HC-EV-AC-7/11/22K-S0 EV charger?\n2. What is the Schematic Topology of 11/22kW AC Charger in the HC-EV-AC-7/11/22K-S1 EV charger?",
+    "expected_source": "HC-EV-AC-071122K.json",
+    "expected_row": 7,
+    "name": "DEV3-POS-041"
+  },
+  {
+    "query": "1. How to install HESS-Gateway-M1?",
+    "expected_source": "HESS-Gateway-M1.json",
+    "expected_row": 6,
+    "name": "DEV3-POS-042"
+  },
+  {
+    "query": "1. Which type of damage of HESS-HY-S-12K-S inverter ur company shall not be liable for?",
+    "expected_source": "HESS-HY-S-12K-S_user-manual.json",
+    "expected_row": 88,
+    "name": "DEV3-POS-043"
+  },
+  {
+    "query": "1. What are the four energy management modes provided by the HESS-HY-S-3~6K inverter?\n2. What factors determine the energy management modes of the HESS-HY-S-3~6K inverter?",
+    "expected_source": "HESS-HY-S-3~6K.json",
+    "expected_row": 41,
+    "name": "DEV3-POS-044"
+  },
+  {
+    "query": "1. How to connect the live, neutral and ground wires in HESS-HY-S-6K-S inverter's GRID&LOAD&GEN connection?",
+    "expected_source": "HESS-HY-S-6K-S_user-manual.json",
+    "expected_row": 18,
+    "name": "DEV3-POS-045"
+  },
+  {
+    "query": "1. What's the steps of connecting other cables on the HESS-HV-T-15/20K M4 series hybrid inverter?\n2. How to connect other cables on the HESS-HV-T-15/20K M4 series hybrid inverter?",
+    "expected_source": "HESS-HY-T-15~20K-M4_user-manual.json",
+    "expected_row": 69,
+    "name": "DEV3-POS-046"
+  },
+  {
+    "query": "1. Does the HESS-HY-T-5~12K inverter include Back-up function?",
+    "expected_source": "HESS-HY-T-5~12K.json",
+    "expected_row": 41,
+    "name": "DEV3-POS-047"
+  },
+  {
+    "query": "1. Can u show me a diagram of HOME-ESS-HV-2.7K battery module parameters?",
+    "expected_source": "HOME-ESS-HV-2.7K.json",
+    "expected_row": 19,
+    "name": "DEV3-POS-048"
+  },
+  {
+    "query": "1. Can u show me a schematic diagram of system general wiring of a single HOME-ESS-HV-5.12K battery system?",
+    "expected_source": "HOME-ESS-HV-5.12K.json",
+    "expected_row": 26,
+    "name": "DEV3-POS-049"
+  },
+  {
+    "query": "1. What's the definition of HOME-ESS-HV-15.9~63.6K battery system?",
+    "expected_source": "HOME-ESS-HV-5.3K.json",
+    "expected_row": 12,
+    "name": "DEV3-POS-050"
+  },
+  {
+    "query": "1. What are HOME-ESS-LV-3.2K battery environment requirements?",
+    "expected_source": "HOME-ESS-LV-3.2K.json",
+    "expected_row": 44,
+    "name": "DEV3-POS-051"
+  },
+  {
+    "query": "1. Can u show me a schematic diagram of how to connect HOME-ESS-LV-3.68K battery's RS485 communication cable?\n2. Can u show me a schematic diagram of HOME-ESS-LV-3.68K battery communication parallel?",
+    "expected_source": "HOME-ESS-LV-3.68K (1).json",
+    "expected_row": 33,
+    "name": "DEV3-POS-052"
+  },
+  {
+    "query": "1. What're HOME-ESS-LV-5.12K battery environment requirements?",
+    "expected_source": "HOME-ESS-LV-5.12K.json",
+    "expected_row": 58,
+    "name": "DEV3-POS-053"
+  },
+  {
+    "query": "1. How to connect the CAN communication cable of HOME-ESS-LV-9.4K battery?",
+    "expected_source": "HOME-ESS-LV-9.4K.json",
+    "expected_row": 33,
+    "name": "DEV3-POS-054"
+  },
+  {
+    "query": "[APP side]**Register and log in**",
+    "expected_source": "[APP side]Update instructions.json",
+    "expected_row": 3,
+    "name": "DEV3-POS-055"
+  },
+  {
+    "query": "[WEB side]Instructions->Maintenance->Device upgrade->Single upgrade of inverter",
+    "expected_source": "hanchu_raw_dataset.json",
+    "expected_row": 109,
+    "name": "DEV3-POS-056"
+  },
+  {
+    "query": "1. Can u show me a schematic diagram of display interface on iESS-M1/M3/M5 smart meter's screen?",
+    "expected_source": "iESS-M1.json",
+    "expected_row": 10,
+    "name": "DEV3-POS-057"
+  },
+  {
+    "query": "高压电池，型号CESS-HV-9.4k的 Quick Installation Guide",
+    "expected_source": "oss文件.json",
+    "expected_row": 96,
+    "name": "DEV3-POS-058"
+  },
+  {
+    "query": "我有一个低压电池，电池型号为HOME-ESS-LV-3.2K/HOME-ESS-LV-9.4K/HOME-ESS-LV-5.12K/HOME-ESS-LV-3.68K。我的电池出现了“SPI通信失效”告警，该告警的触发原因是什么？有没有对应的解决办法，解决办法是什么？",
+    "expected_source": "低压电池告警切片.json",
+    "expected_row": 65,
+    "name": "DEV3-POS-059"
+  },
+  {
+    "query": "What should I do if my Hanchu Three Phase 15/20K inverter shows \"Relay Check Fail\" error?",
+    "expected_source": "单相逆变器问答.json",
+    "expected_row": 133,
+    "name": "DEV3-POS-060"
+  },
+  {
+    "name": "DEV3-NEG-001",
+    "query": "推荐三本适合大学生阅读的推理小说。",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-002",
+    "query": "上海明天的天气怎么样？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-003",
+    "query": "Excel中VLOOKUP函数应该怎么使用？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-004",
+    "query": "红烧肉的家常做法是什么？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-005",
+    "query": "下个月比特币价格会涨到多少？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-006",
+    "query": "帮我写一篇英语自我介绍。",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-007",
+    "query": "把“欢迎来到中国”翻译成法语。",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-008",
+    "query": "不定积分的基本计算方法是什么？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-009",
+    "query": "足球比赛中的越位规则是什么？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-010",
+    "query": "打印机卡纸以后应该怎么处理？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-011",
+    "query": "XESS-HY-Q-900K支持量子电网通信吗？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-012",
+    "query": "HESS-HY-Z-505K出现F.888故障是什么意思？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-013",
+    "query": "HOME-ESS-HV-123K的安装间距是多少？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-014",
+    "query": "CESS-HY-777K是否通过国际船舶认证？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-015",
+    "query": "EnValt Quantum App如何预测未来十年的电价？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-016",
+    "query": "HESS-Gateway-X9如何连接卫星网络？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-017",
+    "query": "HC-EV-AC-99K是否支持无线充电？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-018",
+    "query": "HOME-ESS-LV-42K采用了什么核聚变材料？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-019",
+    "query": "iESS-M99是否支持深海环境运行？",
+    "expect_empty": true
+  },
+  {
+    "name": "DEV3-NEG-020",
+    "query": "SolarWizard逆变器如何连接EnValt系统？",
+    "expect_empty": true
+  }
+]

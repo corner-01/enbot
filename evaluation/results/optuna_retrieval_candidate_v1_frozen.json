@@ -1,0 +1,45 @@
+{
+  "status": "FROZEN_CANDIDATE",
+  "candidate": "optuna-retrieval-candidate-v1",
+  "frozen_at": "2026-09-29",
+  "branch": "codex/optuna-retrieval-v1",
+  "parameters": {
+    "dense_k": 30,
+    "lexical_k": 20,
+    "rerank_k": 5,
+    "final_k": 2,
+    "rrf_k": 80.0,
+    "dense_weight": 0.5,
+    "lexical_weight": 1.5,
+    "rerank_relative_threshold": 0.6,
+    "rerank_absolute_threshold": 0.1,
+    "rerank_min_score": 0.03,
+    "rerank_tie_epsilon": 0.0001
+  },
+  "verification": {
+    "development_v3": {
+      "cases": 80,
+      "pass_rate": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_2": 1.0,
+      "mrr": 1.0,
+      "no_answer_accuracy": 1.0,
+      "failed_cases": 0,
+      "result": "evaluation/optuna/retrieval_v1/candidate003_v3_after_ranking_fix/baseline.json"
+    },
+    "regression_v2": {
+      "cases": 60,
+      "pass_rate": 1.0,
+      "recall_at_1": 1.0,
+      "recall_at_2": 1.0,
+      "mrr": 1.0,
+      "no_answer_accuracy": 1.0,
+      "failed_cases": 0,
+      "result": "evaluation/optuna/retrieval_v1/candidate003_v2_final/baseline.json"
+    }
+  },
+  "policy": {
+    "old_holdout_v1_must_not_be_reused_for_tuning": true,
+    "next_step": "Build a new untouched holdout_v2, then evaluate this frozen candidate once."
+  }
+}

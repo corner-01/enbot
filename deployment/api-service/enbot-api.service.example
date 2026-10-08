@@ -1,0 +1,22 @@
+[Unit]
+Description=EnBot production API
+After=network-online.target ollama.service redis-server.service docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=REPLACE_WITH_SERVICE_USER
+WorkingDirectory=/opt/enbot
+EnvironmentFile=/opt/enbot/.env
+ExecStart=/opt/enbot/.venv/bin/python -X utf8 /opt/enbot/main.py
+Restart=on-failure
+RestartSec=5
+TimeoutStartSec=600
+TimeoutStopSec=30
+KillSignal=SIGINT
+
+# One worker is intentional: each worker would load another embedding model.
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

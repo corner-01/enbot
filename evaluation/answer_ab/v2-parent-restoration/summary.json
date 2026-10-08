@@ -1,0 +1,2152 @@
+{
+  "created_at": "2026-09-29T07:25:04.375864+00:00",
+  "status": "PASS",
+  "mode": "same_model_same_prompt_local_blind_judge",
+  "judge_model": "enbot-optuna:7b",
+  "input": "D:\\telebot\\evaluation\\answer_ab\\v2-parent-restoration\\generations.jsonl",
+  "case_count": 60,
+  "judge_parse_failures": 1,
+  "baseline": {
+    "count": 60,
+    "semantic_pass_rate": 0.366667,
+    "average_correctness": 3.333333,
+    "average_completeness": 2.566667,
+    "average_relevance": 2.65,
+    "hallucination_rate": 0.016667,
+    "average_token_f1": 0.376558,
+    "average_char_similarity": 0.325298,
+    "number_unit_recall": 0.428876,
+    "model_code_recall": 0.719298,
+    "url_recall": 0.04878,
+    "average_generation_seconds": 1.744514,
+    "average_tokens_per_second": 115.77488
+  },
+  "rag": {
+    "count": 60,
+    "semantic_pass_rate": 0.766667,
+    "average_correctness": 4.383333,
+    "average_completeness": 4.183333,
+    "average_relevance": 4.133333,
+    "hallucination_rate": 0,
+    "average_token_f1": 0.807574,
+    "average_char_similarity": 0.780031,
+    "number_unit_recall": 0.79933,
+    "model_code_recall": 0.913158,
+    "url_recall": 0.736585,
+    "average_generation_seconds": 1.689972,
+    "average_tokens_per_second": 115.366572
+  },
+  "delta": {
+    "semantic_pass_rate": 0.4,
+    "hallucination_rate": -0.016667,
+    "average_correctness": 1.05,
+    "average_completeness": 1.616667
+  },
+  "checks": {
+    "semantic_pass_rate_improvement_ge_10pp": true,
+    "average_correctness_not_lower": true,
+    "hallucination_rate_not_higher": true
+  },
+  "case_results": [
+    {
+      "name": "ANSWER-AB-001",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.168224,
+          "char_similarity": 0.037838,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is factually correct and relevant to the user's question. However, it does not explicitly mention that force discharging will not damage battery life if used properly (e.g., with a reasonable discharge cut-off SOC).",
+          "semantic_pass": false,
+          "generation_seconds": 18.566422,
+          "tokens_per_second": 111.825373
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer. It correctly addresses the user's concern about damaging battery life and provides a solution that aligns with the reference.",
+          "semantic_pass": true,
+          "generation_seconds": 1.123736,
+          "tokens_per_second": 116.715989
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-002",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.157205,
+          "char_similarity": 0.03449,
+          "number_unit_recall": 0.3,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is concise but lacks detailed installation steps and diagrams, which are essential for users to understand the installation process.",
+          "semantic_pass": false,
+          "generation_seconds": 0.857839,
+          "tokens_per_second": 117.937987
+        },
+        "rag": {
+          "token_f1": 0.686504,
+          "char_similarity": 0.67996,
+          "number_unit_recall": 0.7,
+          "model_code_recall": 1.0,
+          "url_recall": 0.5,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 5.386242,
+          "tokens_per_second": 112.561117
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-003",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.349727,
+          "char_similarity": 0.248788,
+          "number_unit_recall": 0.666667,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 4,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is very close to the reference. The only difference is that the reference specifies a specific image link, while the candidate answer does not mention this.",
+          "semantic_pass": true,
+          "generation_seconds": 2.180531,
+          "tokens_per_second": 114.883865
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.49002,
+          "tokens_per_second": 115.783949
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-004",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.704545,
+          "char_similarity": 0.61678,
+          "number_unit_recall": 0.833333,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a repeat of the reference answer, with no hallucinations.",
+          "semantic_pass": true,
+          "generation_seconds": 2.074763,
+          "tokens_per_second": 116.018273
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer. It provides a link to a schematic diagram of the Topology of 7kW AC Charger, which is relevant and complete for the user's question.",
+          "semantic_pass": true,
+          "generation_seconds": 1.501187,
+          "tokens_per_second": 113.781299
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-005",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.2,
+          "char_similarity": 0.186292,
+          "number_unit_recall": 0.0,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer provides a detailed list of protective equipment needed for the installation process, which is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.371705,
+          "tokens_per_second": 113.31832
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 0.744949,
+          "tokens_per_second": 116.52635
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-006",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.460938,
+          "char_similarity": 0.15403,
+          "number_unit_recall": 0.333333,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer does not add unsupported claims.",
+          "semantic_pass": false,
+          "generation_seconds": 1.303943,
+          "tokens_per_second": 116.762753
+        },
+        "rag": {
+          "token_f1": 0.791774,
+          "char_similarity": 0.768307,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a complete and accurate response to the user's question. It provides detailed information on the precautions for connecting the parallel connecting lines in both grid wiring and battery wiring.",
+          "semantic_pass": true,
+          "generation_seconds": 3.472398,
+          "tokens_per_second": 114.220793
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-007",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.244444,
+          "char_similarity": 0.068602,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "Candidate answer correctly states that the inverter does not have export active power control as a standard feature and provides context for when such functionality might be required.",
+          "semantic_pass": false,
+          "generation_seconds": 1.510529,
+          "tokens_per_second": 114.517976
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.999348,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.361462,
+          "tokens_per_second": 115.763132
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-008",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.22973,
+          "char_similarity": 0.23327,
+          "number_unit_recall": 0.333333,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer accurately describes how to enable grid participation in battery charging on the HESS-HY-S-6K-S inverter's LCD home screen.",
+          "semantic_pass": true,
+          "generation_seconds": 0.418942,
+          "tokens_per_second": 118.978446
+        },
+        "rag": {
+          "token_f1": 0.701538,
+          "char_similarity": 0.716149,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a detailed explanation of the Work Mode Setup, including the parameters and options available. It accurately describes the ",
+          "semantic_pass": true,
+          "generation_seconds": 3.429423,
+          "tokens_per_second": 113.587299
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-009",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.235294,
+          "char_similarity": 0.347611,
+          "number_unit_recall": 0.333333,
+          "model_code_recall": 0.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer provides a link to the schematic diagram of 5-24 RJ45 terminal connection sequence and definition, which is relevant to the user's question. However, it does not provide detailed information about each terminal connection sequence as in the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 1.243536,
+          "tokens_per_second": 111.930627
+        },
+        "rag": {
+          "token_f1": 0.291667,
+          "char_similarity": 0.205204,
+          "number_unit_recall": 0.333333,
+          "model_code_recall": 0.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing the definition of each terminal connection sequence on the HESS-HV-T-15/20K M4 series hybrid inverter.",
+          "semantic_pass": false,
+          "generation_seconds": 1.354016,
+          "tokens_per_second": 115.838821
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-010",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.447059,
+          "char_similarity": 0.330189,
+          "number_unit_recall": 0.6,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is concise, complete, and directly addresses the user's question about the detailed requirements for the secondary protection ground cable of the HESS-HY-T-5~12K inverter.",
+          "semantic_pass": true,
+          "generation_seconds": 0.685033,
+          "tokens_per_second": 117.477523
+        },
+        "rag": {
+          "token_f1": 0.853333,
+          "char_similarity": 0.870317,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing the actual requirements for the secondary protection ground cable and instead provides a link to assembly instructions for DC connectors.",
+          "semantic_pass": false,
+          "generation_seconds": 1.525687,
+          "tokens_per_second": 116.008669
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-011",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.306283,
+          "char_similarity": 0.05314,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer does not mention maintenance safety requirements.",
+          "semantic_pass": false,
+          "generation_seconds": 4.519752,
+          "tokens_per_second": 114.267681
+        },
+        "rag": {
+          "token_f1": 0.440529,
+          "char_similarity": 0.457698,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing some parts of the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 1.187596,
+          "tokens_per_second": 115.304752
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-012",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.468085,
+          "char_similarity": 0.160793,
+          "number_unit_recall": 0.285714,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing the step of turning off the inverter first, but otherwise correctly describes the shutdown sequence.",
+          "semantic_pass": false,
+          "generation_seconds": 1.780059,
+          "tokens_per_second": 115.912732
+        },
+        "rag": {
+          "token_f1": 0.941176,
+          "char_similarity": 0.904317,
+          "number_unit_recall": 0.857143,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer and does not add unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 2.109795,
+          "tokens_per_second": 115.370436
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-013",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.360902,
+          "char_similarity": 0.052036,
+          "number_unit_recall": 0.0,
+          "model_code_recall": 0.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is very close to the reference. However, it does not mention the specific time interval for charging as stated in the reference.",
+          "semantic_pass": false,
+          "generation_seconds": 0.987548,
+          "tokens_per_second": 116.22832
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.470428,
+          "tokens_per_second": 115.72314
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-014",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.468468,
+          "char_similarity": 0.320377,
+          "number_unit_recall": 0.2,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing the specific installation space requirements for the HOME-ESS-LV-3.2K battery.",
+          "semantic_pass": false,
+          "generation_seconds": 0.908272,
+          "tokens_per_second": 117.064902
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.996785,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 2.008834,
+          "tokens_per_second": 115.326365
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-015",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.586207,
+          "char_similarity": 0.692718,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a duplicate of the reference answer, with only the link to the diagram changed. It accurately reflects the content of the reference.",
+          "semantic_pass": true,
+          "generation_seconds": 1.45901,
+          "tokens_per_second": 115.883501
+        },
+        "rag": {
+          "token_f1": 0.975,
+          "char_similarity": 0.995828,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer, providing a link to a system general wiring diagram for HOME-ESS-LV-3.68K battery.",
+          "semantic_pass": true,
+          "generation_seconds": 0.92572,
+          "tokens_per_second": 117.548064
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-016",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.736196,
+          "char_similarity": 0.556167,
+          "number_unit_recall": 0.571429,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is consistent with the reference answer and does not add unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 1.466181,
+          "tokens_per_second": 117.021149
+        },
+        "rag": {
+          "token_f1": 0.9375,
+          "char_similarity": 0.941426,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is the same as the reference answer. There is no hallucination in the candidate answer.",
+          "semantic_pass": true,
+          "generation_seconds": 2.633737,
+          "tokens_per_second": 115.765381
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-017",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.181159,
+          "char_similarity": 0.298124,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 3,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer provides a link to the schematic diagram of Definition of Indicator Lights, which is relevant to the user's question. However, it does not provide specific information about the Capacity Indicator Lights when the state is Running.",
+          "semantic_pass": false,
+          "generation_seconds": 4.982026,
+          "tokens_per_second": 115.95353
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 0.880404,
+          "tokens_per_second": 116.871849
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-018",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.423077,
+          "char_similarity": 0.336595,
+          "number_unit_recall": 0.1,
+          "model_code_recall": 0.333333,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is consistent with the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 0.320675,
+          "tokens_per_second": 120.546113
+        },
+        "rag": {
+          "token_f1": 0.971429,
+          "char_similarity": 0.998752,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer, providing detailed information about product dimensions and weight for the HOME-ESS-LV-9.4K battery model.",
+          "semantic_pass": true,
+          "generation_seconds": 1.877497,
+          "tokens_per_second": 113.52092
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-019",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.034816,
+          "char_similarity": 0.039524,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is a schematic diagram of the home page. The reference answer is detailed and specific, including navigation bar, status bar, scene, functional area, data, and more content. The candidate answer does not mention these details.",
+          "semantic_pass": false,
+          "generation_seconds": 0.879076,
+          "tokens_per_second": 116.730734
+        },
+        "rag": {
+          "token_f1": 0.581867,
+          "char_similarity": 0.154549,
+          "number_unit_recall": 0.114286,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a faithful summary of the reference answer. It covers all the key points in the reference answer and does not add any unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 3.412362,
+          "tokens_per_second": 113.373248
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-020",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.201117,
+          "char_similarity": 0.102264,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is a link to an image of the home page. The reference answer provides a detailed description of the home page layout and key features.",
+          "semantic_pass": false,
+          "generation_seconds": 0.647351,
+          "tokens_per_second": 117.207721
+        },
+        "rag": {
+          "token_f1": 0.013423,
+          "char_similarity": 0.138934,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is a screenshot of the home page, which is consistent with the reference answer. The home page provides an overview of installed capacity, quick action bar, real-time data, and station ranking.",
+          "semantic_pass": false,
+          "generation_seconds": 1.024726,
+          "tokens_per_second": 114.221809
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-021",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.487395,
+          "char_similarity": 0.091324,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing the step of turning on phone's Bluetooth and selecting devices to bind.",
+          "semantic_pass": false,
+          "generation_seconds": 3.253605,
+          "tokens_per_second": 114.879883
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.999356,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.997524,
+          "tokens_per_second": 113.805379
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-022",
+      "arms": {
+        "baseline": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "视频链接正确",
+          "semantic_pass": false,
+          "generation_seconds": 0.473697,
+          "tokens_per_second": 117.44864
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "完全正确",
+          "semantic_pass": true,
+          "generation_seconds": 1.202003,
+          "tokens_per_second": 116.42311
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-023",
+      "arms": {
+        "baseline": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "该回答对用户提出的告警触发原因和对应的解决办法进行了正确的描述，且内容与问题完全相关。",
+          "semantic_pass": false,
+          "generation_seconds": 0.868438,
+          "tokens_per_second": 93.624458
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "该回答对用户的问题进行了准确的描述，且没有出现与参考答案及事实不符的信息。",
+          "semantic_pass": false,
+          "generation_seconds": 0.339386,
+          "tokens_per_second": 118.724681
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-024",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.405063,
+          "char_similarity": 0.538251,
+          "number_unit_recall": 0.857143,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer correctly identifies the error code and provides a relevant action, but it does not directly match the reference answer. The reference answer is more specific about restarting the inverter and adjusting parameters if the issue persists.",
+          "semantic_pass": false,
+          "generation_seconds": 1.196961,
+          "tokens_per_second": 115.918611
+        },
+        "rag": {
+          "token_f1": 0.895522,
+          "char_similarity": 0.626728,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 2.005272,
+          "tokens_per_second": 113.332859
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-025",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.803419,
+          "char_similarity": 0.809524,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "闪烁的蓝色灯表示设备正在配网",
+          "semantic_pass": false,
+          "generation_seconds": 1.60329,
+          "tokens_per_second": 114.689576
+        },
+        "rag": {
+          "token_f1": 0.919355,
+          "char_similarity": 0.95288,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "回答完全正确，没有添加额外信息",
+          "semantic_pass": true,
+          "generation_seconds": 0.797298,
+          "tokens_per_second": 116.250921
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-026",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.193548,
+          "char_similarity": 0.23913,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "没有pv inverter的展示，用户可能还未绑定设备",
+          "semantic_pass": false,
+          "generation_seconds": 0.226634,
+          "tokens_per_second": 120.827338
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "该回答与参考答案一致，且正确指出了用户可能未绑定设备，并提供了正确的绑定路径。",
+          "semantic_pass": false,
+          "generation_seconds": 0.940729,
+          "tokens_per_second": 111.595054
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-027",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.0,
+          "char_similarity": 0.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is consistent with the reference answer and provides a detailed explanation of why batteries may not stay balanced.",
+          "semantic_pass": true,
+          "generation_seconds": 2.165253,
+          "tokens_per_second": 112.733832
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "回答解释了为什么末端电芯间会出现压差，并说明系统会做均衡动作，但没有明确说为什么电池不会保持平衡",
+          "semantic_pass": false,
+          "generation_seconds": 0.22249,
+          "tokens_per_second": 121.286965
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-028",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.208955,
+          "char_similarity": 0.029455,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 3,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "未解释流域法的核心思想：盯着可能堵车的路段给名额",
+          "semantic_pass": false,
+          "generation_seconds": 0.766456,
+          "tokens_per_second": 116.937572
+        },
+        "rag": {
+          "token_f1": 0.294659,
+          "char_similarity": 0.090379,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "解释了流域法的核心思想、与节点法的区别以及对价格的影响。",
+          "semantic_pass": true,
+          "generation_seconds": 1.824213,
+          "tokens_per_second": 111.123012
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-029",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.0,
+          "char_similarity": 0.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "未提及N-PE功能",
+          "semantic_pass": false,
+          "generation_seconds": 1.822151,
+          "tokens_per_second": 114.372254
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.989247,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "完整准确描述了hanchu逆变器的接地检测功能，没有添加未经证实的信息",
+          "semantic_pass": false,
+          "generation_seconds": 0.320319,
+          "tokens_per_second": 119.578648
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-030",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.021164,
+          "char_similarity": 0.018441,
+          "number_unit_recall": 0.142857,
+          "model_code_recall": 0.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "候选答案没有提及储能产品，但提及的电池产品与参考答案一致",
+          "semantic_pass": true,
+          "generation_seconds": 4.435725,
+          "tokens_per_second": 116.851838
+        },
+        "rag": {
+          "token_f1": 0.241935,
+          "char_similarity": 0.210366,
+          "number_unit_recall": 0.0,
+          "model_code_recall": 0.0,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 3,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "未提及具体电池型号",
+          "semantic_pass": false,
+          "generation_seconds": 1.493266,
+          "tokens_per_second": 112.030871
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-031",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.037037,
+          "char_similarity": 0.110312,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a detailed explanation of battery safety certifications and protection functions, which is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.756237,
+          "tokens_per_second": 115.559166
+        },
+        "rag": {
+          "token_f1": 0.011173,
+          "char_similarity": 0.020255,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a complete and accurate description of battery safety precautions for the HOME-ESS-LV-3.68K product.",
+          "semantic_pass": true,
+          "generation_seconds": 3.803076,
+          "tokens_per_second": 114.364968
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-032",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.251082,
+          "char_similarity": 0.11583,
+          "number_unit_recall": 0.181818,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 3,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "未提及AC耦合安装的具体步骤和智能电表的集成方法，但回答了用户关于如何兼容旁路光伏逆变器的问题。",
+          "semantic_pass": false,
+          "generation_seconds": 0.593528,
+          "tokens_per_second": 118.164511
+        },
+        "rag": {
+          "token_f1": 0.564007,
+          "char_similarity": 0.435088,
+          "number_unit_recall": 0.181818,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 3,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "未提及智能电表集成",
+          "semantic_pass": false,
+          "generation_seconds": 2.017278,
+          "tokens_per_second": 114.150719
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-033",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.084507,
+          "char_similarity": 0.105263,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "未在页面内找到设置工作模式的入口",
+          "semantic_pass": false,
+          "generation_seconds": 1.195238,
+          "tokens_per_second": 120.91699
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "回答与问题和参考答案完全一致",
+          "semantic_pass": true,
+          "generation_seconds": 0.37323,
+          "tokens_per_second": 119.313489
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-034",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.351648,
+          "char_similarity": 0.385382,
+          "number_unit_recall": 0.5,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "未提及用户需配有智能电表，且未说明半价电价的计算方式",
+          "semantic_pass": false,
+          "generation_seconds": 0.652546,
+          "tokens_per_second": 117.209542
+        },
+        "rag": {
+          "token_f1": 0.756757,
+          "char_similarity": 0.815047,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "未提及PeakSave Sundays不是独立的电价产品",
+          "semantic_pass": false,
+          "generation_seconds": 1.535872,
+          "tokens_per_second": 112.986764
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-035",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.516129,
+          "char_similarity": 0.535055,
+          "number_unit_recall": 0.666667,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is very close to the reference. The only difference is that the reference specifies 'PP signal' while the candidate answer says 'PP signal has been disconnected'.",
+          "semantic_pass": false,
+          "generation_seconds": 1.613152,
+          "tokens_per_second": 112.641411
+        },
+        "rag": {
+          "token_f1": 0.539683,
+          "char_similarity": 0.421053,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer provides a detailed explanation of the error and action to take, which is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.415177,
+          "tokens_per_second": 116.246595
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-036",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.551724,
+          "char_similarity": 0.709459,
+          "number_unit_recall": 0.8,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is a direct copy of the reference answer, with only minor differences in formatting and wording. It does not add unsupported information.",
+          "semantic_pass": false,
+          "generation_seconds": 0.923333,
+          "tokens_per_second": 117.620055
+        },
+        "rag": {
+          "token_f1": 0.941176,
+          "char_similarity": 0.958855,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.829527,
+          "tokens_per_second": 115.164777
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-037",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.044444,
+          "char_similarity": 0.025674,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 0,
+          "completeness": 0,
+          "relevance": 0,
+          "hallucination": true,
+          "reason": "judge_parse_failure: Invalid completeness: 0",
+          "semantic_pass": false,
+          "generation_seconds": 1.195884,
+          "tokens_per_second": 114.385542
+        },
+        "rag": {
+          "token_f1": 0.835821,
+          "char_similarity": 0.869962,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "回答完整、准确地涵盖了设置设备在低电价时充电的步骤。",
+          "semantic_pass": true,
+          "generation_seconds": 2.786379,
+          "tokens_per_second": 114.379018
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-038",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.035714,
+          "char_similarity": 0.12093,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer correctly states that the function is mutually exclusive and you can only choose one mode to execute. It does not add any unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 0.175097,
+          "tokens_per_second": 118.791299
+        },
+        "rag": {
+          "token_f1": 0.771429,
+          "char_similarity": 0.652672,
+          "number_unit_recall": 0.0,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The response is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.335065,
+          "tokens_per_second": 114.662097
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-039",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.396867,
+          "char_similarity": 0.102899,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing some of the safety requirements in the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 5.203835,
+          "tokens_per_second": 115.013948
+        },
+        "rag": {
+          "token_f1": 0.440529,
+          "char_similarity": 0.455494,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 4,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing some information in the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 1.160996,
+          "tokens_per_second": 115.71362
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-040",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.510204,
+          "char_similarity": 0.22695,
+          "number_unit_recall": 0.666667,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer provides detailed steps to set the country code (safety code) in the inverter, which is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 2.063992,
+          "tokens_per_second": 116.256348
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer and does not add unsupported claims.",
+          "semantic_pass": false,
+          "generation_seconds": 1.076721,
+          "tokens_per_second": 115.436279
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-041",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.96875,
+          "char_similarity": 0.961672,
+          "number_unit_recall": 0.833333,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The topology diagram is the same for S0 and S1 models.",
+          "semantic_pass": true,
+          "generation_seconds": 1.471134,
+          "tokens_per_second": 115.433099
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.996516,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer, providing a link to a schematic diagram of the Topology of 11/22kW AC Charger for both S0 and S1 models.",
+          "semantic_pass": true,
+          "generation_seconds": 1.073292,
+          "tokens_per_second": 116.379066
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-042",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.318436,
+          "char_similarity": 0.031569,
+          "number_unit_recall": 0.363636,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is a summary of the installation process for different scenarios (home, outdoors, no network), which is consistent with the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 1.531189,
+          "tokens_per_second": 116.379856
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 3.737516,
+          "tokens_per_second": 114.967054
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-043",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.375691,
+          "char_similarity": 0.186885,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a complete list of damage that the company shall not be liable for, and there is no information added that is unsupported by or contradicts the reference.",
+          "semantic_pass": true,
+          "generation_seconds": 2.162334,
+          "tokens_per_second": 115.425085
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.98998,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a direct copy of the reference answer and does not add any unsupported claims.",
+          "semantic_pass": true,
+          "generation_seconds": 1.052391,
+          "tokens_per_second": 115.42421
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-044",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.282051,
+          "char_similarity": 0.099533,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer provides the correct number of energy management modes and their descriptions. However, it does not explicitly state that these modes are determined by photovoltaic energy and user preferences.",
+          "semantic_pass": false,
+          "generation_seconds": 0.958752,
+          "tokens_per_second": 116.461177
+        },
+        "rag": {
+          "token_f1": 0.348837,
+          "char_similarity": 0.378947,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer provides a detailed explanation of the four energy management modes and their definitions, which is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 2.218175,
+          "tokens_per_second": 114.186019
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-045",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.395604,
+          "char_similarity": 0.398801,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer correctly describes how to connect the live, neutral and ground wires in HESS-HY-S-6K-S inverter's GRID&LOAD&GEN connection.",
+          "semantic_pass": true,
+          "generation_seconds": 1.771025,
+          "tokens_per_second": 116.011316
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer, and there is no unsupported claim.",
+          "semantic_pass": true,
+          "generation_seconds": 0.782339,
+          "tokens_per_second": 116.745036
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-046",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.280193,
+          "char_similarity": 0.070696,
+          "number_unit_recall": 0.222222,
+          "model_code_recall": 0.0,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is a general description of connecting other cables, which is relevant and complete for the user's question. However, it does not provide specific steps or images as in the reference answer.",
+          "semantic_pass": false,
+          "generation_seconds": 0.922452,
+          "tokens_per_second": 115.587223
+        },
+        "rag": {
+          "token_f1": 0.696078,
+          "char_similarity": 0.588957,
+          "number_unit_recall": 0.333333,
+          "model_code_recall": 0.2,
+          "url_recall": 0.2,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a direct copy of the reference answer and does not add any unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 1.809915,
+          "tokens_per_second": 114.670245
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-047",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.0625,
+          "char_similarity": 0.115016,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is factually incorrect as the reference clearly states that the product includes a back-up function. However, it does not provide any additional unsupported information.",
+          "semantic_pass": false,
+          "generation_seconds": 0.892889,
+          "tokens_per_second": 111.704711
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 0.997148,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": null,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a verbatim copy of the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.693091,
+          "tokens_per_second": 115.297436
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-048",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.941176,
+          "char_similarity": 0.974619,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer, with no factual errors or unsupported claims.",
+          "semantic_pass": true,
+          "generation_seconds": 0.631218,
+          "tokens_per_second": 116.371084
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer, and there is no unsupported claim.",
+          "semantic_pass": true,
+          "generation_seconds": 1.581078,
+          "tokens_per_second": 115.207184
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-049",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.258065,
+          "char_similarity": 0.5625,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 0.0,
+          "url_recall": 0.0,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer provides a link to the schematic diagram of system general wiring for a single HOME-ESS-HV-5.12K battery system, which is relevant and complete.",
+          "semantic_pass": false,
+          "generation_seconds": 1.229435,
+          "tokens_per_second": 115.215485
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer, providing a link to a schematic diagram of system general wiring for a single HOME-ESS-HV-5.12K battery system.",
+          "semantic_pass": true,
+          "generation_seconds": 0.737234,
+          "tokens_per_second": 116.889131
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-050",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.53012,
+          "char_similarity": 0.639881,
+          "number_unit_recall": 0.5,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer correctly defines the battery system and provides a relevant diagram.",
+          "semantic_pass": true,
+          "generation_seconds": 1.173461,
+          "tokens_per_second": 116.910319
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.963569,
+          "tokens_per_second": 115.526802
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-051",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.19802,
+          "char_similarity": 0.050545,
+          "number_unit_recall": 0.133333,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 3,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer does not mention the specific temperature range for long-term storage, which is 0°C to 40°C. It also does not include the recommended storage temperature of 20°C~30°C.",
+          "semantic_pass": false,
+          "generation_seconds": 1.31019,
+          "tokens_per_second": 114.620135
+        },
+        "rag": {
+          "token_f1": 0.473373,
+          "char_similarity": 0.349568,
+          "number_unit_recall": 0.266667,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is consistent with the reference answer. The only difference is that the candidate answer specifies a charging time of 12 hours for SOC charging at 0.2C.",
+          "semantic_pass": true,
+          "generation_seconds": 1.123114,
+          "tokens_per_second": 116.183105
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-052",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.547945,
+          "char_similarity": 0.389116,
+          "number_unit_recall": 0.333333,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is missing the specific link to the schematic diagram of how to connect the RS485 communication cable and communicate in parallel.",
+          "semantic_pass": false,
+          "generation_seconds": 0.780991,
+          "tokens_per_second": 117.777796
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer. It correctly and completely addresses the user's question without adding unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 2.059574,
+          "tokens_per_second": 115.515
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-053",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.19802,
+          "char_similarity": 0.050822,
+          "number_unit_recall": 0.142857,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer only mentions -30°C to 60°C, but the reference answer specifies a narrower range for long-term storage (5°C~35°C).",
+          "semantic_pass": false,
+          "generation_seconds": 1.341244,
+          "tokens_per_second": 116.337297
+        },
+        "rag": {
+          "token_f1": 0.957055,
+          "char_similarity": 0.953236,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is consistent with the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 3.310864,
+          "tokens_per_second": 114.245344
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-054",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.528302,
+          "char_similarity": 0.624031,
+          "number_unit_recall": 0.666667,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a link to a schematic diagram, which is the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 0.728296,
+          "tokens_per_second": 115.770932
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.380806,
+          "tokens_per_second": 115.269595
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-055",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.342105,
+          "char_similarity": 0.278493,
+          "number_unit_recall": 0.214286,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a simplified version of the reference answer, but it still covers all the necessary steps and information.",
+          "semantic_pass": true,
+          "generation_seconds": 3.377893,
+          "tokens_per_second": 116.261175
+        },
+        "rag": {
+          "token_f1": 0.671186,
+          "char_similarity": 0.051881,
+          "number_unit_recall": 0.214286,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is a faithful translation of the reference answer, with no unsupported claims.",
+          "semantic_pass": true,
+          "generation_seconds": 2.647118,
+          "tokens_per_second": 115.646282
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-056",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.328358,
+          "char_similarity": 0.13587,
+          "number_unit_recall": 0.181818,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is consistent with the reference answer and does not add unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 0.763881,
+          "tokens_per_second": 117.598392
+        },
+        "rag": {
+          "token_f1": 0.044444,
+          "char_similarity": 0.270023,
+          "number_unit_recall": 0.363636,
+          "model_code_recall": null,
+          "url_recall": 0.5,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "完整展示了单个逆变器升级的步骤，没有添加与参考答案不符的信息",
+          "semantic_pass": true,
+          "generation_seconds": 1.019993,
+          "tokens_per_second": 114.45358
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-057",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.576271,
+          "char_similarity": 0.538226,
+          "number_unit_recall": 0.0,
+          "model_code_recall": 1.0,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is the same as reference answer.",
+          "semantic_pass": true,
+          "generation_seconds": 1.080686,
+          "tokens_per_second": 115.970938
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is exactly the same as the reference answer, and there is no unsupported claim.",
+          "semantic_pass": true,
+          "generation_seconds": 1.427495,
+          "tokens_per_second": 116.202705
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-058",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.129032,
+          "char_similarity": 0.756871,
+          "number_unit_recall": 0.166667,
+          "model_code_recall": 0.5,
+          "url_recall": 0.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer and does not add any unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 0.570515,
+          "tokens_per_second": 117.921052
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": 1.0,
+          "model_code_recall": 1.0,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "完整包含了安装指南和用户手册",
+          "semantic_pass": true,
+          "generation_seconds": 2.228745,
+          "tokens_per_second": 115.789526
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-059",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.948718,
+          "char_similarity": 0.964286,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "告警原因描述不准确，应为SPI通信异常",
+          "semantic_pass": false,
+          "generation_seconds": 0.660848,
+          "tokens_per_second": 116.367677
+        },
+        "rag": {
+          "token_f1": 1.0,
+          "char_similarity": 1.0,
+          "number_unit_recall": null,
+          "model_code_recall": null,
+          "url_recall": null,
+          "correctness": 1,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "该告警信息、触发原因以及对应的解决办法均与参考答案一致。",
+          "semantic_pass": false,
+          "generation_seconds": 0.318124,
+          "tokens_per_second": 118.990043
+        }
+      }
+    },
+    {
+      "name": "ANSWER-AB-060",
+      "arms": {
+        "baseline": {
+          "token_f1": 0.521739,
+          "char_similarity": 0.654952,
+          "number_unit_recall": 0.6,
+          "model_code_recall": null,
+          "url_recall": 0.0,
+          "correctness": 4,
+          "completeness": 1,
+          "relevance": 1,
+          "hallucination": false,
+          "reason": "The candidate answer is very close to the reference. The only difference is that the reference mentions measuring the voltage between N&PE (should be <10V) and restarting the inverter.",
+          "semantic_pass": false,
+          "generation_seconds": 0.964167,
+          "tokens_per_second": 117.057716
+        },
+        "rag": {
+          "token_f1": 0.865672,
+          "char_similarity": 0.900662,
+          "number_unit_recall": 1.0,
+          "model_code_recall": null,
+          "url_recall": 1.0,
+          "correctness": 5,
+          "completeness": 5,
+          "relevance": 5,
+          "hallucination": false,
+          "reason": "The candidate answer is identical to the reference answer and does not add unsupported information.",
+          "semantic_pass": true,
+          "generation_seconds": 1.837861,
+          "tokens_per_second": 114.023761
+        }
+      }
+    }
+  ]
+}

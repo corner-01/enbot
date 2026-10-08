@@ -58,7 +58,22 @@ D:\telebot\venv\Scripts\python.exe D:\telebot\integrations\feishu_bot.py --check
 - `FEISHU_REQUIRE_GROUP_MENTION=true`：群聊中只有 @小英 才响应；私聊直接响应。
 - `FEISHU_ALLOWED_CHAT_IDS`：可选的会话 ID 白名单，多个 ID 用英文逗号分隔；留空代表不限制。
 
-当前演示版只处理文本消息。图片、文件等消息会收到“目前只支持文本消息”的提示。
+当前版本支持文字和图片消息，包括普通图片、以文件形式发送的图片，以及富文本
+消息中的图片。图片消息会由飞书桥下载后转发给独立的
+多模态服务，再经过 OCR、视觉模型和 Milvus RAG 生成回复。文件、音频和视频
+消息暂不处理。
+
+使用图片诊断前，另开一个 PowerShell 终端启动视觉服务：
+
+```powershell
+cd D:\telebot
+.\scripts\11_start_vision_api.ps1
+```
+
+视觉接口默认为 `http://127.0.0.1:8011/v1/diagnose`。图片仅在内存中从飞书桥
+转发；视觉服务的临时上传目录位于 `D:\telebot\tmp\vision-uploads`，请求结束后
+自动删除。如果群聊启用了 `FEISHU_REQUIRE_GROUP_MENTION=true`，建议先在私聊中
+验证图片消息，或为演示临时关闭该限制。
 
 ## 6. 飞书直连微调模型（不使用 RAG）
 
@@ -71,7 +86,7 @@ cd D:\telebot
 ```
 
 该脚本会设置 `FEISHU_BACKEND=ollama`，飞书消息将直接发送到 Ollama
-`/api/chat`。此模式不需要启动 `main.py`、Chroma、Embedding、重排器或
+`/api/chat`。此模式不需要启动 `main.py`、Milvus、Embedding、重排器或
 Redis。要恢复 RAG 模式，停止它并重新运行：
 
 ```powershell

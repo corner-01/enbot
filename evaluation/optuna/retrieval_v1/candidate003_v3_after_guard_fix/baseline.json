@@ -1,0 +1,92 @@
+{
+  "created_at": "2026-09-29T01:30:58.698725+00:00",
+  "cases": "D:\\telebot\\evaluation\\retrieval_cases_v3.json",
+  "params": {
+    "dense_k": 30,
+    "lexical_k": 20,
+    "rerank_k": 5,
+    "rrf_k": 80.0,
+    "dense_weight": 0.5,
+    "lexical_weight": 1.5,
+    "rerank_relative_threshold": 0.6,
+    "rerank_absolute_threshold": 0.1,
+    "rerank_min_score": 0.03
+  },
+  "metrics": {
+    "pass_rate": 0.95,
+    "recall_at_1": 0.8833333333333333,
+    "recall_at_2": 0.9333333333333333,
+    "mrr": 0.9083333333333333,
+    "no_answer_accuracy": 1.0,
+    "elapsed_seconds": 44.64695510000456,
+    "milliseconds_per_case": 558.086938750057,
+    "failed_cases": [
+      {
+        "name": "DEV3-POS-027",
+        "failure": "expected_document_not_returned",
+        "query": "Why don't the batteries stay balanced？",
+        "expected_source": "场景化问答.json",
+        "expected_row": 171,
+        "returned": [
+          {
+            "source": "场景化问答(1).json",
+            "row": 171,
+            "reranker_score": 0.9999786615371704
+          }
+        ]
+      },
+      {
+        "name": "DEV3-POS-029",
+        "failure": "expected_document_not_returned",
+        "query": "N-PE（接地检测）",
+        "expected_source": "垂直领域.json",
+        "expected_row": 3,
+        "returned": [
+          {
+            "source": "垂直领域(1).json",
+            "row": 3,
+            "reranker_score": 0.9998655319213867
+          }
+        ]
+      },
+      {
+        "name": "DEV3-POS-048",
+        "failure": "expected_document_not_returned",
+        "query": "1. Can u show me a diagram of HOME-ESS-HV-2.7K battery module parameters?",
+        "expected_source": "HOME-ESS-HV-2.7K.json",
+        "expected_row": 19,
+        "returned": [
+          {
+            "source": "HOME-ESS-HV-2.7K.json",
+            "row": 15,
+            "reranker_score": 0.9999786615371704
+          },
+          {
+            "source": "HOME-ESS-HV-2.7K.json",
+            "row": 20,
+            "reranker_score": 0.9999783039093018
+          }
+        ]
+      },
+      {
+        "name": "DEV3-POS-058",
+        "failure": "expected_document_not_returned",
+        "query": "高压电池，型号CESS-HV-9.4k的 Quick Installation Guide",
+        "expected_source": "oss文件.json",
+        "expected_row": 96,
+        "returned": [
+          {
+            "source": "oss文件.json",
+            "row": 97,
+            "reranker_score": 0.9847394227981567
+          },
+          {
+            "source": "CESS-HV-9.4K.json",
+            "row": 28,
+            "reranker_score": 0.9276549220085144
+          }
+        ]
+      }
+    ]
+  }
+}

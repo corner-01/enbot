@@ -46,7 +46,6 @@ def main() -> int:
 
     load_dotenv(PROJECT_ROOT / ".env", override=False)
     os.environ["VECTOR_STORE"] = "milvus"
-    os.environ["VECTOR_STORE_FALLBACK"] = ""
     settings = VectorStoreSettings.from_env()
     try:
         client = client_for(settings)
