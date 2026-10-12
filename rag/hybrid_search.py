@@ -544,6 +544,15 @@ class HybridSearchEngine:
         normalized = (query or "").lower()
         if extract_model(normalized) or extract_fault_codes(normalized):
             return True
+        brand_terms = (
+            "envalt",
+            "英弗特",
+            "无锡英弗特",
+            "ienos",
+            "myenos",
+        )
+        if any(term in normalized for term in brand_terms):
+            return True
         domain_terms = (
             "逆变器", "储能", "电池", "电网", "光伏", "并网", "离网", "告警",
             "故障", "错误码", "充电", "放电", "功率", "电压", "电流", "频率",
