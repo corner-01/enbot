@@ -1,0 +1,320 @@
+Since multiple devices have been integrated into the platform, the appendix will provide a unified explanation of the control items for these devices.
+
+## ->Inverter settings
+### <font style="color:rgb(0, 0, 0);">->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL</font>
+#### <font style="color:rgb(28, 36, 56);background-color:rgb(250, 250, 250);">->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings</font>
+The basic settings include the fundamental functions of the inverter, including the selection of grid-connection safety regulations, grid-feeding limitations, time and timezone adjustments, and other functions.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721199981211-1641380f-45ca-4259-b0e9-29c482601ef4.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Grid code settings
+please select the correct code according to your country and region. Before changing the grid rule configuration, please set the inverter to standby mode.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721204962164-95f1cbbd-1aa8-43b4-b3f0-2c7462fef2a2.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Grid Side Meter type
+Choose according to the actual installation conditions. 
+
+The single-phase machine (HESS-HY-S-3K/3.68K/4K/5K/6K) has the following meter option. If you currently have a bypass PV system, you need to select a dual-channel electricity meter. If you don't have a bypass PV at present, then choose EASTRON SDM 230 for operation.The single-phase inverter can use the SDM 230 or SDM120 meter. It's the same option.
+
+![img](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1744791343356-23bcd5e1-cace-4de1-9002-95d61bb97766.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->Inverter operating mode
+Configure based on conditions: select AC Coupled Mode if CT is connected to existed grid-tie inverter system, or normal mode if there is no existed grid-tie inverter system.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205084277-f52bc771-c810-4b6e-8283-b95510aa43b9.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->Zero export
+When zero export is opened, grid exporting is forbidden.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205095956-45913fc8-674e-46f5-915d-623edca39a56.png)
+
+When zero export is closed, grid exporting is allowed, and the exporting power limitation is according to the max exporting power.
+
+The single-phase machine (HESS-HY-S-3K/3.68K/4K/5K/6K), users can control the maxmum exporting power, when the zero exporting status is off.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205169055-567f9319-0a9b-458f-8752-c3382f045f26.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Power on/off
+Power off means the inverter is standby.
+
+Power on means the <font style="color:rgba(0, 0, 0, 0.85);">The inverter has been powered on and can work.</font>![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205710360-79fedab9-1e70-4336-9f69-bc3b4a9030af.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Clear wifi password
+Click the _clear wifi password_ button to clear the WiFi password.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205721604-14bbc6b3-63d5-46cd-a64f-f1d1038d7dd1.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Date
+Click the _time calibration_ button to synchronize time setting with local time zone.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205732584-9848d7d7-34dd-4498-b4c1-a184e3f64079.png)
+
+#### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings
+Energy storage setting is the entry point for setting the working mode of the inverter and the charging and discharging limit values of the battery.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742796635804-a1cc8ea7-372c-468a-b1f2-14551919caf2.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->EV Charger settings->Basic settings->Working mode
+There are four working modes in the single-phase machine (HESS-HY-S-3K/3.68K/4K/5K/6K).
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Self-consumption mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984541180-93ee2716-b4d4-43df-9c19-8f4b89031143.png)
+
+Photovoltaic energy is prioritized for use by the load, improving the self-consumption rate and     self-sufficiency rate of photovoltaics. When the photovoltaic energy is sufficient, it first powers     the load, then charges the battery, and finally outputs to the grid. When the load power is too     high, it first obtains energy from photovoltaics, then the battery discharges, and finally          consumes electric energy from the grid.
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Backup energy mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984554284-b8df84c8-0d11-4ec9-8c6a-b609fe66df3d.png)
+
+The battery serves as a standby power source, always maintaining sufficient energy to supply power to the load during grid failure. When the photovoltaic energy is sufficient, it first charges the battery, then powers the load, and finally outputs to the grid. When the load power is too high, it first obtains energy from photovoltaics, and then consumes electric power from the grid. Under normal circumstances, the battery does not discharge and only serves as a standby power source for the load in the event of a grid failure.
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->User-Defined mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984568840-d4a3da85-3c05-440b-8cbc-6fea6d86fd30.png)
+
+Users can manage their battery charging and discharging according to their needs, and set timed charging and discharging daily in EnValt iEnOS. At other times, the self-generation and self-use mode can be adopted.
+
+In this mode, users can set the charging power and discharging power limitation.
+
+Users can set 3 charging periods and 3 discharging periods.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208219551-46449c9d-9de3-4fb3-ac77-36dcb6987261.png)
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Off-grid mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984583520-735bf2ac-7001-4071-bfca-714fdc74e4f7.png)
+
+The inverter operates off-grid, regardless of whether there is power in the grid or not.
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Maximun charge SOC(%)
+Battery will not charge beyond the setted charging limitation.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208073329-ee5e2711-87a7-4445-800a-b39e289d63ce.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->Minimun discharge SOC(%)
+Battery will not discharge below the setted discharging limitation.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208151800-7a7e9d8e-489a-49da-bda3-89c29f1b2875.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Start charging cell voltage threshold（mV）Start charging cell voltage threshold（mV）& Charging time（min） Charging time（min）
+<font style="color:rgba(0, 0, 0, 0.85);">After the minimum voltage of a single battery cell reaches the threshold of the "Start charging cell voltage threshold (mV)", charging will commence, and the charging duration shall be subject to the "Charging time (min)".</font>
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742799055181-a8be8f09-bd8c-442b-aa33-d4872b7e1c66.png)
+
+### ->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T
+#### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings
+The basic settings include the fundamental functions of the inverter, including the selection of grid-connection safety regulations, grid-feeding limitations, time and timezone adjustments, and other functions.
+
+![](https://cdn.nlark.com/yuque/0/2025/png/43518677/1742799709191-5e12d485-6caa-46fd-850d-f5973519aba1.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Grid code settings
+please select the correct code according to your country and region. Before changing the grid rule configuration, please set the inverter to standby mode.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721204962164-95f1cbbd-1aa8-43b4-b3f0-2c7462fef2a2.png)
+
+##### Grid Side ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Meter type
+Choose according to the actual installation conditions. 
+
+The three-phase machine (HESS-HY-T-05K/06K/08K/10K/12K) has both CT and meter options.
+
+<font style="color:rgba(0, 0, 0, 0.85);">If there is currently a bypass PV that needs to be connected to the EnValt inverter for monitoring, generally speaking, on the grid side is an electricity meter, and on the bypass side is a CT.</font>
+
+![](https://cdn.nlark.com/yuque/0/2024/png/43518677/1721204984891-ce2be822-4044-4476-adb8-9537c7dedca9.png)
+
+##### ->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Electricity Metering Method
+The HESS-HY-T-05K/06K/08K/10K/12K series of three-phase inverters support the selection and switching of electricity metering methods, allowing users to choose between single-phase metering or three-phase metering. For single-phase metering, the electricity purchased and sold on the grid side are calculated separately for each phase, and then summed up. For three-phase metering, after calculating the total power obtained by adding up the three phases, the electricity purchased and sold on the grid side are calculated as a whole.
+
+![](https://cdn.nlark.com/yuque/0/2025/png/43518677/1742806621733-f77a41ce-b446-4ee1-a0d9-1f88ee0edfd7.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->Inverter operating mode
+Configure based on conditions: select AC Coupled Mode if CT is connected to existed grid-tie inverter system, or normal mode if there is no existed grid-tie inverter system.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205084277-f52bc771-c810-4b6e-8283-b95510aa43b9.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->Zero export
+When zero export is opened, grid exporting is forbidden.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205095956-45913fc8-674e-46f5-915d-623edca39a56.png)
+
+When zero export is closed, grid exporting is allowed, and the max exporting power is according to the max exporting power.
+
+The three-phase machine (HESS-HY-T-05K/06K/08K/10K/12K), users can control the total power( sum of the 3 lines), or the single-phase power,  when the zero exporting status is off.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205690996-ff80d73e-a5f0-45fc-b233-baf020d0bd4e.png)
+
+![](https://cdn.nlark.com/yuque/0/2024/png/43518677/1721205327109-6fec60b6-4292-4a2b-a213-d08428b79057.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Power on/off
+Power off means the inverter is standby.
+
+Power on means the <font style="color:rgba(0, 0, 0, 0.85);">The inverter has been powered on and can work.</font>![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205710360-79fedab9-1e70-4336-9f69-bc3b4a9030af.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Clear wifi password
+Click the _clear wifi password_ button to clear the WiFi password.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205721604-14bbc6b3-63d5-46cd-a64f-f1d1038d7dd1.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Date
+Click the _time calibration_ button to synchronize time setting with local time zone.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205732584-9848d7d7-34dd-4498-b4c1-a184e3f64079.png)
+
+#### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings
+Energy storage setting is the entry point for setting the working mode of the inverter and the charging and discharging limit values of the battery.
+
+![](https://cdn.nlark.com/yuque/0/2024/png/43518677/1721201808896-5dd47a2b-7020-487e-b9f8-772626dc8f71.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->EV Charger settings->Basic settings->Working mode
+There are four working modes in the single-phase machine (HESS-HY-S-3K/3.68K/4K/5K/6K), and the three-phase machine (HESS-HY-T-05K/06K/08K/10K/12K).
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Self-consumption mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984541180-93ee2716-b4d4-43df-9c19-8f4b89031143.png)
+
+Photovoltaic energy is prioritized for use by the load, improving the self-consumption rate and     self-sufficiency rate of photovoltaics. When the photovoltaic energy is sufficient, it first powers     the load, then charges the battery, and finally outputs to the grid. When the load power is too     high, it first obtains energy from photovoltaics, then the battery discharges, and finally          consumes electric energy from the grid.
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Backup energy mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984554284-b8df84c8-0d11-4ec9-8c6a-b609fe66df3d.png)
+
+The battery serves as a standby power source, always maintaining sufficient energy to supply power to the load during grid failure. When the photovoltaic energy is sufficient, it first charges the battery, then powers the load, and finally outputs to the grid. When the load power is too high, it first obtains energy from photovoltaics, and then consumes electric power from the grid. Under normal circumstances, the battery does not discharge and only serves as a standby power source for the load in the event of a grid failure.
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->User-Defined mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984568840-d4a3da85-3c05-440b-8cbc-6fea6d86fd30.png)
+
+Users can manage their battery charging and discharging according to their needs, and set timed charging and discharging daily in EnValt iEnOS. At other times, the self-generation and self-use mode can be adopted.
+
+In this mode, users can set the charging power and discharging power limitation.
+
+Users can set 3 charging periods and 3 discharging periods.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208219551-46449c9d-9de3-4fb3-ac77-36dcb6987261.png)
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Off-grid mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984583520-735bf2ac-7001-4071-bfca-714fdc74e4f7.png)
+
+The inverter operates off-grid, regardless of whether there is power in the electric grid or not.
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Maximun charge SOC(%)
+Battery will not charge beyond the setted charging limitation.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208073329-ee5e2711-87a7-4445-800a-b39e289d63ce.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->Minimun discharge SOC(%)
+Battery will not discharge below the setted discharging limitation.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208151800-7a7e9d8e-489a-49da-bda3-89c29f1b2875.png)
+
+### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T
+#### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings
+The basic settings include the fundamental functions of the inverter, including the selection of grid-connection safety regulations, grid-feeding limitations, time and timezone adjustments, and other functions.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742881582973-5687c111-d743-4911-b2e4-ed6369b4ff0c.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Grid code settings
+please select the correct code according to your country and region. Before changing the grid rule configuration, please set the inverter to standby mode.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742881647537-dd25f8e8-8de5-4d0e-8dad-72eea487322e.png)
+
+##### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Zero Export
+When zero export is opened, grid exporting is forbidden. <font style="color:rgb(25, 25, 25);background-color:rgb(250, 250, 250);">When zero export is closed, grid exporting is allowed.</font>![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205095956-45913fc8-674e-46f5-915d-623edca39a56.png)
+
+##### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Max import power limit switch
+<font style="color:rgba(0, 0, 0, 0.85);">This is a switch for limiting the maximum input power of the power grid. When turned on, it will limit the maximum input power of the power grid, and the limit value will be implemented according to the expanded "Max import power (kW)" below.</font>
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742882045588-8b213111-cdd0-4211-85d1-49eee874c2e8.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Power on/off
+Power off means the inverter is standby.
+
+Power on means the <font style="color:rgba(0, 0, 0, 0.85);">The inverter has been powered on and can work.</font>![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205710360-79fedab9-1e70-4336-9f69-bc3b4a9030af.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Clear wifi password
+Click the _clear wifi password_ button to clear the WiFi password.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205721604-14bbc6b3-63d5-46cd-a64f-f1d1038d7dd1.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Basic settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Basic settings->Date
+Click the _time calibration_ button to synchronize time setting with local time zone.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721205732584-9848d7d7-34dd-4498-b4c1-a184e3f64079.png)
+
+##### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Inverter Restart
+Click the _Inverter Restart_ button to restart the inverter.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742882841098-05b88f5a-9e8c-49ce-84e7-d8a49eff2b6f.png)
+
+##### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->->EV Charger settings->Basic settings->Restart Logger
+Click the_ Restart_ _ Logger _button to restart the logger.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742882934429-43ad2b5c-51a1-42f0-a120-d5994b62b881.png)
+
+#### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings
+Energy storage setting is the entry point for setting the working mode of the inverter and the charging and discharging limit values of the battery.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742796635804-a1cc8ea7-372c-468a-b1f2-14551919caf2.png)
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->EV Charger settings->Basic settings->Working mode
+There are four working modes in the three-phase machine .
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Self-consumption mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984541180-93ee2716-b4d4-43df-9c19-8f4b89031143.png)
+
+Photovoltaic energy is prioritized for use by the load, improving the self-consumption rate and     self-sufficiency rate of photovoltaics. When the photovoltaic energy is sufficient, it first powers     the load, then charges the battery, and finally outputs to the grid. When the load power is too     high, it first obtains energy from photovoltaics, then the battery discharges, and finally          consumes electric energy from the grid.
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Backup energy mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984554284-b8df84c8-0d11-4ec9-8c6a-b609fe66df3d.png)
+
+The battery serves as a standby power source, always maintaining sufficient energy to supply power to the load during grid failure. When the photovoltaic energy is sufficient, it first charges the battery, then powers the load, and finally outputs to the grid. When the load power is too high, it first obtains energy from photovoltaics, and then consumes electric power from the grid. Under normal circumstances, the battery does not discharge and only serves as a standby power source for the load in the event of a grid failure.
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->User-Defined mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984568840-d4a3da85-3c05-440b-8cbc-6fea6d86fd30.png)
+
+Users can manage their battery charging and discharging according to their needs, and set timed charging and discharging daily in EnValt iEnOS. At other times, the self-generation and self-use mode can be adopted.
+
+In this mode, users can set the charging power and discharging power limitation.
+
+Users can set 3 charging periods and 3 discharging periods.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208219551-46449c9d-9de3-4fb3-ac77-36dcb6987261.png)
+
+###### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Off-grid mode
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721984583520-735bf2ac-7001-4071-bfca-714fdc74e4f7.png)
+
+The inverter operates off-grid, regardless of whether there is power in the grid or not.
+
+##### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Maximun charge SOC(%)
+Battery will not charge beyond the setted charging limitation.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721208073329-ee5e2711-87a7-4445-800a-b39e289d63ce.png)
+
+##### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->On-grid Battery Discharge Minimum(%)
+<font style="color:rgba(0, 0, 0, 0.85);">This is a control item for the minimum state of charge (SOC) during grid - connected battery discharge (%). It controls the lowest SOC value at which the battery is allowed to discharge in the grid - connected situation.</font>![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742883103603-c5fafd91-5d63-4844-9f72-a2de0dec3322.png)
+
+##### ->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->Off-grid Battery Discharge Minimum
+This is a control item for the minimum state of charge (SOC) during off - grid battery discharge (%). It controls the lowest SOC value at which the battery is allowed to discharge in the off - grid situation.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742883209439-e90c17e4-a2ca-4731-9fdd-2373eef05661.png)
+
+## ->EV Charger settings
+### ->EV Charger settings->Basic settings
+The basic settings include the fundamental functions of the EV Charger, including the selection of working mode, start/ stop charging, options of scheduled charging, and other functions.![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1724141591975-474d6e41-060a-4398-922f-289a01e95113.png)
+
+#### ->EV Charger settings->Basic settings->Charging status
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635374620-dc252742-09bd-4018-b09e-bc3cc07b6664.png)
+
+Clicking on 'get data' will retrieve the current working status of the charging pile. If it's charging, it will display as 'on', and you can set it to 'off' to stop charging immediately. If it's not charging, it will display as 'off', and you can set it to 'on' to start charging immediately.
+
+The start/stop function has a higher priority than the working mode. Clicking it will immediately start/stop charging. If a charging task is currently in progress, clicking stop will immediately shut down that task. Unless the charging task is restarted through the work mode, the charging pile will not start charging.
+
+#### ->Inverter settings->FX-3K/3.68K/4K/5K/6K-SL->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->Inverter settings->FX-5K/6K/8K/10K/12K/15K/20K-T->Energy storage settings->->Inverter settings->FX-25K/30K/36K/40K/50K/80K-T->Energy storage settings->->EV Charger settings->Basic settings->Working mode
+EnValt EV CHarger has three operating modes, which are swipe charging, plug&play, and scheduled charging. This is the entrance to switch the workinging modes.
+
+##### ->EV Charger settings->Basic settings->Working mode->Swipe charging
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635293955-dc2f0de0-dd9d-4ccd-9110-803a6abd8bb8.png)
+
+Users can start charging by swiping a card, and it will automatically stop when the car is fully charged.
+
+##### ->EV Charger settings->Basic settings->Working mode->PlugPlug&playplay
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635284164-32d2f46a-0167-41f6-84fb-5fbc10c9e5b5.png)
+
+The charging process starts immediately after plugging into the charging station, and automatically stops when the car is fully charged.
+
+##### ->EV Charger settings->Basic settings->Working mode->Scheduled charging
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635271040-c505837f-0af0-4751-b916-c66e21ef1237.png)
+
+Schedule charging during a specific time period, with the option to execute once or to repeat daily.
+
+#### ->EV Charger settings->Basic settings->Max charging current (A)
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635359459-f5940664-3619-4088-8dd7-36f28ddf99ad.png)
+
+This is a setting item for the limit of the charging current of the charging pile. The maximum charging current of the charging pile cannot exceed this setting value.
+
+For** **EV Charger with rated power of 22W and 7W, the range of max charging current is from 5 to 32. For EV Charger with rated power of 11W, the range of max charging current is from 5 to 16. 
+
+#### ->EV Charger settings->Basic settings->Dynamic load balancing
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635714082-c053c8ed-c62c-4a57-925e-fc582d243ecd.png)
+
+Dynamic load balancing is the limit for the maximum charging power of the charging pile, and the setting value is the grid's maximum output power. To satisfy the first priority of load power usage, if the load uses too much power, the charging power of the charging pile will self-adapt. This is done to ensure that the load power plus charging power of the charging pile does not exceed this setting value.
+
+#### ->EV Charger settings->Basic settings->Charging mode
+Through the setting of the charging mode, users can control the charging source of charging piles. You can choose photovoltaic and battery as power supply for charging, or photovoltaic, battery, and grid as power supply for charging.
+
+##### ->EV Charger settings->Basic settings->Charging mode->->EV Charger settings->Basic settings->Charging mode->PV + Battery + Grid
+The system would use photovoltaic, battery, and grid as power supply for charging.
+
+##### ->EV Charger settings->Basic settings->Charging mode->PV + Battery 
+The system would use photovoltaic and battery as power supply for charging.
+
+#### ->EV Charger settings->Basic settings->Restore factory settings
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1721635960644-f949ab3f-3bd3-47dd-806f-04e1a4b5b3b8.png)
+
+This is the entry point for restoring the charging pile to factory settings. After clicking the button, the configuration items of the charging pile will be reset.
+
+The settings cannot be adjusted when the Charging Station, SuspendedEVSE, and SuspendedEV status are activated.

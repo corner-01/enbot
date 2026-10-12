@@ -1,0 +1,427 @@
+# [APP side]Update instructions
+**Version number**
+
+01 
+
+**Update date**
+
+2026-02-08
+
+# [APP side]Download and install the app.
+## [APP side]Download and install the app.->Note
++ Mobile operating system requirements: Android 8.0, iOS 11.0 and above.
++ In order to ensure the stability of various functions, it is recommended to use versions of Android 8.0, iOS 11.0 and above
++ Mobile phone (iOS end point supports iPhone SE and later models, recommended to use iPhone X and later models).
++ The phone supports internet connection.
++ The phone supports WLAN function.
++ The router supports the 2.4GHz wireless band, and the WLAN signal covers the device's location.
+
+## [APP side]Download and install the app.->Operating steps
+You can download the EnValt App by scanning the QR code on the website ( [https://www.envalt-tech.com](https://www.envalt-tech.com/)) or by visiting the website.
+
+### [APP side]Download and install the app.->Operating steps->Method 1: Download and install from the app store.
+1. iOS system mobile users: Search " **myEnOS **" in the App Store
+2. Android system mobile phone users: Google play search " **myEnOS **".
+
+EnValt App icon：
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969377-65c6c310-ca4b-46df-b607-d12e65323b5a.png)
+
+### [APP side]Download and install the app.->Operating steps->Method 2: Scan the QR code, download and install.
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969396-2382948e-ea30-4c55-b0c4-734c485a7b8e.png)
+
+# [APP side]**Register and log in**
+## [APP side]**Register and log in**->Register
+1. If you don't have an account yet, please click " **Register **" to register, as shown in the picture:
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969572-2ee3b3d4-407b-4506-bad4-163c04311136.png)
+
+1. In order to provide you with the basic functions of our products/services, you need to authorize and agree to the " **Privacy Policy **" and " **Terms and Conditions **". We promise to strictly keep user information confidential and will not disclose user's private information to third parties unless authorized by the user or required by law.
+2. Fill in account info
+    1. After filling in the registration information, click " **get verification code **", as shown in the figure.
+
+Tip: Please contact your installer to obtain the Business Code.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969510-2cf26723-733a-4db4-bc05-1e88a7d996a7.png)
+
+    2. We will send a verification code to your email. Fill in the verification code and click " **Confirm **" to log in, as shown in the picture.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889969624-af8f5542-7d0d-446c-a748-9962b135917b.png)
+
+3. If you are already registered, you can log in directly. Then you can go to " **Add Device **".
+
+# [APP side]Add power station
+## [APP side]Add power station->Add
+1. Click the " **Add Power Station **" button on the page, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889970498-41ecae09-6157-45a9-a21f-7411ed58d0e8.png)
+
+1. Click the "+" icon and select " **Add Power Station **" as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889970688-9408ed6c-7b84-46ae-ada1-340eb378cb51.png)
+
+## [APP side]Add power station->Fill in the power station information
+1. You need to fill in some information for the power station, as shown in the figure.
+2. Address (optional): Your detailed address, which we only use for after-sales services.
+3. Electricity price setting (optional): After filling it out, you will be able to view the income and expenditure of your equipment.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889971478-edb497a1-d8ab-4373-bbf1-12e12f4a2d84.png)
+
+| **Tab** | **Function** | **Operating instructions** |
+| --- | --- | --- |
+| Home page | Create power stations | 1. Click "Add Power Station" on the page.<br/>2. Fill in the power station information. |
+
+
+# [APP side]Network configuration
+  Select the home Wi-Fi network you want to connect to and enter your Wi-Fi password, as shown in the figure.
+
+Tip: Only supports wireless WLAN in the 2.4G frequency band, not in the 5G frequency band. Please identify according to your home router.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889971334-6b95cb5f-c1a1-4f0a-9126-a4b1a4a906f8.png)
+
+| **Tab** | **Function** | **Operating instructions** |
+| --- | --- | --- |
+| Add devices | Network configuration |     1. Select the home Wi-Fi network you want to connect to and enter your Wi-Fi password.<br/>Note: Only supports wireless WLAN in the 2.4G frequency band, not in the 5G frequency band. Please identify according to your home router. |
+
+
+# [APP side]Add devices
+## [APP side]Add devices->Add devices->Search for devices
+1. Click **"+" **on the homepage, select "Add Device", as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889973249-71dea649-de1f-4a75-9584-6825feb09bf6.png)
+
+1. Click "Add Device" to enter the device search page. Follow the prompts on the page "Please bring your phone close to this device" to search, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889973247-a6e79a1a-6eb5-4e19-b41c-8d5586e5adae.png)
+
+1. No device was found. Follow the prompt "No device found, please click here" and click "Click here" to be redirected to the QR code scanning page, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889973319-0d7f2bec-e9b5-419f-af68-c4e3790646eb.png)
+
+1. Place the device QR code in the scan box and automatically scan the device, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889973901-de37783c-1ee4-4d17-8adb-b0775c96e28a.png)
+
+## [APP side]Add power station->Add devices->Add devices
+1. Turn on the Bluetooth on your phone and search for the device you want to bind.
+
+The SN on this page is the same as the SN of the device
+
+Tip: Please make sure to turn on your phone's Bluetooth, otherwise the added function will not be available.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889973885-9d602b9e-c5a7-4c2e-aa64-8463ff76c8c5.png)
+
+1. Select the inverter to be added, click "Add" to add the device to your site, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889973976-d8dd1b34-6fed-44c8-b97f-c2a5851034e7.png)
+
+1. After clicking "Add", enter the adding device page, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974173-372ee567-b55b-406b-aaaf-6776e7b99055.png)
+
+## [APP side]Add devices->Binding complete
+1. After the device is successfully connected to the network and bound, please click **"Enter" **, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974246-462f2bbd-d2ca-4edf-b1d0-458c66c67c8d.png)
+
+## [APP side]Add devices->Binding failed
+1. Some devices failed: The page prompts "Number of failed devices", click "Retry", and the failed devices will be rebound.
+2. All devices failed: The page prompts "1. Confirm that the Wi-Fi is in the 2.4GHz band, 2. Confirm whether the Bluetooth connection is stable", click "WiFi Configuration" to reconfigure the WiFi. Click "Retry" to re-bind the failed devices.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974623-725f7002-f754-4f2a-861e-b319168737cd.png)
+
+https://lvbsk03ee00.feishu.cn/sync/Xha6dw6WJs7MC8bG3p7cde70n7g
+
+# [APP side]Home page
+## [APP side]Home page->Navigation bar, status bar
+### [APP side]Home page->Navigation bar, status bar->Power station switching
+Click **"Power Station Switch" **, select the required power station to complete the switch, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974550-520cc9a1-f2e8-47de-95b7-4a57963317be.png)
+
+### [APP side]Home page->Navigation bar, status bar->Search
+Click **"Search" **to enter the search page, you can quickly find power plants and equipment, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889974650-6552ea4b-6c69-4d2c-a18c-9085e41460dc.png)
+
+### [APP side]Home page->Navigation bar, status bar->Add power station->Add
+Click **"Add" **, you can create power plants, add equipment, add heat pumps, apply for quality assurance, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889975001-626ed7fa-65ce-44b5-a413-ac8ca2e0ca6e.png)
+
+### [APP side]Home page->Navigation bar, status bar->Device SN switch
+Click on **"SN" **to switch the required device, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889975002-1eb411d0-8622-4e38-9db4-3eb19c70fe0a.png)
+
+### [APP side]Home page->Navigation bar, status bar->Working mode
+Real-time display of the current device's working mode and status
+
+## [APP side]Home page->Scene
+### [APP side]Home page->Scene->Home page->Data
+1. Real-time data of devices such as power grids, batteries, loads, photovoltaics, and charging piles can be viewed
+2. SOC information display, understand the real-time SOC status of the battery
+
+### [APP side]Home page->Scene->Status
+1. Understanding equipment status through energy flow direction
+2. Battery charge and discharge status display
+
+### [APP side]Home page->Scene->Weather
+1. Weather display
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889975917-75953d0e-e729-4995-a08d-85e26c89caba.png)
+
+## [APP side]Home page->Functional area
+The homepage function area displays analysis, events, and control functions, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976078-742979f5-3c99-485d-a508-17f791809052.png)
+
+### [APP side]Home page->Functional area->Analysis
+Click " **Analysis **" to enter the Data Analysis page, where you can view the historical, statistical, and revenue data of the device in three dimensions, as shown in the figure.
+
+### [APP side]Home page->Functional area->Event
+Click " **Events **" to enter the event list page to view all event alerts, as shown in the figure.
+
+### [APP side]Home page->Functional area->Control
+Click " **Control **" to enter the remote cloud control page, and set the basic, energy storage, function, power grid parameters, active/reactive power, and dynamic adjustment, as shown in the figure.
+
+| **Tab** | **Function** | **Operating instructions** |
+| --- | --- | --- |
+| Home Function Area | Analysis | 1. Click "Analysis" to enter the analysis page to view relevant data in history, statistics, and revenue dimensions. |
+| | Alarm | 1. Click "Alarm" to enter the alarm page to view device alarm prompts. |
+| | Control | 1. Click "Control" to enter the control page where you can perform basic settings, energy storage settings, function settings, power grid parameter settings, active power settings, reactive power settings, and dynamic adjustment of the equipment. |
+
+
+## [APP side]Home page->Data
+Data items for **"today", "total" **two dimensions of data display
+
+### [APP side]Home page->Data->Today's data
+Display today's data for self-use, energy ratio, revenue, photovoltaic, load, battery discharge, and feed-in data dimensions
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976588-50236328-e831-4c29-a0a3-e5c1aa0277f3.png)
+
+### [APP side]Home page->Data->Aggregate data
+Display aggregate data for self-use, energy ratio, revenue, photovoltaic, load, battery discharge, and feed-in dimensions
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976934-b408b403-21d7-446e-87dd-308ad4c65516.png)
+
+[https://lvbsk03ee00.feishu.cn/sync/OHErdYMXPszD3zbXTp1ckMOPntD](https://lvbsk03ee00.feishu.cn/sync/OHErdYMXPszD3zbXTp1ckMOPntD)
+
+# [APP side]Equipment
+## [APP side]Equipment->Inverter
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Heat pump->Equipment->Electric meter->List
+1. The list can display different models and quantities of equipment
+2. Equipment information can view " **SN, working mode, working status **" related information data
+3. Click on any device to enter the device details page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976867-d147c2c5-bb4e-478d-abd9-b974f9eefec3.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Equipment->Electric meter->Unbind
+Click "Edit" to unbind the inverter, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889976879-0ec4794b-c357-4820-ad41-bf818a4165ee.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Details
+Details page Display inverter " **real-time, historical, statistical **" data
+
+1. Real-time data:
+    1. Event Alert: If the inverter has an event alarm, the event level related prompt will be displayed.
+    2. Working mode: Display the inverter working mode
+    3. Energy flow chart: Display energy flow data display
+    4. Data: Display " **power grid, PV, battery, load, EPS **" data
+    5. Click " **Control **" to enter the remote control page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889977243-75300727-8b10-4718-a0ed-397985cc74b8.png)
+
+2. Historical data:
+    1. Switch time to view historical data for the day.
+    2. " **Photovoltaic power generation, load, battery discharge, grid feeding **" data
+    3. " **Load, Generation, Battery, Grid **" Power, Battery SOC Data
+    4. Click " **Control **" to enter the remote control page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889977472-0d5c87fe-ac5a-482f-8f7e-c2cf2699f135.png)
+
+3. Statistical Data:
+    1. Monthly Statistical Data: Switch to by month to view the " **Load, Generation, Charging, Discharging, Grid Purchasing, Grid Feeding **" data trend chart
+    2. Annual Statistical Data: Switch to the annual dimension to view the " **Load, Generation, Charging, Discharging, Grid Purchasing, Grid Feeding **" data trend chart
+    3. Click " **Control **" to enter the remote control page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889977561-23af4582-2c14-4f7f-93ce-c229a5678d8c.png)
+
+## [APP side]Equipment->Battery
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Heat pump->Equipment->Electric meter->List
+1. The list can display different models and quantities of equipment
+2. Equipment information can view " **SN, SoC, ADR, working status, voltage, current **" related information data
+3. Click on any device to enter the device details page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889977431-99a20016-dc2f-47a4-94af-054033a4ccb3.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Equipment->Electric meter->Unbind
+Click " **Edit **" to unbind the battery, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889977604-b81ebf71-ef55-4c2f-af76-0f62c43a2c45.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Details
+Details Battery " **Real-time, historical, statistical **" data
+
+1. Real-time data:
+    1. Display " **battery status, voltage, SOC, power, current **" data
+    2. Click " **Control **" to enter the remote control page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889977843-3c458b56-84cc-448a-b659-473534d078f3.png)
+
+2. Historical data:
+    1. Switch the date to display the " **battery charging amount, battery discharge amount **" data of the day
+    2. Click " **Control **" to enter the remote control page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978008-1f3a85a5-f3f5-4615-8266-d5e659add0aa.png)
+
+1. Statistical Data:
+    1. Monthly Statistical Data: Switch to by month to view " **total charging amount, total discharge amount, charging this month, discharging this month **" data
+    2. Annual Statistical Data: Switch to the annual dimension to view " **total charging amount, total discharge amount, charging this year, discharging this year **" data
+    3. Charge and discharge data recording
+    4. Click " **Control **" to enter the remote control page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978138-7827da5d-edf6-4ae2-8ef4-e41164edcab0.png)
+
+## [APP side]Equipment->Charging pile
+1. The list can display different models and quantities of equipment
+2. Equipment information can view " **SN, working status, working mode **" related information data
+3. Click on any device to enter the device details page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978255-d033eb3f-8e06-4497-b4f3-1a1686af8607.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Equipment->Electric meter->Unbind
+Click " **Edit **" to unbind the charging pile, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978306-3b94f7a4-2171-4858-928d-000bf6a9e101.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Details
+Details page Display charging pile " **networking status, SN, charging information, settings **" related information data
+
+1. Charging pile information:
+    1. Charging pile status
+    2. Charging duration
+    3. Charging gun status
+    4. Charging energy options
+2. Data display:
+    1. Voltage
+    2. Current
+    3. Power
+    4. Charging amount
+3. Meter information:
+    1. Meter status
+    2. Meter power
+4. Working mode:
+    1. Card charging
+    2. Plug and Charge
+    3. Timed charging
+5. Maximum charging current
+6. Charging record
+    1. Click Record to enter the charging record page.
+7. Charging pile setting
+    1. Click Settings to enter the Settings page.
+8. Click " **switch **" to turn on/off charging
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978987-7f8fe073-5797-4202-91d5-4a581d2f50a0.png)
+
+## [APP side]Equipment->Heat pump
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Heat pump->Equipment->Electric meter->List
+1. The list can display different models and quantities of equipment
+2. Equipment information can view " **SN, working mode, working status **" related information data
+3. Click on any device to enter the device details page
+
+![](https://cdn.nlark.com/yuque/0/2025/png/43518677/1742889978695-5089c626-940f-4deb-97ce-eb4a37d06adf.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Equipment->Electric meter->Unbind
+Click "Edit" to unbind the heat pump, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889979430-0c1a030b-6b6f-4d55-8714-f6420ebf0930.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Details
+Heat pump " **SN, equipment classification, temperature control, working mode, wind speed (wind), function mode, switch **"
+
+1. Equipment classification:
+    1. Switchable heating system " **heat pump, thermostat, water heater **" and other equipment
+2. Temperature control:
+    1. Click the **“+”“-” **button to adjust the temperature
+3. Working mode: Click mode to set the working mode
+    1. Cooling mode
+    2. Heating mode
+    3. Air supply mode
+    4. Automatic mode
+4. Wind speed control: set the working mode and adjust the wind speed accordingly
+    1. Automatically
+    2. Low-end
+    3. Mid-range
+    4. High-end
+5. Function mode:
+    1. Sleep patterns
+    2. Business trip mode
+    3. Energy saving mode
+    4. Programming mode
+6. Settings: Click Settings to enter the Settings page for more advanced settings of the heat pump
+7. Switch: Click " **switch **" to control the heat pump **on/off **state
+
+## [APP side]Equipment->Electric meter
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Heat pump->Equipment->Electric meter->List
+1. The list can display different models and quantities of equipment
+2. Equipment information can view " **SN, working mode, working status **" related information data
+3. Click on any device to enter the device details page
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978870-4c0b11bd-710a-4ae1-9c39-56a7fe55d6cc.png)
+
+### [APP side]Equipment->Inverter->Equipment->Battery->Equipment->Charging pile->Equipment->Heat pump->Equipment->Electric meter->Unbind
+Click "Edit" to unbind the meter, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889978845-90f72f40-1593-4c0e-9073-0231abf4ca5f.png)
+
+# [APP side]Personal center
+Click " **MENU **" to enter the personal center, the function includes " **settings, account information, after-sales services, feedback, services **" section, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889979243-2aa20c94-268b-4325-9329-d1f7a6ac2735.png)
+
+## [APP side]Personal center->Settings
+Click "Settings" icon, enter the settings page, you can " **change password, language, version information, clear cache, QR code scan, destroy account, message, exit **" settings and other operations, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889979427-27ea5267-ac4a-47f6-91a4-264a34fe1734.png)
+
+## [APP side]Personal center->Account
+Click the "Account" icon to enter the account page, displaying basic information such as "Account type, account, username, phone number, email, region, time zone, dealer name, merchant code, contact person, and contact information", as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889979469-7387ced2-8ef7-40ee-aa77-4de0c76018ac.png)
+
+## [APP side]Personal center->After-sales services
+Click the "after-sales services" icon to pop up the "after-sales services" information pop-up window, displaying relevant information such as "dealer name, contact person, and contact information". Click "contact information" to copy the information, as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889979678-3299d471-70c5-4b09-b7e0-b5820ce6665f.png)
+
+## [APP side]Personal center->Feedback
+Click "Feedback" to enter the "Help Center" page, where you can edit and submit information related to "Feedback Title, Problem Description, Upload Images", as shown in the figure.
+
+![](https://oss-cdn.hanchuess.com//Knowledge_data_base/app_pic/1742889979766-f4431a7e-3fdf-4ce9-85f8-084b49cd7947.png)
+
+## [APP side]Personal center->Service
+### [APP side]Home page->Scene->Home page->Personal center->Service->Data center
+Click " **Data Center **", enter the data center page, you can view " **my products, product list **" two dimensions of information.
+
+1. My products
+
+" **My product **" shows the information of the device under the current account name, and you can view the " **user manual, quick installation manual, quality assurance, certification **" and other information of different devices, as shown in the figure.
+
+1. Product list
+
+" **Product List **" shows the information of all equipment, and you can view the " **User Manual, Quick Installation Manual, Quality Assurance, Certification **" and other information of all equipment, as shown in the figure.
+
+### [APP side]Personal center->Service->Quick boot
+Click " **Quick Guide **" to enter the Quick Guide page. By sliding left and right on the page, you can learn how to " **create power stations, add equipment, distribution networks **" and other processes, which can help you get started quickly, as shown in the figure.
+
+![](https://cdn.nlark.com/yuque/0/2025/png/43518677/1742889980135-e8d2cdc7-6769-4970-8e81-4de1089fbe46.png)
+
+| **Tab** | **Function** | **Operating instructions** |
+| --- | --- | --- |
+| Personal center | Settings | Enter the settings to change the password, language settings, version information, clear cache, QR code scanning, destroy the account, and exit the account |
+| Personal center | Account info | Go to the account info page to view:<br/>1. Account type<br/>2. Username, phone number, email, region, time zone, dealer name<br/>3. Dealer number, contact person, contact information |
+| Personal center | After-sales services | 1. Is there any equipment malfunction or technical problem? Click "After-sales" and you will see relevant business information. |
+| Personal center | Help Center | 1. If you have any questions or suggestions about the APP, you can leave a message in the "Feedback" section and we will handle it. |
+|                 |                      |                                                              |
