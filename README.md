@@ -12,7 +12,7 @@ Milvus 混合检索、CPU 重排、拒答机制、多模态 OCR/VLM 诊断、Fas
 - **混合 RAG**：Milvus 稠密向量 + BM25 词法召回，通过加权 RRF 融合。
 - **精排与拒答**：使用本地 BGE reranker，并对未知型号、故障码和域外问题保守拒答。
 - **长文本恢复**：子块负责召回，命中后恢复完整父级问答或目标章节。
-- **微调模型**：通过 Ollama 运行 Qwen2.5-7B 的 Optuna QLoRA 最优版本，部署为 Q4_K_M。
+- **微调模型**：通过 Ollama 运行基于新数据训练的 EnBot V9 模型，部署为 Q4_K_M。
 - **多模态诊断**：PaddleOCR 提取精确文字、数值和单位，Qwen3-VL 提取图像结构，证据融合后再进入 RAG。
 - **服务接口**：文本 API（8000）和视觉 API（8011）独立部署，支持健康检查、API Key、并发限制与会话隔离。
 - **业务接入**：支持飞书官方 SDK 长连接机器人和用户反馈收集。
@@ -31,7 +31,7 @@ Milvus 混合检索、CPU 重排、拒答机制、多模态 OCR/VLM 诊断、Fas
 图片 ─ 校验/预处理 ─┬─ PaddleOCR ─┐                  │
                     └─ Qwen3-VL ──┴─ 证据融合 ───────┘
                                                       │
-                                    enbot-optuna:7b / Ollama
+                                    enbot-v9:7b / Ollama
                                                       │
                                       FastAPI / 飞书 / Postman
 ```
@@ -69,7 +69,7 @@ Copy-Item .env.example .env
 models/Qwen3-8B-native/
 models/bge-reranker-v2-m3/
 knowledge_data/
-deployment/ollama-optuna-v1/enbot-optuna-q4_k_m.gguf
+deployment/ollama-v9/enbot-v9-q4_k_m.gguf
 ```
 
 知识库必须是你有权使用的资料。不要把示例中的公司内部数据替换回公开仓库。
@@ -86,7 +86,7 @@ deployment/ollama-optuna-v1/enbot-optuna-q4_k_m.gguf
 3. 确认 Ollama 已运行，并导入本地 GGUF：
 
 ```powershell
-ollama create enbot-optuna:7b -f deployment\ollama-optuna-v1\Modelfile
+ollama create enbot-v9:7b -f deployment\ollama-v9\Modelfile
 ollama list
 ```
 

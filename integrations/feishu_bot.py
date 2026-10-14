@@ -131,7 +131,7 @@ class FeishuConfig:
             ).strip(),
             ollama_model=os.getenv(
                 "FEISHU_OLLAMA_MODEL",
-                os.getenv("OLLAMA_MODEL", "enbot-optuna:7b"),
+                os.getenv("OLLAMA_MODEL", "enbot-v9:7b"),
             ).strip(),
             enbot_timeout_seconds=_env_int("FEISHU_ENBOT_TIMEOUT", 300),
             queue_size=_env_int("FEISHU_QUEUE_SIZE", 16),
@@ -372,14 +372,6 @@ def extract_ollama_answer(payload: object) -> str:
     return answer.strip()
 
 
-def feedback_prompt() -> str:
-    return (
-        "\n\n\u2014\u2014\n\u8fd9\u6761\u56de\u7b54\u662f\u5426\u6709"
-        "\u5e2e\u52a9\uff1f\u8bf7\u56de\u590d\u201c\u6709\u5e2e\u52a9"
-        "\u201d\uff0c\u6216\u201c\u6ca1\u5e2e\u52a9 + \u539f\u56e0"
-        "\u201d\u3002"
-    )
-
 
 def feedback_no_previous_message() -> str:
     return (
@@ -522,8 +514,6 @@ class FeishuEnBotBridge:
                         if result.request_id:
                             self._remember_request_id(job.chat_id, result.request_id)
                         answer = result.answer
-                        if self.config.feedback_enabled and result.request_id:
-                            answer += feedback_prompt()
                 self._reply(job.message_id, answer)
             except requests.Timeout:
                 LOGGER.exception("EnBot request timed out")

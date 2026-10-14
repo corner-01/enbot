@@ -125,7 +125,7 @@ def main() -> int:
         raise ValueError("Holdout files are forbidden in this development A/B run.")
 
     load_dotenv(PROJECT_ROOT / ".env")
-    model = args.model or os.getenv("OLLAMA_MODEL", "enbot-optuna:7b")
+    model = args.model or os.getenv("OLLAMA_MODEL", "enbot-v9:7b")
     payload = json.loads(args.cases.read_text(encoding="utf-8"))
     cases = payload["cases"]
     completed = load_completed(args.output)

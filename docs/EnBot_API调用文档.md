@@ -8,7 +8,7 @@
 - 在线接口文档：`http://127.0.0.1:8000/docs`
 - 返回格式：JSON
 - 问答方式：非流式，一次请求返回完整答案
-- 正式问答模型：`enbot-optuna:7b`
+- 正式问答模型：`enbot-v9:7b`
 - 检索后端：Milvus 混合检索与本地重排
 
 调用前应确保 Ollama、Milvus 和 EnBot API 已启动。Redis 用于持久保存会话历史，
@@ -218,7 +218,7 @@ X-Request-ID: <可选的调用方追踪编号>
     "milvus_active": true,
     "ollama": {
       "available": true,
-      "expected_model": "enbot-optuna:7b"
+      "expected_model": "enbot-v9:7b"
     }
   }
 }

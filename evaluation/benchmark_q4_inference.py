@@ -195,7 +195,7 @@ def main() -> int:
         raise FileExistsError(f"Performance result already exists: {args.output}")
 
     load_dotenv(PROJECT_ROOT / ".env")
-    model = args.model or os.getenv("OLLAMA_MODEL", "enbot-optuna:7b")
+    model = args.model or os.getenv("OLLAMA_MODEL", "enbot-v9:7b")
     case_payload = json.loads(args.cases.read_text(encoding="utf-8"))
     cases = case_payload["cases"]
     if args.samples < 1 or args.samples > len(cases):

@@ -16,7 +16,7 @@ def load_cases(path: Path) -> List[Dict[str, Any]]:
 
 def retrieve_from_api(api_url: str, query: str) -> List[Dict[str, Any]]:
     payload = json.dumps(
-        {"query": query, "evaluate": False, "debug": True},
+        {"query": query, "include_content": False},
         ensure_ascii=False,
     ).encode("utf-8")
     request = urllib.request.Request(
@@ -35,6 +35,11 @@ def retrieve_from_api(api_url: str, query: str) -> List[Dict[str, Any]]:
     return data["retrieval_debug"]
 
 
+def normalize_source(value: Any) -> str:
+    """Make source labels portable between Windows and Linux workers."""
+    return str(value or "").replace("\\", "/")
+
+
 def first_relevant_rank(case: Dict[str, Any], documents: List[Dict[str, Any]]) -> int:
     expected_terms = [term.lower() for term in case.get("expected_any", [])]
     expected_model = case.get("expected_model", "").upper()
@@ -49,7 +54,7 @@ def first_relevant_rank(case: Dict[str, Any], documents: List[Dict[str, Any]]) -
         term_matches = not expected_terms or any(term in text for term in expected_terms)
         model_matches = not expected_model or model == expected_model
         document_matches = any(
-            (not expected.get("source") or document.get("source", "") == expected["source"])
+            (not expected.get("source") or normalize_source(document.get("source")) == normalize_source(expected["source"]))
             and (expected.get("row") is None or document.get("row") == expected["row"])
             for expected in acceptable_documents
         )

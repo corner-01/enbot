@@ -26,6 +26,17 @@ def _env_float(name: str, default: float, minimum: float = 0.1) -> float:
         return default
 
 
+def _validated_api_key(value: str) -> str:
+    """Return a header-safe API key or raise a configuration error."""
+    value = value.strip()
+    if value and not value.isascii():
+        raise ValueError(
+            "RETRIEVAL_API_KEY must contain ASCII characters only; "
+            "replace any Chinese placeholder text with the real key"
+        )
+    return value
+
+
 class RemoteRetrievalError(RuntimeError):
     """Raised when the dedicated retrieval node cannot serve a request."""
 
@@ -52,7 +63,7 @@ class RemoteKnowledgeRetriever(BaseRetriever):
             )
         return cls(
             api_url=api_url,
-            api_key=os.getenv("RETRIEVAL_API_KEY", "").strip(),
+            api_key=_validated_api_key(os.getenv("RETRIEVAL_API_KEY", "")),
             timeout_seconds=_env_float("RETRIEVAL_TIMEOUT_SECONDS", 8.0),
             local_fallback=_env_bool("RETRIEVAL_LOCAL_FALLBACK", False),
         )
@@ -113,12 +124,16 @@ class RemoteKnowledgeRetriever(BaseRetriever):
         return documents
 
     def _get_relevant_documents(self, query: str, *, run_manager) -> list[Document]:
+        try:
+            api_key = _validated_api_key(self.api_key)
+        except ValueError as exc:
+            raise RemoteRetrievalError(str(exc)) from exc
         headers = {
             "Content-Type": "application/json",
             "X-Request-ID": uuid.uuid4().hex,
         }
-        if self.api_key:
-            headers["X-API-Key"] = self.api_key
+        if api_key:
+            headers["X-API-Key"] = api_key
         try:
             response = self._session.post(
                 self.endpoint,
@@ -148,4 +163,3 @@ class RemoteKnowledgeRetriever(BaseRetriever):
             RemoteRetrievalError,
         ) as exc:
             return self._fallback_or_raise(query, exc)
-
