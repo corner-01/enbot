@@ -13,7 +13,7 @@ if (-not (Test-Path -LiteralPath $bridge)) {
 
 # Bypass EnBot /chat and send Feishu messages directly to Ollama.
 $env:FEISHU_BACKEND = "ollama"
-$env:FEISHU_OLLAMA_MODEL = "enbot-optuna:7b"
+$env:FEISHU_OLLAMA_MODEL = "enbot-v9:7b"
 
 Set-Location -LiteralPath $projectRoot
 & $python $bridge

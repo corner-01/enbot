@@ -1,6 +1,14 @@
+import os
 import unittest
+from types import SimpleNamespace
+from unittest.mock import Mock, patch
 
-from app.api import Chatbot
+from app.api import (
+    Chatbot,
+    _web_search_enabled,
+    get_active_model_name,
+    get_llm_provider,
+)
 
 
 class ApiFormattingTests(unittest.TestCase):
@@ -72,6 +80,118 @@ class ApiFormattingTests(unittest.TestCase):
         self.assertIn("联系供应商", answer)
         self.assertNotIn("电池系统", answer)
 
+    def test_company_platform_and_model_queries_route_to_rag(self):
+        queries = (
+            "EnValt是什么？",
+            "无锡英弗特的主营业务是什么？",
+            "iEnOS是什么平台？",
+            "myEnOS面向哪些用户？",
+            "EnOne是什么？",
+            "EBS-H-16K是什么？",
+            "FX-10K-T怎么设置？",
+        )
+
+        for query in queries:
+            with self.subTest(query=query):
+                self.assertTrue(Chatbot._is_product_support_query(query))
+
+    def test_general_chat_does_not_force_product_rag(self):
+        for query in ("你好", "你是谁", "Python是什么？"):
+            with self.subTest(query=query):
+                self.assertFalse(Chatbot._is_product_support_query(query))
+
+    def test_knowledge_first_skips_only_small_talk(self):
+        self.assertFalse(Chatbot._should_try_knowledge_first("你好！"))
+        self.assertFalse(Chatbot._should_try_knowledge_first("你是谁？"))
+        self.assertTrue(
+            Chatbot._should_try_knowledge_first(
+                "Which personnel may remove or dismantle safety facilities?"
+            )
+        )
+        self.assertTrue(Chatbot._should_try_knowledge_first("Python是什么？"))
+
+    def test_small_talk_returns_without_rag_agent_or_web_search(self):
+        bot = Chatbot.__new__(Chatbot)
+        bot.model_only = False
+        bot.agent_executor = Mock()
+        bot.redis_memory = SimpleNamespace(messages=[])
+        bot._retrieve_local_contexts = Mock()
+        bot._finalize_response = Mock(
+            side_effect=lambda _query, _response, output, **_kwargs: {"output": output}
+        )
+
+        with patch("app.api.search") as web_search:
+            result = bot.run("你好！")
+
+        self.assertIn("我是小英", result["output"])
+        bot._retrieve_local_contexts.assert_not_called()
+        bot.agent_executor.invoke.assert_not_called()
+        web_search.assert_not_called()
+
+    def test_agent_limit_recovery_does_not_force_web_search(self):
+        bot = Chatbot.__new__(Chatbot)
+        bot._format_knowledge_answer = Mock()
+
+        with patch("app.api.search") as web_search:
+            answer = bot._recover_agent_limit(
+                "一个没有可靠答案的问题",
+                {"intermediate_steps": []},
+            )
+
+        self.assertIn("无法可靠回答", answer)
+        bot._format_knowledge_answer.assert_not_called()
+        web_search.assert_not_called()
+
+    def test_web_search_is_disabled_by_default_and_can_be_opted_in(self):
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertFalse(_web_search_enabled())
+        with patch.dict(os.environ, {"ENBOT_WEB_SEARCH_ENABLED": "true"}, clear=True):
+            self.assertTrue(_web_search_enabled())
+
+    def test_unknown_in_domain_wording_uses_retrieval_hit_before_agent(self):
+        bot = Chatbot.__new__(Chatbot)
+        bot.agent_executor = Mock()
+        bot.redis_memory = SimpleNamespace(messages=[])
+        bot._retrieve_local_contexts = Mock(return_value=["trusted knowledge"])
+        bot._format_knowledge_answer = Mock(return_value="grounded answer")
+        bot._finalize_response = Mock(return_value={"output": "grounded answer"})
+
+        result = bot.run("Which personnel may remove or dismantle safety facilities?")
+
+        self.assertEqual(result["output"], "grounded answer")
+        bot._retrieve_local_contexts.assert_called_once()
+        bot.agent_executor.invoke.assert_not_called()
+
+    def test_product_query_without_retrieval_hit_does_not_fall_back_to_agent(self):
+        bot = Chatbot.__new__(Chatbot)
+        bot.agent_executor = Mock()
+        bot.redis_memory = SimpleNamespace(messages=[])
+        bot._retrieve_local_contexts = Mock(return_value=[])
+        bot._finalize_response = Mock(
+            side_effect=lambda _query, _response, output, **_kwargs: {"output": output}
+        )
+
+        result = bot.run("FX-10K-T 的未知参数是什么？")
+
+        self.assertIn("暂未检索到", result["output"])
+        bot.agent_executor.invoke.assert_not_called()
+
+    def test_llm_provider_defaults_to_ollama_and_selects_openai_model(self):
+        with patch.dict(os.environ, {"LLM_PROVIDER": ""}, clear=False):
+            self.assertEqual(get_llm_provider(), "ollama")
+
+        with patch.dict(
+            os.environ,
+            {"LLM_PROVIDER": "openai", "OPENAI_MODEL": "gpt-test"},
+            clear=False,
+        ):
+            self.assertEqual(get_llm_provider(), "openai")
+            self.assertEqual(get_active_model_name(), "gpt-test")
+
+    def test_llm_provider_rejects_unknown_value(self):
+        with patch.dict(os.environ, {"LLM_PROVIDER": "unsupported"}, clear=False):
+            with self.assertRaises(ValueError):
+                get_llm_provider()
 
 if __name__ == "__main__":
     unittest.main()

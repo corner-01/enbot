@@ -1,4 +1,4 @@
-FROM D:\enbot-finetune-artifacts\deployment\ollama-optuna-v1\enbot-optuna-q4_k_m.gguf
+FROM D:\enbot-finetune-artifacts\deployment\ollama-v9\enbot-v9-q4_k_m.gguf
 
 PARAMETER temperature 0
 PARAMETER num_ctx 4096

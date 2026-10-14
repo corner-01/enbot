@@ -10,21 +10,28 @@ from __future__ import annotations
 
 import asyncio
 import hmac
+import json
 import logging
 import os
 import time
 import uuid
 from collections import OrderedDict
 from contextlib import asynccontextmanager
-from typing import Any, Literal
+from typing import Any, AsyncIterator, Literal
 
 import requests
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from starlette.concurrency import run_in_threadpool
 
-from app.api import Chatbot, _retrieval_debug_payload
+from app.api import (
+    Chatbot,
+    _retrieval_debug_payload,
+    get_active_model_name,
+    get_llm_provider,
+)
 from app.feedback_store import ALLOWED_FEEDBACK_CATEGORIES, feedback_store
 from memory.redis_history import RedisChatHistory
 from rag.knowledge_retriever import get_knowledge_retriever
@@ -33,7 +40,7 @@ from rag.knowledge_retriever import get_knowledge_retriever
 LOGGER = logging.getLogger("enbot.service")
 SERVICE_NAME = "enbot"
 ASSISTANT_NAME = "小英"
-SERVICE_VERSION = "3.1.0"
+SERVICE_VERSION = "3.2.0"
 
 
 def _env_bool(name: str, default: bool) -> bool:
@@ -102,6 +109,40 @@ class FeedbackRequest(BaseModel):
         pattern=r"^[A-Za-z0-9_.:@-]+$",
     )
     rating: Literal["up", "down"]
+    categories: list[str] = Field(default_factory=list, max_length=8)
+    comment: str = Field(default="", max_length=4000)
+    expected_answer: str = Field(default="", max_length=12000)
+
+    @field_validator("categories")
+    @classmethod
+    def validate_categories(cls, value: list[str]) -> list[str]:
+        categories = list(dict.fromkeys(item.strip() for item in value if item.strip()))
+        invalid = sorted(set(categories) - ALLOWED_FEEDBACK_CATEGORIES)
+        if invalid:
+            raise ValueError("unsupported categories: " + ", ".join(invalid))
+        return categories
+
+    @field_validator("comment", "expected_answer")
+    @classmethod
+    def trim_optional_text(cls, value: str) -> str:
+        return value.strip()
+
+
+class HelpfulFeedbackRequest(BaseModel):
+    """Frontend payload for the helpful button."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    request_id: str = Field(
+        min_length=1,
+        max_length=128,
+        pattern=r"^[A-Za-z0-9_.:@-]+$",
+    )
+
+
+class UnhelpfulFeedbackRequest(HelpfulFeedbackRequest):
+    """Frontend payload for the unhelpful button and optional correction."""
+
     categories: list[str] = Field(default_factory=list, max_length=8)
     comment: str = Field(default="", max_length=4000)
     expected_answer: str = Field(default="", max_length=12000)
@@ -287,6 +328,7 @@ if origins:
         allow_credentials=False,
         allow_methods=["GET", "POST"],
         allow_headers=["Content-Type", "X-API-Key", "X-Request-ID"],
+        expose_headers=["X-Request-ID"],
     )
 
 
@@ -315,9 +357,42 @@ def _request_id(request: Request) -> str:
     return getattr(request.state, "request_id", uuid.uuid4().hex)
 
 
+def _sse_event(event: str, data: dict[str, Any], event_id: str | None = None) -> str:
+    """把一个事件编码为携带 UTF-8 JSON 数据的 SSE 帧。"""
+    lines: list[str] = []
+    if event_id:
+        lines.append(f"id: {event_id}")
+    lines.append(f"event: {event}")
+    encoded = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
+    lines.extend(f"data: {line}" for line in encoded.splitlines() or [""])
+    return "\n".join(lines) + "\n\n"
+
+
+def _chunk_text(value: str, chunk_chars: int) -> list[str]:
+    """把完整回答按固定字符数切分，供 SSE 分段发送。"""
+    return [value[index:index + chunk_chars] for index in range(0, len(value), chunk_chars)]
+
+
+def _consume_background_task_result(task: asyncio.Task[Any]) -> None:
+    """客户端断开后消费后台任务结果，避免产生未处理异常。"""
+    try:
+        task.result()
+    except asyncio.CancelledError:
+        return
+    except Exception:
+        LOGGER.exception("Detached SSE chat task failed after client disconnected")
+
+
+def _validate_chat_options(payload: ChatRequest) -> None:
+    if payload.evaluate and not _env_bool("ENBOT_ENABLE_EVALUATION", False):
+        raise HTTPException(status_code=403, detail="Online RAGAS evaluation is disabled")
+    if payload.debug and not _env_bool("ENBOT_ENABLE_DEBUG", False):
+        raise HTTPException(status_code=403, detail="Retrieval debug output is disabled")
+
+
 def _ollama_status() -> dict[str, Any]:
     base_url = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434").rstrip("/")
-    expected_model = os.getenv("OLLAMA_MODEL", "enbot-optuna:7b")
+    expected_model = os.getenv("OLLAMA_MODEL", "enbot-v9:7b")
     try:
         response = requests.get(f"{base_url}/api/tags", timeout=2)
         response.raise_for_status()
@@ -327,8 +402,13 @@ def _ollama_status() -> dict[str, Any]:
             for item in payload.get("models", [])
             if isinstance(item, dict)
         }
+        # Ollama lists locally-created models as ``name:latest`` even when
+        # OLLAMA_MODEL intentionally uses the shorter ``name`` form.
+        expected_names = {expected_model}
+        if ":" not in expected_model:
+            expected_names.add(f"{expected_model}:latest")
         return {
-            "available": expected_model in names,
+            "available": bool(expected_names & names),
             "expected_model": expected_model,
             "models": sorted(name for name in names if name),
         }
@@ -340,6 +420,33 @@ def _ollama_status() -> dict[str, Any]:
         }
 
 
+def _llm_status() -> dict[str, Any]:
+    """Return readiness information for the configured generation provider."""
+    try:
+        provider = get_llm_provider()
+        model = get_active_model_name()
+    except ValueError as exc:
+        return {"available": False, "provider": "invalid", "error": str(exc)}
+
+    if provider == "ollama":
+        return {"provider": provider, "model": model, **_ollama_status()}
+
+    # Do not make a billable/cloud request from /health/ready. A valid key and
+    # model configuration make the process ready; provider-side failures are
+    # reported normally by the chat endpoint.
+    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    base_url = (
+        os.getenv("OPENAI_BASE_URL", "").strip()
+        or os.getenv("OPENAI_API_BASE", "").strip()
+    )
+    return {
+        "available": bool(api_key),
+        "provider": provider,
+        "model": model,
+        "base_url_configured": bool(base_url),
+        **({} if api_key else {"error": "OPENAI_API_KEY is not configured"}),
+    }
+
 @app.get("/", tags=["service"])
 async def root() -> dict[str, Any]:
     return {
@@ -349,6 +456,7 @@ async def root() -> dict[str, Any]:
         "version": SERVICE_VERSION,
         "docs": "/docs",
         "chat": "/v1/chat",
+        "chat_stream": "/v1/chat/stream",
         "retrieve": "/v1/retrieve",
         "feedback": "/v1/feedback",
     }
@@ -363,21 +471,28 @@ async def health_live() -> dict[str, Any]:
 async def health_ready() -> dict[str, Any]:
     retriever = runtime.default_retriever()
     backend = getattr(retriever, "active_backend", None)
-    ollama = await run_in_threadpool(_ollama_status)
-    require_milvus = _env_bool("ENBOT_REQUIRE_MILVUS", True)
+    llm = await run_in_threadpool(_llm_status)
+    rag_disabled = _env_bool("ENBOT_MODEL_ONLY", False) or _env_bool("ENBOT_DISABLE_RAG", False)
+    # 分布式模式下，Milvus 由远程检索服务负责；纯模型模式则不需要检索器。
+    require_milvus = (
+        not rag_disabled
+        and _env_bool("ENBOT_REQUIRE_MILVUS", True)
+        and str(backend or "").strip().lower() != "remote"
+    )
     checks = {
         "runtime_initialized": runtime.initialized,
         "retriever_available": retriever is not None,
         "retrieval_backend": backend,
+        "rag_enabled": not rag_disabled,
         "milvus_required": require_milvus,
         "milvus_active": backend == "milvus",
-        "ollama": ollama,
+        "llm": llm,
     }
     ready = (
         runtime.initialized
-        and retriever is not None
+        and (rag_disabled or retriever is not None)
         and (not require_milvus or backend == "milvus")
-        and bool(ollama.get("available"))
+        and bool(llm.get("available"))
         and runtime.load_error is None
     )
     if not ready:
@@ -394,10 +509,7 @@ async def service_metrics() -> dict[str, Any]:
 
 
 async def _chat_impl(request: Request, payload: ChatRequest) -> ChatResponse:
-    if payload.evaluate and not _env_bool("ENBOT_ENABLE_EVALUATION", False):
-        raise HTTPException(status_code=403, detail="Online RAGAS evaluation is disabled")
-    if payload.debug and not _env_bool("ENBOT_ENABLE_DEBUG", False):
-        raise HTTPException(status_code=403, detail="Retrieval debug output is disabled")
+    _validate_chat_options(payload)
     started = time.perf_counter()
     try:
         result = await runtime.chat(payload)
@@ -442,6 +554,118 @@ async def _chat_impl(request: Request, payload: ChatRequest) -> ChatResponse:
     return response
 
 
+async def _chat_sse_events(
+    request: Request,
+    payload: ChatRequest,
+) -> AsyncIterator[str]:
+    """按照稳定的 SSE 事件协议，流式输出一次聊天响应。"""
+    request_id = _request_id(request)
+    started = time.perf_counter()
+    sequence = 0
+
+    def frame(event: str, data: dict[str, Any]) -> str:
+        nonlocal sequence
+        # 每个事件都使用“请求编号:事件序号”作为唯一事件 ID。
+        event_id = f"{request_id}:{sequence}"
+        sequence += 1
+        return _sse_event(event, data, event_id)
+
+    # 首帧先返回请求、会话和模型信息，调用方可立即确认连接成功。
+    yield frame(
+        "meta",
+        {
+            "request_id": request_id,
+            "session_id": payload.session_id,
+            "model": get_active_model_name(),
+            "protocol_version": "1.0",
+        },
+    )
+
+    # 原有 RAG 调用是阻塞式完整回答，因此放入独立异步任务中执行。
+    task = asyncio.create_task(_chat_impl(request, payload))
+    heartbeat_seconds = _env_int("ENBOT_SSE_HEARTBEAT_SECONDS", 10)
+    response: ChatResponse | None = None
+    try:
+        while response is None:
+            if await request.is_disconnected():
+                # run_in_threadpool 无法可靠终止正在执行的模型调用。
+                # 让任务在后台自然结束并释放运行时锁。
+                task.add_done_callback(_consume_background_task_result)
+                return
+            try:
+                response = await asyncio.wait_for(
+                    asyncio.shield(task),
+                    timeout=heartbeat_seconds,
+                )
+            except asyncio.TimeoutError:
+                # 检索或生成尚未完成时发送心跳，避免代理和浏览器误判超时。
+                yield frame(
+                    "heartbeat",
+                    {
+                        "request_id": request_id,
+                        "elapsed_seconds": round(time.perf_counter() - started, 3),
+                    },
+                )
+    except HTTPException as exc:
+        yield frame(
+            "error",
+            {
+                "request_id": request_id,
+                "code": "chat_failed",
+                "status_code": exc.status_code,
+                "message": exc.detail,
+            },
+        )
+        return
+    except Exception as exc:
+        LOGGER.exception("SSE chat request failed")
+        yield frame(
+            "error",
+            {
+                "request_id": request_id,
+                "code": "internal_error",
+                "status_code": 503,
+                "message": str(exc),
+            },
+        )
+        return
+
+    # 回答完成后按字符数切片；客户端收到 delta 后按顺序拼接。
+    chunk_chars = _env_int("ENBOT_SSE_CHUNK_CHARS", 24)
+    for index, chunk in enumerate(_chunk_text(response.data.response, chunk_chars)):
+        if await request.is_disconnected():
+            return
+        yield frame(
+            "delta",
+            {
+                "request_id": request_id,
+                "index": index,
+                "delta": chunk,
+            },
+        )
+        await asyncio.sleep(0)
+
+    # 答案发送完毕后单独返回知识来源和检索后端。
+    yield frame(
+        "sources",
+        {
+            "request_id": request_id,
+            "sources": response.data.sources,
+            "retrieval_backend": response.data.retrieval_backend,
+        },
+    )
+    # done 是成功结束标记；失败时上方会发送 error 并结束生成器。
+    yield frame(
+        "done",
+        {
+            "request_id": request_id,
+            "status": "success",
+            "finish_reason": "stop",
+            "duration_seconds": round(time.perf_counter() - started, 3),
+        },
+    )
+
+
 @app.post(
     "/v1/chat",
     response_model=ChatResponse,
@@ -451,6 +675,32 @@ async def _chat_impl(request: Request, payload: ChatRequest) -> ChatResponse:
 )
 async def chat_v1(request: Request, payload: ChatRequest) -> ChatResponse:
     return await _chat_impl(request, payload)
+
+
+@app.post(
+    "/v1/chat/stream",
+    response_class=StreamingResponse,
+    responses={
+        200: {
+            "description": "SSE 事件流：meta、heartbeat、delta、sources、done/error",
+            "content": {"text/event-stream": {}},
+        }
+    },
+    tags=["chat"],
+    dependencies=[Depends(require_api_key)],
+)
+async def chat_stream_v1(request: Request, payload: ChatRequest) -> StreamingResponse:
+    _validate_chat_options(payload)
+    return StreamingResponse(
+        _chat_sse_events(request, payload),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache, no-transform",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
 
 
 @app.post(
@@ -512,16 +762,34 @@ async def retrieve_compatibility(request: Request, payload: RetrieveRequest) -> 
     dependencies=[Depends(require_api_key)],
 )
 async def submit_feedback(payload: FeedbackRequest) -> dict[str, Any]:
+    return await _submit_feedback_record(
+        request_id=payload.request_id,
+        rating=payload.rating,
+        categories=payload.categories,
+        comment=payload.comment,
+        expected_answer=payload.expected_answer,
+    )
+
+
+async def _submit_feedback_record(
+    *,
+    request_id: str,
+    rating: Literal["up", "down"],
+    categories: list[str],
+    comment: str,
+    expected_answer: str,
+) -> dict[str, Any]:
+    """Persist feedback through one shared validation and error boundary."""
     if not _env_bool("ENBOT_FEEDBACK_ENABLED", True):
         raise HTTPException(status_code=503, detail="Feedback collection is disabled")
     try:
         record = await run_in_threadpool(
             feedback_store.submit_feedback,
-            request_id=payload.request_id,
-            rating=payload.rating,
-            categories=payload.categories,
-            comment=payload.comment,
-            expected_answer=payload.expected_answer,
+            request_id=request_id,
+            rating=rating,
+            categories=categories,
+            comment=comment,
+            expected_answer=expected_answer,
         )
     except KeyError as exc:
         raise HTTPException(
@@ -531,6 +799,42 @@ async def submit_feedback(payload: FeedbackRequest) -> dict[str, Any]:
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     return {"status": "success", "data": record}
+
+
+@app.post(
+    "/v1/feedback/helpful",
+    tags=["feedback"],
+    dependencies=[Depends(require_api_key)],
+)
+async def submit_helpful_feedback(
+    payload: HelpfulFeedbackRequest,
+) -> dict[str, Any]:
+    """Record a frontend thumbs-up action for one completed chat request."""
+    return await _submit_feedback_record(
+        request_id=payload.request_id,
+        rating="up",
+        categories=[],
+        comment="",
+        expected_answer="",
+    )
+
+
+@app.post(
+    "/v1/feedback/unhelpful",
+    tags=["feedback"],
+    dependencies=[Depends(require_api_key)],
+)
+async def submit_unhelpful_feedback(
+    payload: UnhelpfulFeedbackRequest,
+) -> dict[str, Any]:
+    """Record a frontend thumbs-down action and optional correction details."""
+    return await _submit_feedback_record(
+        request_id=payload.request_id,
+        rating="down",
+        categories=payload.categories,
+        comment=payload.comment,
+        expected_answer=payload.expected_answer,
+    )
 
 
 @app.get(

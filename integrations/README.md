@@ -78,7 +78,7 @@ cd D:\telebot
 ## 6. 飞书直连微调模型（不使用 RAG）
 
 先停止正在运行的飞书长连接（按 `Ctrl+C`），确认 Ollama 中能看到
-`enbot-optuna:7b`，然后运行：
+`enbot-v9:7b`，然后运行：
 
 ```powershell
 cd D:\telebot

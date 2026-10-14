@@ -199,7 +199,7 @@ def main() -> int:
 
     load_dotenv(PROJECT_ROOT / ".env")
     judge_model = args.judge_model or os.getenv("AB_JUDGE_MODEL") or os.getenv(
-        "OLLAMA_MODEL", "enbot-optuna:7b"
+        "OLLAMA_MODEL", "enbot-v9:7b"
     )
     generations = [
         json.loads(line)

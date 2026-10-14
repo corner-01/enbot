@@ -1,12 +1,12 @@
 # EnBot API 服务部署
 
-生产候选固定为 **Optuna QLoRA 模型 `enbot-optuna:7b` + Milvus 混合检索/RAG**。
+生产候选固定为 **V9 正确数据 QLoRA 模型 `enbot-v9:7b` + Milvus 混合检索/RAG**。
 DPO 试验没有通过开发集门槛，因此不进入本服务。
 
 ## 1. 服务组成
 
 - EnBot FastAPI：默认 `127.0.0.1:8000`
-- Ollama：`127.0.0.1:11434`，模型 `enbot-optuna:7b`
+- Ollama：`127.0.0.1:11434`，模型 `enbot-v9:7b`
 - Milvus：`127.0.0.1:19530`，集合 `enbot_knowledge_v1`
 - Redis：`127.0.0.1:6379`，不可用时自动退化为进程内存
 
@@ -41,7 +41,7 @@ redis-cli ping
 docker ps --filter name=milvus-standalone
 ```
 
-必须看到Ollama中存在 `enbot-optuna:7b`，Milvus容器状态为healthy。
+必须看到Ollama中存在 `enbot-v9:7b`，Milvus容器状态为healthy。
 
 ## 4. 手动启动与验收
 

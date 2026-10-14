@@ -1,6 +1,6 @@
 import os
 import re
-from typing import Optional
+from typing import Any, Optional
 
 from dotenv import load_dotenv
 
@@ -24,6 +24,71 @@ PROJECT_NAME = "enbot"
 ASSISTANT_NAME = "小英"
 
 app = FastAPI(title=f"{PROJECT_NAME} API", version="2.0.0")
+
+
+def _model_only_mode() -> bool:
+    """Return whether this process must bypass RAG and all Agent tools."""
+    return os.getenv("ENBOT_MODEL_ONLY", "").strip().casefold() in {
+        "1", "true", "yes", "on"
+    }
+
+
+def _web_search_enabled() -> bool:
+    """Return whether the optional public web-search tool is enabled."""
+    return os.getenv("ENBOT_WEB_SEARCH_ENABLED", "false").strip().casefold() in {
+        "1", "true", "yes", "on"
+    }
+
+def get_llm_provider() -> str:
+    """Return the configured generation provider."""
+    provider = os.getenv("LLM_PROVIDER", "ollama").strip().casefold() or "ollama"
+    if provider not in {"ollama", "openai"}:
+        raise ValueError("LLM_PROVIDER must be either 'ollama' or 'openai'")
+    return provider
+
+
+def get_active_model_name() -> str:
+    """Return the configured model name without creating a client."""
+    if get_llm_provider() == "openai":
+        return os.getenv("OPENAI_MODEL", "gpt-4.1-mini").strip() or "gpt-4.1-mini"
+    return os.getenv("OLLAMA_MODEL", "enbot-v9:7b").strip() or "enbot-v9:7b"
+
+
+def create_chat_model() -> Any:
+    """Build the LangChain model selected by ``LLM_PROVIDER``."""
+    provider = get_llm_provider()
+    if provider == "ollama":
+        ollama_num_gpu = os.getenv("OLLAMA_NUM_GPU")
+        return Ollama(
+            model=get_active_model_name(),
+            temperature=0,
+            num_gpu=int(ollama_num_gpu) if ollama_num_gpu else None,
+        )
+
+    api_key = os.getenv("OPENAI_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY is required when LLM_PROVIDER=openai")
+    try:
+        from langchain_openai import ChatOpenAI
+    except ImportError as exc:
+        raise RuntimeError(
+            "OpenAI provider requires langchain-openai; run: "
+            "pip install -r requirements.txt"
+        ) from exc
+
+    # OPENAI_API_BASE remains a compatibility alias for OpenAI-compatible gateways.
+    base_url = (
+        os.getenv("OPENAI_BASE_URL", "").strip()
+        or os.getenv("OPENAI_API_BASE", "").strip()
+    )
+    kwargs: dict[str, Any] = {
+        "model": get_active_model_name(),
+        "temperature": 0,
+        "api_key": api_key,
+    }
+    if base_url:
+        kwargs["base_url"] = base_url
+    return ChatOpenAI(**kwargs)
 
 
 def _retrieval_debug_payload(documents):
@@ -61,14 +126,10 @@ class Chatbot:
     def __init__(self):
         # 初始化实例属性
         self.session_id = "default"
-        # 使用 langchain_community 的 Ollama，兼容性最好，避免 502 错误
-        ollama_num_gpu = os.getenv("OLLAMA_NUM_GPU")
-        self.chatmodel = Ollama(
-            model=os.getenv("OLLAMA_MODEL", "enbot-optuna:7b"),
-            temperature=0,
-            num_gpu=int(ollama_num_gpu) if ollama_num_gpu else None,
-        )
-
+        self._last_retrieval_sources = []
+        # RAG、Agent、SSE 与反馈链路复用同一个可切换模型。
+        self.chatmodel = create_chat_model()
+        self.model_only = _model_only_mode()
         # 初始化 Redis 对话历史。
         try:
             self.redis_memory = RedisChatHistory(self.session_id)
@@ -81,16 +142,13 @@ class Chatbot:
             # 使用内存作为后备方案
             self.redis_memory = InMemoryChatMessageHistory()
 
-        # 初始化知识库检索器
-        self.knowledge_retriever = get_knowledge_retriever()
+        # 纯模型模式不初始化知识库，避免加载向量库、嵌入模型或远程检索服务。
+        self.knowledge_retriever = None if self.model_only else get_knowledge_retriever()
 
         # 定义工具列表
-        self.tools = [
-            search,
-            get_weather,
-            get_current_time,
-            calculator,
-        ]
+        self.tools = [get_weather, get_current_time, calculator]
+        if _web_search_enabled():
+            self.tools.insert(0, search)
 
         # 添加知识库工具（如果可用）
         if self.knowledge_retriever is not None:
@@ -151,13 +209,13 @@ class Chatbot:
 
         【回答流程】
        1.初次回答用户的问题时，你会查询本地知识库工具。
-       2.当遇到不知道的事情或者不明白的概念，你会用搜索工具来搜索。
-       3.你会根据用户的问题使用不同的合适的工具来回答，当所有的工具都无法回答时，你会使用搜索工具来搜索。
+       2.知识库没有可靠答案时，不要根据模型记忆猜测产品事实。
+       3.只有工具列表中明确提供了搜索工具，并且用户问题确实需要公开网络信息时，才允许使用搜索工具。
        4.你会保存每一次的聊天记录，以便在后续的对话中参考和使用.
        5. 最多允许使用2次工具来回答问题。如果使用2次工具后仍无法获取完整答案，必须基于已有信息给出初步回答，并建议用户联系人工客服获取进一步帮助。绝对禁止反复尝试同一工具！
         【工具调用限制】
        1. 如果用户问题非常简单，且能在本地知识库中找到答案，必须直接使用知识库工具回答。
-       2. 如果用户的问题无法通过知识库解决，再尝试使用搜索工具。
+       2. 如果用户的问题无法通过知识库解决，应明确说明暂未找到可靠信息；只有搜索工具已启用时才可以查询公开网络。
        3. 如果所有工具都无法回答，必须直接告知用户无法回答，并建议联系人工客服。
        4. 绝对禁止连续调用同一工具超过2次。
         """
@@ -544,9 +602,10 @@ Thought:{agent_scratchpad}"""
     def _is_product_support_query(query):
         """Route product and troubleshooting questions to the local RAG system."""
         normalized = query.lower()
-        if re.search(r"\b(?:home-ess|hess|cess)[a-z0-9~._/-]*\b", normalized):
+        if re.search(r"\b(?:home-ess|hess|cess|ebs|fx)[a-z0-9~._/-]*\b", normalized):
             return True
         product_keywords = (
+            "envalt", "英弗特", "ienos", "myenos", "enone",
             "hess", "逆变器", "储能", "电池", "电网", "光伏", "并网", "离网",
             "告警", "故障", "报错", "错误码", "参数", "手册", "安装", "接线",
             "充电", "放电", "功率", "电压", "电流", "频率", "ct", "bms",
@@ -555,12 +614,73 @@ Thought:{agent_scratchpad}"""
         )
         return any(keyword in normalized for keyword in product_keywords)
 
+    @staticmethod
+    def _should_try_knowledge_first(query):
+        """Try retrieval first except for short, unambiguous social messages."""
+        return Chatbot._small_talk_response(query) is None
+
+    @staticmethod
+    def _small_talk_response(query):
+        """Return a deterministic reply for social messages, otherwise ``None``."""
+        normalized = re.sub(r"[\s,，。.!！?？:：;；]+", "", (query or "").casefold())
+        if not normalized:
+            return None
+
+        greetings = {"你好", "您好", "嗨", "hello", "hi", "早上好", "下午好", "晚上好"}
+        identity = {"你是谁", "你叫什么", "你叫什么名字", "介绍一下你自己"}
+        thanks = {"谢谢", "感谢"}
+        acknowledgements = {"好的", "收到"}
+        farewells = {"再见", "拜拜"}
+
+        if normalized in greetings:
+            return "你好，我是小英，英弗特能源科技有限公司的 AI 智能客服助手。请问有什么可以帮您？"
+        if normalized in identity:
+            return "我是小英，英弗特能源科技有限公司的 AI 智能客服助手，可以协助您查询产品信息和排查设备问题。"
+        if normalized in thanks:
+            return "不客气。如果还有产品使用或设备故障方面的问题，可以继续告诉我。"
+        if normalized in acknowledgements:
+            return "好的，请继续告诉我您需要了解的问题。"
+        if normalized in farewells:
+            return "再见，如有需要可以随时来找我。"
+        return None
+
+    def _recover_agent_limit(self, query, response):
+        """Recover a stopped Agent without automatically querying the public web."""
+        knowledge_results = []
+        for step in response.get("intermediate_steps", []):
+            if not isinstance(step, (tuple, list)) or len(step) < 2:
+                continue
+            action, observation = step[0], step[1]
+            if getattr(action, "tool", None) != "knowledge_base":
+                continue
+            if isinstance(observation, str) and observation.strip():
+                knowledge_results.append(observation.strip())
+
+        if knowledge_results:
+            return self._format_knowledge_answer(query, knowledge_results)
+        return (
+            "抱歉，我暂时无法可靠回答这个问题。"
+            "您可以换一种方式描述，或联系人工客服进一步确认。"
+        )
+
     def _retrieve_local_contexts(self, query):
         """Retrieve final locally reranked context from the knowledge retriever."""
+        self._last_retrieval_sources = []
         if self.knowledge_retriever is None:
             return []
         try:
             documents = self.knowledge_retriever.invoke(query)
+            sources = []
+            for document in documents:
+                metadata = getattr(document, "metadata", {}) or {}
+                source = str(metadata.get("source", "")).strip()
+                if not source:
+                    continue
+                row = metadata.get("row")
+                label = f"{source}（第 {row} 行）" if row is not None else source
+                if label not in sources:
+                    sources.append(label)
+            self._last_retrieval_sources = sources
             return [
                 document.page_content.strip()
                 for document in documents
@@ -605,7 +725,11 @@ Thought:{agent_scratchpad}"""
         output_text = self._focus_visual_fault_answer(query, output_text, contexts)
 
         if contexts:
-            response.setdefault("sources", self._extract_source_urls(contexts, query))
+            sources = self._extract_source_urls(contexts, query)
+            for source in self._last_retrieval_sources:
+                if source not in sources:
+                    sources.append(source)
+            response.setdefault("sources", sources)
 
         ragas_result = None
         if evaluate_ragas:
@@ -643,7 +767,55 @@ Thought:{agent_scratchpad}"""
             response["ragas"] = ragas_result
         return response
 
+    def _run_model_only(self, query: str) -> str:
+        """Answer with the configured LLM only, without RAG or Agent tools."""
+        history_lines: list[str] = []
+        try:
+            for message in self.redis_memory.messages[-6:]:
+                role = "用户" if isinstance(message, HumanMessage) else "助手"
+                history_lines.append(f"{role}: {message.content}")
+        except Exception as exc:
+            print(f"读取模型测试历史失败: {exc}")
+
+        history = "\n".join(history_lines)
+        prompt = (
+            "你是小英，英弗特能源科技有限公司的 AI 智能客服助手。"
+            "当前是纯模型测试模式：不要调用知识库、搜索或其他工具。"
+            "请用与用户相同的语言给出简洁回答；不确定的产品事实必须明确说明不确定，"
+            "不要编造型号、参数、政策或链接。\n\n"
+            f"对话历史：\n{history or '（无）'}\n\n"
+            f"用户问题：{query}\n助手回答："
+        )
+        response = self.chatmodel.invoke(prompt)
+        output = getattr(response, "content", response)
+        return str(output).strip()
     def run(self, query, evaluate_ragas=False, ground_truth=None):
+        self._last_retrieval_sources = []
+        if getattr(self, "model_only", False):
+            output_text = self._run_model_only(query)
+            return self._finalize_response(
+                query,
+                {"output": output_text, "intermediate_steps": [], "_rag_contexts": []},
+                output_text,
+                evaluate_ragas=False,
+                ground_truth=ground_truth,
+            )
+
+        # 社交性短消息采用确定性直答，避免进入 RAG、Agent 或联网搜索。
+        small_talk_response = self._small_talk_response(query)
+        if small_talk_response is not None:
+            return self._finalize_response(
+                query,
+                {
+                    "output": small_talk_response,
+                    "intermediate_steps": [],
+                    "_rag_contexts": [],
+                },
+                small_talk_response,
+                evaluate_ragas=False,
+                ground_truth=ground_truth,
+            )
+
         # 1.【终极防御】检查 agent_executor 是否存在，如果丢失，立刻全盘重建！
         if not hasattr(self, 'agent_executor') or self.agent_executor is None:
             print(" 检测到 AgentExecutor 丢失，正在立刻重建...")
@@ -667,18 +839,36 @@ Thought:{agent_scratchpad}"""
         # 更新本地 _chat_history 供 Agent 使用
         self._chat_history = history
 
-        # 产品与故障问题由代码强制走本地 RAG，避免 Agent 误选网络搜索。
-        if self._is_product_support_query(query):
-            print("[RAG] 检测到产品技术问题，优先查询本地知识库")
+        # 默认先检索知识库。这样即使问题没有出现型号或产品关键词，
+        # 只要检索器命中可信资料，也会使用 RAG 回答，而不会先交给 Agent 猜测。
+        product_support_query = self._is_product_support_query(query)
+        direct_contexts = []
+        if self._should_try_knowledge_first(query):
+            print("[RAG] 优先查询本地知识库")
             direct_contexts = self._retrieve_local_contexts(query)
             if direct_contexts:
                 output_text = self._format_knowledge_answer(query, direct_contexts)
-            else:
-                output_text = "本地知识库中暂未检索到与该问题相关的信息。"
+                response = {
+                    "output": output_text,
+                    "intermediate_steps": [],
+                    "_rag_contexts": direct_contexts,
+                }
+                return self._finalize_response(
+                    query,
+                    response,
+                    output_text,
+                    evaluate_ragas=evaluate_ragas,
+                    ground_truth=ground_truth,
+                )
+
+        # 明确属于产品支持范围但没有可靠检索结果时，宁可明确说未收录，
+        # 不让通用 Agent 或模型参数记忆生成未经知识库支持的产品结论。
+        if product_support_query:
+            output_text = "本地知识库中暂未检索到与该问题相关的信息。"
             response = {
                 "output": output_text,
                 "intermediate_steps": [],
-                "_rag_contexts": direct_contexts,
+                "_rag_contexts": [],
             }
             return self._finalize_response(
                 query,
@@ -745,39 +935,7 @@ Thought:{agent_scratchpad}"""
             print("中间步骤记录:", response.get("intermediate_steps"))
             print("="*50)
 
-            # 检查中间步骤中的知识库检索结果
-            steps = response.get("intermediate_steps", [])
-            if steps:
-                # 提取所有知识库检索结果
-                knowledge_results = []
-                for step in steps:
-                    if (
-                        isinstance(step, (tuple, list))
-                        and len(step) >= 2
-                        and getattr(step[0], "tool", None) == "knowledge_base"
-                    ):
-                        obs = step[1]
-                        if obs and obs.strip():
-                            knowledge_results.append(obs.strip())
-
-                if knowledge_results:
-                    # Agent 达到限制时，仍使用本地模型把原始检索内容整理成直接答案。
-                    output_text = self._format_knowledge_answer(query, knowledge_results)
-                else:
-                    # 如果没有获取到知识库结果，尝试使用搜索工具
-                    if len([step for step in steps if step[0].tool == "knowledge_base"]) < 2:
-                        print("尝试使用搜索工具")
-                        search_result = search.run(query)
-                        if search_result and search_result.strip():
-                            output_text = "通过网络搜索，我找到了以下相关信息：\n\n"
-                            output_text += search_result
-                            output_text += "\n\n如果以上信息未能解决您的问题，建议您联系我们的技术支持团队获取更专业的帮助。"
-                        else:
-                            output_text = "抱歉，我在查找相关信息时遇到了一些困难。为了更好地帮助您解决问题，建议您联系我们的技术支持团队获取更专业的故障排查指导。"
-                    else:
-                        output_text = "抱歉，处理您的问题时遇到了一些困难。为了不耽误您的时间，建议您直接联系我们的技术支持团队获取更专业的帮助。"
-            else:
-                output_text = "抱歉，处理您的问题时遇到了一些困难。为了不耽误您的时间，建议您直接联系我们的技术支持团队获取更专业的帮助。"
+            output_text = self._recover_agent_limit(query, response)
 
         # 6. 统一执行评估、保存记忆并返回。
         return self._finalize_response(

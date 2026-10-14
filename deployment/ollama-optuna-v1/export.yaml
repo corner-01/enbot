@@ -1,9 +1,0 @@
-model_name_or_path: /home/yft/projects/enbot-finetune/models/Qwen2.5-7B-Instruct
-adapter_name_or_path: /home/yft/projects/enbot-finetune/outputs/optuna-qlora-v1/full_trial_006
-template: qwen
-trust_remote_code: true
-
-export_dir: /mnt/d/enbot-finetune-artifacts/deployment/ollama-optuna-v1/merged-safetensors
-export_size: 5
-export_device: cpu
-export_legacy_format: false

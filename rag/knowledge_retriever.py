@@ -378,6 +378,13 @@ def get_knowledge_retriever(
     Rebuild operations always target the local index. Production primary nodes
     select the retrieval GPU node with RETRIEVAL_MODE=remote.
     """
+    rag_disabled = (
+        os.getenv("ENBOT_MODEL_ONLY", "").strip().casefold() in {"1", "true", "yes", "on"}
+        or os.getenv("ENBOT_DISABLE_RAG", "").strip().casefold() in {"1", "true", "yes", "on"}
+    )
+    if rag_disabled and not force_rebuild:
+        return None
+
     mode = os.getenv("RETRIEVAL_MODE", "local").strip().casefold()
     if force_rebuild or mode != "remote":
         return get_local_knowledge_retriever(

@@ -81,6 +81,18 @@ class RemoteRetrieverTests(unittest.TestCase):
             retriever = get_knowledge_retriever(raise_on_error=True)
         self.assertIsInstance(retriever, RemoteKnowledgeRetriever)
 
+    def test_factory_rejects_non_ascii_api_key_before_http_request(self):
+        with patch.dict(
+            os.environ,
+            {
+                "RETRIEVAL_API_URL": "http://retrieval-node:8100",
+                "RETRIEVAL_API_KEY": "请填写真实密钥",
+            },
+            clear=False,
+        ):
+            with self.assertRaisesRegex(ValueError, "ASCII characters only"):
+                RemoteKnowledgeRetriever.from_env()
+
     def test_retrieval_service_routes_are_documented(self):
         schema = retrieval_app.openapi()
         for path in (
@@ -101,4 +113,3 @@ class RemoteRetrieverTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

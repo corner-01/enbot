@@ -52,6 +52,7 @@ Thumbs.db
 tmp/
 .codex-finalizer-*/
 .local-archive/
+artifact.md
 
 # Proprietary evaluation inputs and per-sample outputs. Public repositories
 # contain only aggregate, anonymized metrics documented under docs/.
