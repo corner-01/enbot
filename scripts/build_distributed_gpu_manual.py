@@ -415,7 +415,6 @@ Invoke-RestMethod -Method Post `
     add_body(doc, "分布式改造只改变知识检索位置，不改变用户入口。主机A的8000端口启动成功后，在新的PowerShell窗口继续运行原有脚本。")
     add_table(doc, ["功能", "主机A命令"], [
         ["视觉诊断API", r".\scripts\11_start_vision_api.ps1"],
-        ["Gradio网页", r".\scripts\12_start_gradio_demo.ps1"],
         ["飞书机器人", r".\scripts\07_start_feishu_bot.ps1"],
     ], [1.55, 5.05])
     add_body(doc, "推荐顺序：先启动主机B检索服务，再启动主机A主服务，最后启动视觉和飞书。关闭时按相反顺序操作。")
@@ -443,8 +442,6 @@ Invoke-RestMethod -Method Post `
         "主机A可以完成知识库问答并显示来源",
         "主机A没有加载Qwen3-8B Embedding",
         "主机A的Ollama使用RTX 4070生成回答",
-        "Gradio文字问答正常",
-        "Gradio图片诊断正常",
         "飞书文字和图片消息正常",
     ])
 
