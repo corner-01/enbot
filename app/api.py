@@ -32,6 +32,8 @@ def _model_only_mode() -> bool:
         "1", "true", "yes", "on"
     }
 
+    
+
 
 def _web_search_enabled() -> bool:
     """Return whether the optional public web-search tool is enabled."""
