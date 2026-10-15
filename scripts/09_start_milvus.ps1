@@ -5,7 +5,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 if ([string]::IsNullOrWhiteSpace($MilvusRoot)) {
-    $MilvusRoot = "D:\enbot-milvus"
+    $MilvusRoot = "D:\AI Workspace\enbot-milvus"
 }
 
 $launcherFile = Join-Path $MilvusRoot "standalone_embed.bat"
