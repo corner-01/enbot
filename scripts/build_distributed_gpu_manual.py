@@ -234,7 +234,7 @@ def build_document():
 
     add_table(doc, ["项目", "内容"], [
         ["适用项目", r"D:\telebot"],
-        ["主机A", "当前RTX 4070电脑，运行主服务、Ollama文本生成、视觉模型、飞书和Gradio"],
+        ["主机A", "当前RTX 4070电脑，运行主服务、Ollama文本生成、视觉模型和飞书"],
         ["主机B", "另一台NVIDIA GPU电脑，运行Embedding、Milvus、BM25、RRF和BGE Reranker"],
         ["网络", "两台电脑位于同一可信局域网，主机A通过HTTP调用主机B"],
         ["手册版本", date.today().isoformat()],
@@ -242,13 +242,13 @@ def build_document():
     p = doc.add_paragraph()
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p.paragraph_format.space_before = Pt(22)
-    set_run_font(p.add_run("完成本手册后，原飞书和Gradio入口保持不变。"), "SimSun", 11, bold=True)
+    set_run_font(p.add_run("完成本手册后，飞书入口保持不变。"), "SimSun", 11, bold=True)
 
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
     add_heading(doc, "一 部署结果", 1)
     add_body(doc, "本方案将原来集中在一台电脑上的生成与检索负载拆成两个独立服务。主机A不再加载Qwen3-8B Embedding和BGE重排模型，释放显存给enbot-optuna 7B文本生成模型和qwen3-vl视觉模型。主机B集中完成知识库检索和GPU重排，只把最终文档返回主机A。")
     add_table(doc, ["节点", "主要服务", "GPU负载", "监听端口"], [
-        ["主机A", "EnBot API、Ollama、视觉API、飞书、Gradio、Redis", "7B生成模型和视觉模型", "8000、8011、7861"],
+        ["主机A", "EnBot API、Ollama、视觉API、飞书、Redis", "7B生成模型和视觉模型", "8000、8011"],
         ["主机B", "Embedding、Milvus、BM25、RRF、BGE重排、检索API", "Qwen3-8B Embedding和BGE Reranker", "8100"],
     ], [0.85, 2.35, 2.3, 1.1])
     add_body(doc, "请求链路：用户提出问题后，主机A把问题发送给主机B。主机B依次执行问题向量化、Milvus向量检索、BM25关键词检索、RRF融合和GPU重排，返回最终两条文档。主机A再调用本地Ollama生成回答。", bold_lead="请求链路：")
@@ -411,14 +411,14 @@ Invoke-RestMethod -Method Post `
     add_body(doc, "回答应正常返回知识库来源。此时在主机A运行nvidia-smi，应主要看到Ollama生成模型；主机B应看到Embedding和Reranker。")
 
     doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
-    add_heading(doc, "六 恢复飞书 Gradio和视觉服务", 1)
+    add_heading(doc, "六 恢复飞书和视觉服务", 1)
     add_body(doc, "分布式改造只改变知识检索位置，不改变用户入口。主机A的8000端口启动成功后，在新的PowerShell窗口继续运行原有脚本。")
     add_table(doc, ["功能", "主机A命令"], [
         ["视觉诊断API", r".\scripts\11_start_vision_api.ps1"],
         ["Gradio网页", r".\scripts\12_start_gradio_demo.ps1"],
         ["飞书机器人", r".\scripts\07_start_feishu_bot.ps1"],
     ], [1.55, 5.05])
-    add_body(doc, "推荐顺序：先启动主机B检索服务，再启动主机A主服务，最后启动视觉、Gradio和飞书。关闭时按相反顺序操作。")
+    add_body(doc, "推荐顺序：先启动主机B检索服务，再启动主机A主服务，最后启动视觉和飞书。关闭时按相反顺序操作。")
 
     add_heading(doc, "七 每日启动顺序", 1)
     for item in [
@@ -427,7 +427,7 @@ Invoke-RestMethod -Method Post `
         "主机B确认health ready返回ready。",
         "主机A启动Ollama。",
         "主机A运行13_start_primary_distributed.ps1并传入主机B地址和相同密钥。",
-        "主机A启动视觉API、Gradio和飞书机器人。",
+        "主机A启动视觉API和飞书机器人。",
         "分别查看两台机器的nvidia-smi，确认负载落在预期机器。",
     ]:
         add_numbered(doc, item)
